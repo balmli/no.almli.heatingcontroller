@@ -1,0 +1,209 @@
+{
+  "id": "no.almli.homestate",
+  "version": "0.0.1",
+  "compatibility": ">=1.5.0",
+  "sdk": 2,
+  "name": {
+    "en": "HomeState"
+  },
+  "description": {
+    "en": "HomeState"
+  },
+  "category": [
+    "tools"
+  ],
+  "permissions": [
+  ],
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  },
+  "author": {
+    "name": "Bjørnar Almli",
+    "email": "bjornar.almli@gmail.com"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Bjørnar Almli",
+        "email": "bjornar.almli@gmail.com"
+      }
+    ]
+  },
+  "flow": {
+    "triggers": [
+      {
+        "id": "night",
+        "title": {
+          "en": "Night"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HomeState"
+          }
+        ]
+      },
+      {
+        "id": "at_work",
+        "title": {
+          "en": "At work"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HomeState"
+          }
+        ]
+      },
+      {
+        "id": "set_heat_on",
+        "title": {
+          "en": "Set heat on"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HomeState"
+          }
+        ]
+      },
+      {
+        "id": "set_heat_off",
+        "title": {
+          "en": "Set heat off"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HomeState"
+          }
+        ]
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "id": "HomeState",
+      "name": {
+        "en": "HomeState"
+      },
+      "class": "other",
+      "capabilities": [
+        "onoff",
+        "night",
+        "at_work",
+        "heating"
+      ],
+      "capabilitiesOptions": {
+        "at_home": {
+          "greyout": true
+        }
+      },
+      "mobile": {
+        "components": [
+          {
+            "id": "icon",
+            "capabilities": [
+              "onoff"
+            ]
+          },
+          {
+            "id": "sensor",
+            "capabilities": [
+              "heating"
+            ],
+            "options": {
+              "icons": {
+                "heating": "/drivers/HomeState/assets/images/onoff.svg"
+              },
+              "heating": {
+                "noblink": false,
+                "greyout": true,
+                "label": {
+                  "true": {
+                    "en": "Heating on"
+                  },
+                  "false": {
+                    "en": "Heating off"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_my_devices"
+          }
+        },
+        {
+          "id": "add_my_devices",
+          "template": "add_devices"
+        }
+      ],
+      "images": {
+        "large": "/drivers/HomeState/assets/images/large.png",
+        "small": "/drivers/HomeState/assets/images/small.png"
+      }
+    }
+  ],
+  "capabilities": {
+    "at_home": {
+      "type": "boolean",
+      "title": {
+        "en": "At home"
+      },
+      "desc": {
+        "en": "At home or not home"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true
+    },
+    "night": {
+      "type": "boolean",
+      "title": {
+        "en": "Night"
+      },
+      "desc": {
+        "en": "Night or day"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true
+    },
+    "at_work": {
+      "type": "boolean",
+      "title": {
+        "en": "At work"
+      },
+      "desc": {
+        "en": "At work or not at work"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true
+    },
+    "heating": {
+      "type": "boolean",
+      "title": {
+        "en": "Heating"
+      },
+      "desc": {
+        "en": "Heating on or off"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true
+    }
+  }
+}
