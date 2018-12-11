@@ -26,7 +26,7 @@ class HomeStateDevice extends Homey.Device {
 
         this.registerCapabilityListener('onoff', (value, opts) => {
             this.log(this.getName() + ' -> onoff changed: ', value, opts);
-            return this.checkTime();
+            return this.checkTime(value);
         });
 
         this.checkTime();
@@ -40,7 +40,8 @@ class HomeStateDevice extends Homey.Device {
         this.log(this.getName() + ' -> virtual device deleted');
     }
 
-    async checkTime() {
+    async checkTime(onoff) {
+        this.clearCheckTime();
 
         let day = HomeStateDevice.isDay();
         this.log('day', day);
@@ -48,7 +49,11 @@ class HomeStateDevice extends Homey.Device {
         let worktime = HomeStateDevice.isWorkTime();
         this.log('worktime', worktime);
 
-        this._at_home = this.getCapabilityValue('onoff');
+        if (onoff === false || onoff === true) {
+            this._at_home = onoff;
+        } else {
+            this._at_home = this.getCapabilityValue('onoff');
+        }
         if (this._at_home === undefined || this._at_home === null) {
             this._at_home = true;
             await this.setCapabilityValue('onoff', this._at_home);
@@ -91,10 +96,17 @@ class HomeStateDevice extends Homey.Device {
         return Promise.resolve();
     }
 
-    scheduleCheckTime(seconds) {
+
+    clearCheckTime() {
         if (this.curTimeout) {
             clearTimeout(this.curTimeout);
+            this.curTimeout = undefined;
+            this.log('clear timeout');
         }
+    }
+
+    scheduleCheckTime(seconds) {
+        this.clearCheckTime();
         this.log(`Checking time in ${seconds} seconds`);
         this.curTimeout = setTimeout(this.checkTime.bind(this), seconds * 1000);
     }
