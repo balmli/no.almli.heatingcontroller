@@ -1,13 +1,13 @@
 {
-  "id": "no.almli.homestate",
+  "id": "no.almli.heatingcontroller",
   "version": "0.0.1",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "name": {
-    "en": "HomeState"
+    "en": "HeatingController"
   },
   "description": {
-    "en": "HomeState"
+    "en": "HeatingController"
   },
   "category": [
     "tools"
@@ -41,7 +41,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=HomeState"
+            "filter": "driver_id=HeatingController"
           }
         ]
       },
@@ -54,7 +54,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=HomeState"
+            "filter": "driver_id=HeatingController"
           }
         ]
       },
@@ -67,7 +67,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=HomeState"
+            "filter": "driver_id=HeatingController"
           }
         ]
       },
@@ -80,7 +80,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=HomeState"
+            "filter": "driver_id=HeatingController"
           }
         ]
       },
@@ -93,7 +93,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=HomeState"
+            "filter": "driver_id=HeatingController"
           }
         ]
       },
@@ -106,7 +106,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=HomeState"
+            "filter": "driver_id=HeatingController"
           }
         ]
       }
@@ -121,7 +121,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=HomeState"
+            "filter": "driver_id=HeatingController"
           }
         ]
       },
@@ -134,7 +134,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=HomeState"
+            "filter": "driver_id=HeatingController"
           }
         ]
       },
@@ -147,7 +147,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=HomeState"
+            "filter": "driver_id=HeatingController"
           }
         ]
       },
@@ -160,7 +160,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=HomeState"
+            "filter": "driver_id=HeatingController"
           }
         ]
       },
@@ -173,7 +173,7 @@
           {
             "name": "device",
             "type": "device",
-            "filter": "driver_id=HomeState"
+            "filter": "driver_id=HeatingController"
           }
         ]
       }
@@ -241,9 +241,9 @@
   },
   "drivers": [
     {
-      "id": "HomeState",
+      "id": "HeatingController",
       "name": {
-        "en": "HomeState"
+        "en": "HeatingController"
       },
       "class": "other",
       "capabilities": [
@@ -273,7 +273,7 @@
             ],
             "options": {
               "icons": {
-                "heating": "/drivers/HomeState/assets/images/onoff.svg"
+                "heating": "/drivers/HeatingController/assets/images/onoff.svg"
               },
               "heating": {
                 "noblink": false,
@@ -305,8 +305,8 @@
         }
       ],
       "images": {
-        "large": "/drivers/HomeState/assets/images/large.png",
-        "small": "/drivers/HomeState/assets/images/small.png"
+        "large": "/drivers/HeatingController/assets/images/large.png",
+        "small": "/drivers/HeatingController/assets/images/small.png"
       }
     }
   ],

@@ -2,7 +2,7 @@
 
 const Homey = require('homey');
 
-class HomeStateDevice extends Homey.Device {
+class HeatingControllerDevice extends Homey.Device {
 
     onInit() {
         this.log(this.getName() + ' -> virtual device initialized');
@@ -107,10 +107,10 @@ class HomeStateDevice extends Homey.Device {
     async checkTime(onoff, home_override) {
         this.clearCheckTime();
 
-        let day = HomeStateDevice.isDay();
+        let day = HeatingControllerDevice.isDay();
         this.log('day', day);
 
-        let worktime = HomeStateDevice.isWorkTime();
+        let worktime = HeatingControllerDevice.isWorkTime();
         this.log('worktime', worktime);
 
         if (onoff === false || onoff === true) {
@@ -202,7 +202,7 @@ class HomeStateDevice extends Homey.Device {
 
     static isWorkTime() {
         let today = new Date();
-        let workDay = !HomeStateDevice.isHoliday() && today.getDay() >= 1 && today.getDay() <= 5;
+        let workDay = !HeatingControllerDevice.isHoliday() && today.getDay() >= 1 && today.getDay() <= 5;
         let hour = today.getHours() + today.getMinutes() / 60 + today.getSeconds() / 3600;
         return workDay && hour >= 7.0 && hour <= 15.5;
     }
@@ -213,4 +213,4 @@ class HomeStateDevice extends Homey.Device {
 
 }
 
-module.exports = HomeStateDevice;
+module.exports = HeatingControllerDevice;

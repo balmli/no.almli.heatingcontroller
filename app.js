@@ -2,12 +2,12 @@
 
 const Homey = require('homey');
 
-class HomeStateApp extends Homey.App {
+class HeatingControllerApp extends Homey.App {
 
     async onInit() {
-        this.log('HomeStateApp is running...');
+        this.log('HeatingControllerApp is running...');
     }
 
 }
 
-module.exports = HomeStateApp;
+module.exports = HeatingControllerApp;

@@ -1,4 +1,4 @@
-# HomeState
+# HeatingController
 
 Has modes for
 
@@ -17,7 +17,7 @@ The 'Set heat on' and 'Set heat off' triggers can be used to turn heaters on / o
 
 ## Flow cards
 
-### Device: HomeState
+### Device: HeatingController
 
 #### Triggers
 
