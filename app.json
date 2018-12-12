@@ -33,9 +33,9 @@
   "flow": {
     "triggers": [
       {
-        "id": "night",
+        "id": "night_starts",
         "title": {
-          "en": "Night"
+          "en": "Night starts"
         },
         "args": [
           {
@@ -46,9 +46,35 @@
         ]
       },
       {
-        "id": "at_work",
+        "id": "night_ends",
         "title": {
-          "en": "At work"
+          "en": "Night ends"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HomeState"
+          }
+        ]
+      },
+      {
+        "id": "at_work_starts",
+        "title": {
+          "en": "At work starts"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HomeState"
+          }
+        ]
+      },
+      {
+        "id": "at_work_ends",
+        "title": {
+          "en": "At work ends"
         },
         "args": [
           {

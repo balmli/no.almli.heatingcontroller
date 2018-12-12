@@ -12,11 +12,17 @@ class HomeStateDevice extends Homey.Device {
         this._at_work = undefined;
         this._home_override = false;
 
-        this._nightTrigger = new Homey.FlowCardTriggerDevice('night');
-        this._nightTrigger.register();
+        this._nightStartsTrigger = new Homey.FlowCardTriggerDevice('night_starts');
+        this._nightStartsTrigger.register();
 
-        this._atWorkTrigger = new Homey.FlowCardTriggerDevice('at_work');
-        this._atWorkTrigger.register();
+        this._nightEndsTrigger = new Homey.FlowCardTriggerDevice('night_ends');
+        this._nightEndsTrigger.register();
+
+        this._atWorkStartsTrigger = new Homey.FlowCardTriggerDevice('at_work_starts');
+        this._atWorkStartsTrigger.register();
+
+        this._atWorkEndsTrigger = new Homey.FlowCardTriggerDevice('at_work_ends');
+        this._atWorkEndsTrigger.register();
 
         this._setHeatOnTrigger = new Homey.FlowCardTriggerDevice('set_heat_on');
         this._setHeatOnTrigger.register();
@@ -63,14 +69,22 @@ class HomeStateDevice extends Homey.Device {
         if (this._night === undefined || !this._night && !day || this._night && day) {
             this._night = !day;
             await this.setCapabilityValue('night', this._night);
-            this._nightTrigger.trigger(this, {night: this._night});
+            if (this._night) {
+                this._nightStartsTrigger.trigger(this);
+            } else {
+                this._nightEndsTrigger.trigger(this);
+            }
             this.log('night trigger', this._night);
         }
 
         if (this._at_work === undefined || !this._at_work && worktime || this._at_work && !worktime) {
             this._at_work = worktime;
             await this.setCapabilityValue('at_work', this._at_work);
-            this._atWorkTrigger.trigger(this, {atWork: this._at_work});
+            if (this._at_work) {
+                this._atWorkStartsTrigger.trigger(this);
+            } else {
+                this._atWorkEndsTrigger.trigger(this);
+            }
             this.log('at_work trigger', this._at_work);
         }
 
@@ -83,10 +97,10 @@ class HomeStateDevice extends Homey.Device {
         if (currentHeat === undefined || newHeat !== currentHeat) {
             await this.setCapabilityValue('heating', newHeat);
             if (newHeat) {
-                this._setHeatOnTrigger.trigger(this, {heat: true});
+                this._setHeatOnTrigger.trigger(this);
                 this.log('heatOnTrigger', newHeat);
             } else {
-                this._setHeatOffTrigger.trigger(this, {heat: false});
+                this._setHeatOffTrigger.trigger(this);
                 this.log('heatOffTrigger', newHeat);
             }
         }
