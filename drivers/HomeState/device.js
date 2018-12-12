@@ -10,7 +10,7 @@ class HomeStateDevice extends Homey.Device {
         this._at_home = undefined;
         this._night = undefined;
         this._at_work = undefined;
-        this._home_override = false;
+        this._home_override = undefined;
 
         this._nightStartsTrigger = new Homey.FlowCardTriggerDevice('night_starts');
         this._nightStartsTrigger.register();
@@ -63,25 +63,29 @@ class HomeStateDevice extends Homey.Device {
         this._setAtHomeOnAction = new Homey.FlowCardAction('set_at_home_on')
             .register()
             .registerRunListener((args, state) => {
-                return args.device.setCapabilityValue('onoff', true);
+                args.device.setCapabilityValue('onoff', true);
+                return this.checkTime(true);
             });
 
         this._setAtHomeOffAction = new Homey.FlowCardAction('set_at_home_off')
             .register()
             .registerRunListener((args, state) => {
-                return args.device.setCapabilityValue('onoff', false);
+                args.device.setCapabilityValue('onoff', false);
+                return this.checkTime(false);
             });
 
         this._setHomeOverrideOnAction = new Homey.FlowCardAction('set_home_override_on')
             .register()
             .registerRunListener((args, state) => {
-                return args.device.setCapabilityValue('home_override', true);
+                args.device.setCapabilityValue('home_override', true);
+                return this.checkTime(undefined, true);
             });
 
         this._setHomeOverrideOffAction = new Homey.FlowCardAction('set_home_override_off')
             .register()
             .registerRunListener((args, state) => {
-                return args.device.setCapabilityValue('home_override', false);
+                args.device.setCapabilityValue('home_override', false);
+                return this.checkTime(undefined, false);
             });
 
         this.registerCapabilityListener('onoff', (value, opts) => {
@@ -100,7 +104,7 @@ class HomeStateDevice extends Homey.Device {
         this.log(this.getName() + ' -> virtual device deleted');
     }
 
-    async checkTime(onoff) {
+    async checkTime(onoff, home_override) {
         this.clearCheckTime();
 
         let day = HomeStateDevice.isDay();
@@ -119,6 +123,11 @@ class HomeStateDevice extends Homey.Device {
             await this.setCapabilityValue('onoff', this._at_home);
         }
 
+        if (home_override === false || home_override === true) {
+            this._home_override = home_override;
+        } else {
+            this._home_override = this.getCapabilityValue('home_override');
+        }
         if (this._home_override === undefined || this._home_override === null) {
             this._home_override = false;
             await this.setCapabilityValue('home_override', this._home_override);
