@@ -188,7 +188,7 @@
           {
             "type": "device",
             "name": "device",
-            "filter": "driver_id=TF_Thermostat"
+            "filter": "driver_id=HeatingController"
           }
         ]
       },
@@ -201,7 +201,7 @@
           {
             "type": "device",
             "name": "device",
-            "filter": "driver_id=TF_Thermostat"
+            "filter": "driver_id=HeatingController"
           }
         ]
       },
@@ -217,7 +217,7 @@
           {
             "type": "device",
             "name": "device",
-            "filter": "driver_id=TF_Thermostat"
+            "filter": "driver_id=HeatingController"
           }
         ]
       },
@@ -233,7 +233,7 @@
           {
             "type": "device",
             "name": "device",
-            "filter": "driver_id=TF_Thermostat"
+            "filter": "driver_id=HeatingController"
           }
         ]
       }

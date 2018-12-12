@@ -118,7 +118,7 @@ class HeatingControllerDevice extends Homey.Device {
         } else {
             this._at_home = this.getCapabilityValue('onoff');
         }
-        if (this._at_home === undefined || this._at_home === null) {
+        if (this._at_home === undefined || this._at_home === null) {
             this._at_home = true;
             await this.setCapabilityValue('onoff', this._at_home);
         }
@@ -128,13 +128,13 @@ class HeatingControllerDevice extends Homey.Device {
         } else {
             this._home_override = this.getCapabilityValue('home_override');
         }
-        if (this._home_override === undefined || this._home_override === null) {
+        if (this._home_override === undefined || this._home_override === null) {
             this._home_override = false;
             await this.setCapabilityValue('home_override', this._home_override);
         }
 
         this._night = this.getCapabilityValue('night');
-        if (this._night === undefined || !this._night && !day || this._night && day) {
+        if (this._night === undefined || this._night === null || !this._night && !day || this._night && day) {
             this._night = !day;
             await this.setCapabilityValue('night', this._night);
             if (this._night) {
@@ -145,7 +145,7 @@ class HeatingControllerDevice extends Homey.Device {
             this.log('night trigger', this._night);
         }
 
-        if (this._at_work === undefined || !this._at_work && worktime || this._at_work && !worktime) {
+        if (this._at_work === undefined || this._at_work === null || !this._at_work && worktime || this._at_work && !worktime) {
             this._at_work = worktime;
             await this.setCapabilityValue('at_work', this._at_work);
             if (this._at_work) {
@@ -197,7 +197,7 @@ class HeatingControllerDevice extends Homey.Device {
         let today = new Date();
         let workDay = today.getDay() >= 1 && today.getDay() <= 5;
         let hour = today.getHours() + today.getMinutes() / 60 + today.getSeconds() / 3600;
-        return workDay && hour >= 7.0 && hour <= 22.5 || !workDay && hour >= 7.0 && hour <= 22.5;
+        return workDay && hour >= 5.5 && hour <= 22.5 || !workDay && hour >= 7.0 && hour <= 23;
     }
 
     static isWorkTime() {
@@ -208,7 +208,65 @@ class HeatingControllerDevice extends Homey.Device {
     }
 
     static isHoliday() {
-        return false;
+        let today = new Date();
+        let m = today.getMonth() + 1;
+        let d = today.getDate();
+        let easterDate = HeatingControllerDevice.easter(today.getFullYear());
+        return (m === 1 && (d === 1)) ||
+            (m === 5 && (d === 1 || d === 17)) ||
+            (m === 12 && (d === 24 || d === 25 || d === 26 || d === 31)) ||
+            HeatingControllerDevice.equals(today, HeatingControllerDevice.addDate(easterDate, -3)) ||
+            HeatingControllerDevice.equals(today, HeatingControllerDevice.addDate(easterDate, -2)) ||
+            HeatingControllerDevice.equals(today, HeatingControllerDevice.addDate(easterDate, 1)) ||
+            HeatingControllerDevice.equals(today, HeatingControllerDevice.addDate(easterDate, 39)) ||
+            HeatingControllerDevice.equals(today, HeatingControllerDevice.addDate(easterDate, 50));
+    }
+
+    static addDate(date, days) {
+        let ret = new Date();
+        ret.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        return ret;
+    }
+
+    static equals(d1, d2) {
+        return d1.getFullYear() === d2.getFullYear() &&
+            d1.getMonth() === d2.getMonth() &&
+            d1.getDate() === d2.getDate();
+    }
+
+    static easter(y) {
+        let date = new Date();
+        date.setHours(0, 0, 0, 0);
+        date.setFullYear(y);
+
+        // Find the golden number.
+        let a, b, c, m, d;
+        a = y % 19;
+
+        // Choose which version of the algorithm to use based on the given year.
+        b = (2200 <= y && y <= 2299) ?
+            ((11 * a) + 4) % 30 :
+            ((11 * a) + 5) % 30;
+
+        // Determine whether or not to compensate for the previous step.
+        c = ((b === 0) || (b === 1 && a > 10)) ?
+            (b + 1) :
+            b;
+
+        // Use c first to find the month: April or March.
+        m = (1 <= c && c <= 19) ? 3 : 2;
+
+        // Then use c to find the full moon after the northward equinox.
+        d = (50 - c) % 31;
+
+        // Mark the date of that full moon—the "Paschal" full moon.
+        date.setMonth(m, d);
+
+        // Count forward the number of days until the following Sunday (Easter).
+        date.setMonth(m, d + (7 - date.getDay()));
+
+        // Gregorian Western Easter Sunday
+        return date;
     }
 
 }
