@@ -30,6 +30,60 @@ class HomeStateDevice extends Homey.Device {
         this._setHeatOffTrigger = new Homey.FlowCardTriggerDevice('set_heat_off');
         this._setHeatOffTrigger.register();
 
+        this.isHomeCondition = new Homey.FlowCardCondition('is_home')
+            .register()
+            .registerRunListener((args, state) => {
+                return args.device.getCapabilityValue('onoff');
+            });
+
+        this.isHomeOverrideCondition = new Homey.FlowCardCondition('is_home_override')
+            .register()
+            .registerRunListener((args, state) => {
+                return args.device.getCapabilityValue('home_override');
+            });
+
+        this.NightCondition = new Homey.FlowCardCondition('is_night')
+            .register()
+            .registerRunListener((args, state) => {
+                return args.device.getCapabilityValue('night');
+            });
+
+        this.isAtWorkCondition = new Homey.FlowCardCondition('is_at_work')
+            .register()
+            .registerRunListener((args, state) => {
+                return args.device.getCapabilityValue('at_work');
+            });
+
+        this.isHeatingOnCondition = new Homey.FlowCardCondition('is_heating_on')
+            .register()
+            .registerRunListener((args, state) => {
+                return args.device.getCapabilityValue('heating');
+            });
+
+        this._setAtHomeOnAction = new Homey.FlowCardAction('set_at_home_on')
+            .register()
+            .registerRunListener((args, state) => {
+                return args.device.setCapabilityValue('onoff', true);
+            });
+
+        this._setAtHomeOffAction = new Homey.FlowCardAction('set_at_home_off')
+            .register()
+            .registerRunListener((args, state) => {
+                return args.device.setCapabilityValue('onoff', false);
+            });
+
+        this._setHomeOverrideOnAction = new Homey.FlowCardAction('set_home_override_on')
+            .register()
+            .registerRunListener((args, state) => {
+                return args.device.setCapabilityValue('home_override', true);
+            });
+
+        this._setHomeOverrideOffAction = new Homey.FlowCardAction('set_home_override_off')
+            .register()
+            .registerRunListener((args, state) => {
+                return args.device.setCapabilityValue('home_override', false);
+            });
+
         this.registerCapabilityListener('onoff', (value, opts) => {
             this.log(this.getName() + ' -> onoff changed: ', value, opts);
             return this.checkTime(value);
@@ -63,6 +117,11 @@ class HomeStateDevice extends Homey.Device {
         if (this._at_home === undefined || this._at_home === null) {
             this._at_home = true;
             await this.setCapabilityValue('onoff', this._at_home);
+        }
+
+        if (this._home_override === undefined || this._home_override === null) {
+            this._home_override = false;
+            await this.setCapabilityValue('home_override', this._home_override);
         }
 
         this._night = this.getCapabilityValue('night');

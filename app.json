@@ -110,6 +110,133 @@
           }
         ]
       }
+    ],
+    "conditions": [
+      {
+        "id": "is_home",
+        "title": {
+          "en": "Is !{{home|away}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HomeState"
+          }
+        ]
+      },
+      {
+        "id": "is_home_override",
+        "title": {
+          "en": "Is home override !{{on|off}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HomeState"
+          }
+        ]
+      },
+      {
+        "id": "is_night",
+        "title": {
+          "en": "Is !{{night|day}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HomeState"
+          }
+        ]
+      },
+      {
+        "id": "is_at_work",
+        "title": {
+          "en": "Is !{{at work|not at work}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HomeState"
+          }
+        ]
+      },
+      {
+        "id": "is_heating_on",
+        "title": {
+          "en": "Is heating !{{on|off}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HomeState"
+          }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "set_at_home_on",
+        "title": {
+          "en": "Set home"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=TF_Thermostat"
+          }
+        ]
+      },
+      {
+        "id": "set_at_home_off",
+        "title": {
+          "en": "Set away"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=TF_Thermostat"
+          }
+        ]
+      },
+      {
+        "id": "set_home_override_on",
+        "title": {
+          "en": "Set home override on"
+        },
+        "hint": {
+          "en": "True will keep heating on even if at work"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=TF_Thermostat"
+          }
+        ]
+      },
+      {
+        "id": "set_home_override_off",
+        "title": {
+          "en": "Set home override off"
+        },
+        "hint": {
+          "en": "True will keep heating on even if at work"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=TF_Thermostat"
+          }
+        ]
+      }
     ]
   },
   "drivers": [
@@ -121,6 +248,7 @@
       "class": "other",
       "capabilities": [
         "onoff",
+        "home_override",
         "night",
         "at_work",
         "heating"
@@ -190,6 +318,18 @@
       },
       "desc": {
         "en": "At home or not home"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true
+    },
+    "home_override": {
+      "type": "boolean",
+      "title": {
+        "en": "Home override"
+      },
+      "desc": {
+        "en": "Will turn on heating even if at work"
       },
       "getable": true,
       "setable": false,

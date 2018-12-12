@@ -31,14 +31,17 @@ The 'Set heat on' and 'Set heat off' triggers can be used to turn heaters on / o
 #### Conditions
 
 - Is home
+- Is home override
 - Is night
 - Is at work
-- Is home override
+- Is heating on
 
 #### Actions
 
-- Set home on / off
-- Set home override on / off
+- Set home
+- Set away
+- Set home override on
+- Set home override off
 
 ### Release Notes
 
