@@ -13,7 +13,7 @@ Will automatically set 'At work' based on time, day of week and public holidays.
 
 The 'Home override' state can be used to override the 'Home' state.
 
-The 'Set heat on' and 'Set heat off' triggers can be used to turn heaters on / off, or set the thermostat temperature.
+The 'Set heat on' and 'Set heat off' triggers can be used to turn heaters on / off, or set the thermostat temperature or thermostat mode.
 
 ## Flow cards
 
