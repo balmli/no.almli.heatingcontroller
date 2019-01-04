@@ -254,8 +254,37 @@
         "heating"
       ],
       "capabilitiesOptions": {
-        "at_home": {
-          "greyout": true
+        "onoff": {
+          "titleTrue": {
+            "en": "Home"
+          },
+          "titleFalse": {
+            "en": "Away"
+          }
+        },
+        "night": {
+          "titleTrue": {
+            "en": "Night"
+          },
+          "titleFalse": {
+            "en": "Day"
+          }
+        },
+        "at_work": {
+          "titleTrue": {
+            "en": "At work"
+          },
+          "titleFalse": {
+            "en": "Not at work"
+          }
+        },
+        "heating": {
+          "titleTrue": {
+            "en": "Heating on"
+          },
+          "titleFalse": {
+            "en": "Heating off"
+          }
         }
       },
       "mobile": {
@@ -321,7 +350,8 @@
       },
       "getable": true,
       "setable": false,
-      "greyout": true
+      "greyout": true,
+      "icon": "/drivers/HeatingController/assets/images/house.svg"
     },
     "home_override": {
       "type": "boolean",
@@ -333,7 +363,8 @@
       },
       "getable": true,
       "setable": false,
-      "greyout": true
+      "greyout": true,
+      "icon": "/drivers/HeatingController/assets/images/house.svg"
     },
     "night": {
       "type": "boolean",
@@ -345,7 +376,8 @@
       },
       "getable": true,
       "setable": false,
-      "greyout": true
+      "greyout": true,
+      "icon": "/drivers/HeatingController/assets/images/night.svg"
     },
     "at_work": {
       "type": "boolean",
@@ -357,7 +389,8 @@
       },
       "getable": true,
       "setable": false,
-      "greyout": true
+      "greyout": true,
+      "icon": "/drivers/HeatingController/assets/images/work.svg"
     },
     "heating": {
       "type": "boolean",
@@ -369,7 +402,8 @@
       },
       "getable": true,
       "setable": false,
-      "greyout": true
+      "greyout": true,
+      "icon": "/drivers/HeatingController/assets/images/onoff.svg"
     }
   }
 }
