@@ -1,6 +1,6 @@
 {
   "id": "no.almli.heatingcontroller",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "compatibility": ">=1.5.0",
   "sdk": 2,
   "name": {
@@ -87,7 +87,7 @@
       {
         "id": "set_heat_on",
         "title": {
-          "en": "Set heat on"
+          "en": "Heating on"
         },
         "args": [
           {
@@ -100,13 +100,100 @@
       {
         "id": "set_heat_off",
         "title": {
-          "en": "Set heat off"
+          "en": "Heating off"
         },
         "args": [
           {
             "name": "device",
             "type": "device",
             "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "price_changed",
+        "title": {
+          "en": "Utility price changed"
+        },
+        "tokens": [
+          {
+            "name": "price",
+            "type": "number",
+            "title": {
+              "en": "price"
+            }
+          },
+          {
+            "name": "priceArea",
+            "type": "string",
+            "title": {
+              "en": "price area"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "low_price_heating",
+        "title": {
+          "en": "Heating on if low price"
+        },
+        "tokens": [
+          {
+            "name": "onoff",
+            "type": "boolean",
+            "title": {
+              "en": "onoff"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "low_hours",
+            "type": "number",
+            "placeholder": {
+              "en": "low_hours"
+            }
+          }
+        ]
+      },
+      {
+        "id": "low_x_hours_of_day",
+        "title": {
+          "en": "Low price [x] hours of the day"
+        },
+        "tokens": [
+          {
+            "name": "onoff",
+            "type": "boolean",
+            "title": {
+              "en": "onoff"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "low_hours",
+            "type": "number",
+            "placeholder": {
+              "en": "low_hours"
+            }
           }
         ]
       }
@@ -251,7 +338,8 @@
         "home_override",
         "night",
         "at_work",
-        "heating"
+        "heating",
+        "price"
       ],
       "capabilitiesOptions": {
         "onoff": {
@@ -298,25 +386,12 @@
           {
             "id": "sensor",
             "capabilities": [
-              "heating"
-            ],
-            "options": {
-              "icons": {
-                "heating": "/drivers/HeatingController/assets/images/onoff.svg"
-              },
-              "heating": {
-                "noblink": false,
-                "greyout": true,
-                "label": {
-                  "true": {
-                    "en": "Heating on"
-                  },
-                  "false": {
-                    "en": "Heating off"
-                  }
-                }
-              }
-            }
+              "home_override",
+              "night",
+              "at_work",
+              "heating",
+              "price"
+            ]
           }
         ]
       },
@@ -404,6 +479,17 @@
       "setable": false,
       "greyout": true,
       "icon": "/drivers/HeatingController/assets/images/onoff.svg"
+    },
+    "price": {
+      "type": "number",
+      "title": {
+        "en": "Current price"
+      },
+      "getable": true,
+      "setable": false,
+      "units": {
+        "en": "kr"
+      }
     }
   }
 }

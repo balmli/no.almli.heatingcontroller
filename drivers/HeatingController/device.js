@@ -1,6 +1,9 @@
 'use strict';
 
-const Homey = require('homey');
+const Homey = require('homey'),
+    _ = require('lodash'),
+    moment = require('moment'),
+    nordpool = require('../../lib/nordpool');
 
 class HeatingControllerDevice extends Homey.Device {
 
@@ -11,6 +14,10 @@ class HeatingControllerDevice extends Homey.Device {
         this._night = undefined;
         this._at_work = undefined;
         this._home_override = undefined;
+
+        this._lastFetchData = undefined;
+        this._lastPrice = undefined;
+        this._prices = undefined;
 
         this._nightStartsTrigger = new Homey.FlowCardTriggerDevice('night_starts');
         this._nightStartsTrigger.register();
@@ -30,6 +37,29 @@ class HeatingControllerDevice extends Homey.Device {
         this._setHeatOffTrigger = new Homey.FlowCardTriggerDevice('set_heat_off');
         this._setHeatOffTrigger.register();
 
+        this._priceChangedTrigger = new Homey.FlowCardTriggerDevice('price_changed');
+        this._priceChangedTrigger.register();
+
+        this._setLowPriceHeatOnTrigger = new Homey.FlowCardTriggerDevice('low_price_heating');
+        this._setLowPriceHeatOnTrigger
+            .register()
+            .registerRunListener(this._lowHoursComparer.bind(this));
+
+        this._setLowPriceHeatOffTrigger = new Homey.FlowCardTriggerDevice('low_price_heating');
+        this._setLowPriceHeatOffTrigger
+            .register()
+            .registerRunListener(this._lowHoursComparer.bind(this));
+
+        this._lowHoursOnTrigger = new Homey.FlowCardTriggerDevice('low_x_hours_of_day');
+        this._lowHoursOnTrigger
+            .register()
+            .registerRunListener(this._lowHoursComparer.bind(this));
+
+        this._lowHoursOffTrigger = new Homey.FlowCardTriggerDevice('low_x_hours_of_day');
+        this._lowHoursOffTrigger
+            .register()
+            .registerRunListener(this._lowHoursComparer.bind(this));
+
         this.isHomeCondition = new Homey.FlowCardCondition('is_home')
             .register()
             .registerRunListener((args, state) => {
@@ -42,7 +72,7 @@ class HeatingControllerDevice extends Homey.Device {
                 return args.device.getCapabilityValue('home_override');
             });
 
-        this.NightCondition = new Homey.FlowCardCondition('is_night')
+        this.isNightCondition = new Homey.FlowCardCondition('is_night')
             .register()
             .registerRunListener((args, state) => {
                 return args.device.getCapabilityValue('night');
@@ -156,28 +186,17 @@ class HeatingControllerDevice extends Homey.Device {
             this.log('at_work trigger', this._at_work);
         }
 
-        let currentHeat = this.getCapabilityValue('heating');
-        //this.log('currentHeat', currentHeat);
-
-        let newHeat = this._at_home === true && this._night === false && this._at_work === false ||
-            this._home_override === true && this._night === false;
-
-        if (currentHeat === undefined || newHeat !== currentHeat) {
-            await this.setCapabilityValue('heating', newHeat);
-            if (newHeat) {
-                this._setHeatOnTrigger.trigger(this);
-                this.log('heatOnTrigger', newHeat);
-            } else {
-                this._setHeatOffTrigger.trigger(this);
-                this.log('heatOffTrigger', newHeat);
-            }
+        const currentHour = moment().format('YYYY-MM-DD\THH');
+        if (!this._prices || !this._lastFetchData || this._lastFetchData.format('YYYY-MM-DD\THH') !== currentHour) {
+            this.fetchData();
+        } else if (this._prices) {
+            this.onData();
         }
 
         this.scheduleCheckTime(60);
 
         return Promise.resolve();
     }
-
 
     clearCheckTime() {
         if (this.curTimeout) {
@@ -193,6 +212,120 @@ class HeatingControllerDevice extends Homey.Device {
         this.curTimeout = setTimeout(this.checkTime.bind(this), seconds * 1000);
     }
 
+    async fetchData() {
+        let settings = this.getSettings();
+        let priceArea = settings.priceArea || 'Oslo';
+        let currency = settings.currency || 'NOK';
+        this.log('fetchData: ', this.getData().id, settings, priceArea);
+        Promise.all([
+            nordpool.getHourlyPrices(moment(), {priceArea: priceArea, currency: currency}),
+            nordpool.getHourlyPrices(moment().add(1, 'days'), {priceArea: priceArea, currency: currency})
+        ]).then(result => {
+            let prices = result[0];
+            Array.prototype.push.apply(prices, result[1]);
+            this._lastFetchData = moment();
+            this._prices = prices;
+            return this.onData();
+        }).catch(err => {
+            console.error(err);
+        });
+    }
+
+    async onData() {
+
+        let currentHeat = this.getCapabilityValue('heating');
+        //this.log('currentHeat', currentHeat);
+
+        let newHeat = this._at_home === true && this._night === false && this._at_work === false ||
+            this._home_override === true && this._night === false;
+
+        let heatChanged = currentHeat === undefined || newHeat !== currentHeat;
+
+        if (heatChanged) {
+            await this.setCapabilityValue('heating', newHeat);
+            if (newHeat) {
+                this._setHeatOnTrigger.trigger(this);
+                this.log('heatOnTrigger', newHeat);
+            } else {
+                this._setHeatOffTrigger.trigger(this);
+                this.log('heatOffTrigger', newHeat);
+            }
+        }
+
+        const currentHour = moment().format('YYYY-MM-DD\THH');
+        const currentPrice = this._prices.find(p => moment(p.startsAt).format('YYYY-MM-DD\THH') === currentHour);
+
+        this.log('currentPrice', currentPrice.startsAt, currentPrice.price);
+
+        if (!this._lastPrice || currentPrice.startsAt !== this._lastPrice.startsAt || heatChanged) {
+            this._lastPrice = currentPrice;
+            this._priceChangedTrigger.trigger(this, currentPrice);
+            this.setCapabilityValue("price", currentPrice.price).catch(console.error);
+            this.log('Triggering price_changed', currentPrice);
+
+            let heating = await this.getCapabilityValue('heating');
+
+            this._setLowPriceHeatOnTrigger.trigger(this, {
+                onoff: true
+            }, {
+                heating: heating,
+                onofftrigger: true,
+                prices: this._prices
+            }).catch(console.error);
+
+            this._setLowPriceHeatOffTrigger.trigger(this, {
+                onoff: false
+            }, {
+                heating: heating,
+                onofftrigger: false,
+                prices: this._prices
+            }).catch(console.error);
+
+            this._lowHoursOnTrigger.trigger(this, {
+                onoff: true
+            }, {
+                heating: undefined,
+                onofftrigger: true,
+                prices: this._prices
+            }).catch(console.error);
+
+            this._lowHoursOffTrigger.trigger(this, {
+                onoff: false
+            }, {
+                heating: undefined,
+                onofftrigger: false,
+                prices: this._prices
+            }).catch(console.error);
+        }
+    }
+
+    _lowHoursComparer(args, state) {
+        if (!args.low_hours) {
+            return false;
+        }
+
+        const now = moment();
+        const startingAt = moment().hours(0).minutes(0).second(0).millisecond(0);
+
+        let pricesNextHours = _(state.prices)
+            .filter(p => moment(p.startsAt).isSameOrAfter(startingAt))
+            .take(24)
+            .value();
+        if (pricesNextHours.length === 0) {
+            return false;
+        }
+
+        // Search for lowest prices for the next hours after the start hour
+        let onNowOrOff = _(pricesNextHours)
+            .sortBy(['price'])
+            .take(args.low_hours)
+            .filter(p => moment(p.startsAt).isBefore(now) && moment(p.startsAt).add(1, 'hours').minutes(0).second(0).millisecond(0).isAfter(now));
+
+        // Will trig if onofftrigger is true and found, or onofftrigger is false and not found
+        return (state.heating === undefined || state.heating === true) && state.onofftrigger && onNowOrOff.size() === 1 ||
+            (state.heating === undefined || state.heating === false) && !state.onofftrigger && onNowOrOff.size() === 0;
+    }
+
     static isDay() {
         let today = new Date();
         let workDay = today.getDay() >= 1 && today.getDay() <= 5;
@@ -204,7 +337,7 @@ class HeatingControllerDevice extends Homey.Device {
         let today = new Date();
         let workDay = !HeatingControllerDevice.isHoliday() && today.getDay() >= 1 && today.getDay() <= 5;
         let hour = today.getHours() + today.getMinutes() / 60 + today.getSeconds() / 3600;
-        return workDay && hour >= 7.0 && hour <= 15.5;
+        return workDay && hour >= 7.0 && hour <= 14;
     }
 
     static isHoliday() {
