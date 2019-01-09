@@ -129,6 +129,13 @@
             "title": {
               "en": "price area"
             }
+          },
+          {
+            "name": "currency",
+            "type": "string",
+            "title": {
+              "en": "currency"
+            }
           }
         ],
         "args": [
@@ -395,6 +402,156 @@
           }
         ]
       },
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "General settings"
+          },
+          "children": [
+            {
+              "id": "priceArea",
+              "type": "dropdown",
+              "label": {
+                "en": "Price area"
+              },
+              "value": "Oslo",
+              "values": [
+                {
+                  "id": "SE1",
+                  "label": {
+                    "en": "SE - SE1"
+                  }
+                },
+                {
+                  "id": "SE2",
+                  "label": {
+                    "en": "SE - SE2"
+                  }
+                },
+                {
+                  "id": "SE3",
+                  "label": {
+                    "en": "SE - SE3"
+                  }
+                },
+                {
+                  "id": "SE4",
+                  "label": {
+                    "en": "SE - SE4"
+                  }
+                },
+                {
+                  "id": "DK1",
+                  "label": {
+                    "en": "DK - DK1"
+                  }
+                },
+                {
+                  "id": "DK2",
+                  "label": {
+                    "en": "DK - DK2"
+                  }
+                },
+                {
+                  "id": "FI",
+                  "label": {
+                    "en": "FI"
+                  }
+                },
+                {
+                  "id": "Oslo",
+                  "label": {
+                    "en": "NO - Oslo"
+                  }
+                },
+                {
+                  "id": "Kr.sand",
+                  "label": {
+                    "en": "NO - Kr.sand"
+                  }
+                },
+                {
+                  "id": "Bergen",
+                  "label": {
+                    "en": "NO - Bergen"
+                  }
+                },
+                {
+                  "id": "Molde",
+                  "label": {
+                    "en": "NO - Molde"
+                  }
+                },
+                {
+                  "id": "Tr.heim",
+                  "label": {
+                    "en": "NO - Tr.heim"
+                  }
+                },
+                {
+                  "id": "Tromsø",
+                  "label": {
+                    "en": "NO - Tromsø"
+                  }
+                },
+                {
+                  "id": "EE",
+                  "label": {
+                    "en": "EE"
+                  }
+                },
+                {
+                  "id": "LV",
+                  "label": {
+                    "en": "LV"
+                  }
+                },
+                {
+                  "id": "LT",
+                  "label": {
+                    "en": "LT"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "currency",
+              "type": "dropdown",
+              "label": {
+                "en": "Currency"
+              },
+              "value": "EUR",
+              "values": [
+                {
+                  "id": "EUR",
+                  "label": {
+                    "en": "EUR"
+                  }
+                },
+                {
+                  "id": "DKK",
+                  "label": {
+                    "en": "DKK"
+                  }
+                },
+                {
+                  "id": "NOK",
+                  "label": {
+                    "en": "NOK"
+                  }
+                },
+                {
+                  "id": "SEK",
+                  "label": {
+                    "en": "SEK"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
       "pair": [
         {
           "id": "list_devices",
@@ -486,10 +643,7 @@
         "en": "Current price"
       },
       "getable": true,
-      "setable": false,
-      "units": {
-        "en": "kr"
-      }
+      "setable": false
     }
   }
 }

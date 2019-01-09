@@ -123,7 +123,7 @@ class HeatingControllerDevice extends Homey.Device {
             return this.checkTime(value);
         });
 
-        this.checkTime();
+        this.scheduleCheckTime(10);
     }
 
     onAdded() {
@@ -240,7 +240,6 @@ class HeatingControllerDevice extends Homey.Device {
             this._home_override === true && this._night === false;
 
         let heatChanged = currentHeat === undefined || newHeat !== currentHeat;
-
         if (heatChanged) {
             await this.setCapabilityValue('heating', newHeat);
             if (newHeat) {
@@ -257,18 +256,19 @@ class HeatingControllerDevice extends Homey.Device {
 
         this.log('currentPrice', currentPrice.startsAt, currentPrice.price);
 
-        if (!this._lastPrice || currentPrice.startsAt !== this._lastPrice.startsAt || heatChanged) {
+        let priceChanged = !this._lastPrice || currentPrice.startsAt !== this._lastPrice.startsAt;
+        if (priceChanged) {
             this._lastPrice = currentPrice;
             this._priceChangedTrigger.trigger(this, currentPrice);
             this.setCapabilityValue("price", currentPrice.price).catch(console.error);
             this.log('Triggering price_changed', currentPrice);
+        }
 
-            let heating = await this.getCapabilityValue('heating');
-
+        if (priceChanged || heatChanged) {
             this._setLowPriceHeatOnTrigger.trigger(this, {
                 onoff: true
             }, {
-                heating: heating,
+                heating: newHeat,
                 onofftrigger: true,
                 prices: this._prices
             }).catch(console.error);
@@ -276,11 +276,13 @@ class HeatingControllerDevice extends Homey.Device {
             this._setLowPriceHeatOffTrigger.trigger(this, {
                 onoff: false
             }, {
-                heating: heating,
+                heating: newHeat,
                 onofftrigger: false,
                 prices: this._prices
             }).catch(console.error);
+        }
 
+        if (priceChanged) {
             this._lowHoursOnTrigger.trigger(this, {
                 onoff: true
             }, {
@@ -307,6 +309,7 @@ class HeatingControllerDevice extends Homey.Device {
         const now = moment();
         const startingAt = moment().hours(0).minutes(0).second(0).millisecond(0);
 
+        // Finds prices starting at 00:00 today
         let pricesNextHours = _(state.prices)
             .filter(p => moment(p.startsAt).isSameOrAfter(startingAt))
             .take(24)
@@ -315,15 +318,15 @@ class HeatingControllerDevice extends Homey.Device {
             return false;
         }
 
-        // Search for lowest prices for the next hours after the start hour
+        // Search for X lowest prices
         let onNowOrOff = _(pricesNextHours)
             .sortBy(['price'])
             .take(args.low_hours)
             .filter(p => moment(p.startsAt).isBefore(now) && moment(p.startsAt).add(1, 'hours').minutes(0).second(0).millisecond(0).isAfter(now));
 
         // Will trig if onofftrigger is true and found, or onofftrigger is false and not found
-        return (state.heating === undefined || state.heating === true) && state.onofftrigger && onNowOrOff.size() === 1 ||
-            (state.heating === undefined || state.heating === false) && !state.onofftrigger && onNowOrOff.size() === 0;
+        return (state.heating === undefined || state.heating === true) && state.onofftrigger === true && onNowOrOff.size() === 1 ||
+            (state.heating === undefined || state.heating === false) && state.onofftrigger === false && onNowOrOff.size() === 0;
     }
 
     static isDay() {
