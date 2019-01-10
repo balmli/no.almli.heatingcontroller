@@ -3,7 +3,23 @@
 const Homey = require('homey'),
     _ = require('lodash'),
     moment = require('moment'),
-    nordpool = require('../../lib/nordpool');
+    nordpool = require('../../lib/nordpool'),
+    heating = require('../../lib/heating');
+
+let heatingOptions = {
+    workday: {
+        startHour: 5,
+        endHour: 22.5,
+    },
+    notWorkday: {
+        startHour: 7,
+        endHour: 23,
+    },
+    workHours: {
+        startHour: 7,
+        endHour: 14
+    }
+};
 
 class HeatingControllerDevice extends Homey.Device {
 
@@ -11,8 +27,6 @@ class HeatingControllerDevice extends Homey.Device {
         this.log(this.getName() + ' -> virtual device initialized');
 
         this._at_home = undefined;
-        this._night = undefined;
-        this._at_work = undefined;
         this._home_override = undefined;
 
         this._lastFetchData = undefined;
@@ -137,53 +151,24 @@ class HeatingControllerDevice extends Homey.Device {
     async checkTime(onoff, home_override) {
         this.clearCheckTime();
 
-        let day = HeatingControllerDevice.isDay();
-        this.log('day', day);
-
-        let worktime = HeatingControllerDevice.isWorkTime();
-        this.log('worktime', worktime);
-
         if (onoff === false || onoff === true) {
             this._at_home = onoff;
         } else {
-            this._at_home = this.getCapabilityValue('onoff');
+            this._at_home = await this.getCapabilityValue('onoff');
         }
-        if (this._at_home === undefined || this._at_home === null) {
+        if (!this._at_home) {
             this._at_home = true;
-            await this.setCapabilityValue('onoff', this._at_home);
+            this.setCapabilityValue('onoff', this._at_home);
         }
 
         if (home_override === false || home_override === true) {
             this._home_override = home_override;
         } else {
-            this._home_override = this.getCapabilityValue('home_override');
+            this._home_override = await this.getCapabilityValue('home_override');
         }
-        if (this._home_override === undefined || this._home_override === null) {
+        if (!this._home_override) {
             this._home_override = false;
-            await this.setCapabilityValue('home_override', this._home_override);
-        }
-
-        this._night = this.getCapabilityValue('night');
-        if (this._night === undefined || this._night === null || !this._night && !day || this._night && day) {
-            this._night = !day;
-            await this.setCapabilityValue('night', this._night);
-            if (this._night) {
-                this._nightStartsTrigger.trigger(this);
-            } else {
-                this._nightEndsTrigger.trigger(this);
-            }
-            this.log('night trigger', this._night);
-        }
-
-        if (this._at_work === undefined || this._at_work === null || !this._at_work && worktime || this._at_work && !worktime) {
-            this._at_work = worktime;
-            await this.setCapabilityValue('at_work', this._at_work);
-            if (this._at_work) {
-                this._atWorkStartsTrigger.trigger(this);
-            } else {
-                this._atWorkEndsTrigger.trigger(this);
-            }
-            this.log('at_work trigger', this._at_work);
+            this.setCapabilityValue('home_override', this._home_override);
         }
 
         const currentHour = moment().format('YYYY-MM-DD\THH');
@@ -233,21 +218,43 @@ class HeatingControllerDevice extends Homey.Device {
 
     async onData() {
 
-        let currentHeat = this.getCapabilityValue('heating');
-        //this.log('currentHeat', currentHeat);
+        let calcHeating = heating.calcHeating(new Date(), this._at_home, this._home_override, heatingOptions);
+        this.log('calcHeating', calcHeating);
 
-        let newHeat = this._at_home === true && this._night === false && this._at_work === false ||
-            this._home_override === true && this._night === false;
+        let curNight = await this.getCapabilityValue('night');
+        if (!curNight || calcHeating.night !== curNight) {
+            this.setCapabilityValue('night', calcHeating.night);
+            if (calcHeating.night) {
+                this._nightStartsTrigger.trigger(this);
+                this.log('night starts trigger');
+            } else {
+                this._nightEndsTrigger.trigger(this);
+                this.log('night ends trigger');
+            }
+        }
 
-        let heatChanged = currentHeat === undefined || newHeat !== currentHeat;
+        let curAtWork = await this.getCapabilityValue('at_work');
+        if (!curAtWork || calcHeating.atWork !== curAtWork) {
+            this.setCapabilityValue('at_work', calcHeating.atWork);
+            if (calcHeating.atWork) {
+                this._atWorkStartsTrigger.trigger(this);
+                this.log('at_work starts trigger');
+            } else {
+                this._atWorkEndsTrigger.trigger(this);
+                this.log('at_work ends trigger');
+            }
+        }
+
+        let curHeating = await this.getCapabilityValue('heating');
+        let heatChanged = !curHeating || calcHeating.heating !== curHeating;
         if (heatChanged) {
-            await this.setCapabilityValue('heating', newHeat);
-            if (newHeat) {
+            this.setCapabilityValue('heating', calcHeating.heating);
+            if (calcHeating.heating) {
                 this._setHeatOnTrigger.trigger(this);
-                this.log('heatOnTrigger', newHeat);
+                this.log('heatOnTrigger');
             } else {
                 this._setHeatOffTrigger.trigger(this);
-                this.log('heatOffTrigger', newHeat);
+                this.log('heatOffTrigger');
             }
         }
 
@@ -261,14 +268,14 @@ class HeatingControllerDevice extends Homey.Device {
             this._lastPrice = currentPrice;
             this._priceChangedTrigger.trigger(this, currentPrice);
             this.setCapabilityValue("price", currentPrice.price).catch(console.error);
-            this.log('Triggering price_changed', currentPrice);
+            this.log('price_changed trigger', currentPrice);
         }
 
         if (priceChanged || heatChanged) {
             this._setLowPriceHeatOnTrigger.trigger(this, {
                 onoff: true
             }, {
-                heating: newHeat,
+                heating: calcHeating.heating,
                 onofftrigger: true,
                 prices: this._prices
             }).catch(console.error);
@@ -276,7 +283,7 @@ class HeatingControllerDevice extends Homey.Device {
             this._setLowPriceHeatOffTrigger.trigger(this, {
                 onoff: false
             }, {
-                heating: newHeat,
+                heating: calcHeating.heating,
                 onofftrigger: false,
                 prices: this._prices
             }).catch(console.error);
@@ -327,82 +334,6 @@ class HeatingControllerDevice extends Homey.Device {
         // Will trig if onofftrigger is true and found, or onofftrigger is false and not found
         return (state.heating === undefined || state.heating === true) && state.onofftrigger === true && onNowOrOff.size() === 1 ||
             (state.heating === undefined || state.heating === false) && state.onofftrigger === false && onNowOrOff.size() === 0;
-    }
-
-    static isDay() {
-        let today = new Date();
-        let workDay = today.getDay() >= 1 && today.getDay() <= 5;
-        let hour = today.getHours() + today.getMinutes() / 60 + today.getSeconds() / 3600;
-        return workDay && hour >= 5.5 && hour <= 22.5 || !workDay && hour >= 7.0 && hour <= 23;
-    }
-
-    static isWorkTime() {
-        let today = new Date();
-        let workDay = !HeatingControllerDevice.isHoliday() && today.getDay() >= 1 && today.getDay() <= 5;
-        let hour = today.getHours() + today.getMinutes() / 60 + today.getSeconds() / 3600;
-        return workDay && hour >= 7.0 && hour <= 14;
-    }
-
-    static isHoliday() {
-        let today = new Date();
-        let m = today.getMonth() + 1;
-        let d = today.getDate();
-        let easterDate = HeatingControllerDevice.easter(today.getFullYear());
-        return (m === 1 && (d === 1)) ||
-            (m === 5 && (d === 1 || d === 17)) ||
-            (m === 12 && (d === 24 || d === 25 || d === 26 || d === 31)) ||
-            HeatingControllerDevice.equals(today, HeatingControllerDevice.addDate(easterDate, -3)) ||
-            HeatingControllerDevice.equals(today, HeatingControllerDevice.addDate(easterDate, -2)) ||
-            HeatingControllerDevice.equals(today, HeatingControllerDevice.addDate(easterDate, 1)) ||
-            HeatingControllerDevice.equals(today, HeatingControllerDevice.addDate(easterDate, 39)) ||
-            HeatingControllerDevice.equals(today, HeatingControllerDevice.addDate(easterDate, 50));
-    }
-
-    static addDate(date, days) {
-        let ret = new Date();
-        ret.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        return ret;
-    }
-
-    static equals(d1, d2) {
-        return d1.getFullYear() === d2.getFullYear() &&
-            d1.getMonth() === d2.getMonth() &&
-            d1.getDate() === d2.getDate();
-    }
-
-    static easter(y) {
-        let date = new Date();
-        date.setHours(0, 0, 0, 0);
-        date.setFullYear(y);
-
-        // Find the golden number.
-        let a, b, c, m, d;
-        a = y % 19;
-
-        // Choose which version of the algorithm to use based on the given year.
-        b = (2200 <= y && y <= 2299) ?
-            ((11 * a) + 4) % 30 :
-            ((11 * a) + 5) % 30;
-
-        // Determine whether or not to compensate for the previous step.
-        c = ((b === 0) || (b === 1 && a > 10)) ?
-            (b + 1) :
-            b;
-
-        // Use c first to find the month: April or March.
-        m = (1 <= c && c <= 19) ? 3 : 2;
-
-        // Then use c to find the full moon after the northward equinox.
-        d = (50 - c) % 31;
-
-        // Mark the date of that full moon—the "Paschal" full moon.
-        date.setMonth(m, d);
-
-        // Count forward the number of days until the following Sunday (Easter).
-        date.setMonth(m, d + (7 - date.getDay()));
-
-        // Gregorian Western Easter Sunday
-        return date;
     }
 
 }
