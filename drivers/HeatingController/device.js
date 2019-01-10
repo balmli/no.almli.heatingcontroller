@@ -325,7 +325,7 @@ class HeatingControllerDevice extends Homey.Device {
             return false;
         }
 
-        // Check if price now.  Skip consecutive hours.
+        // Check if high price now.  Skip consecutive hours.
         const now = moment();
         let highPriceNow = _(pricesNextHours)
             .map(p => {
@@ -366,7 +366,7 @@ class HeatingControllerDevice extends Homey.Device {
             .take(args.low_hours)
             .filter(p => moment(p.startsAt).isBefore(now) && moment(p.startsAt).add(1, 'hours').minutes(0).second(0).millisecond(0).isAfter(now));
 
-        // Will trig if onofftrigger is true and low price found, or onofftrigger is false and no low price found
+        // Will trig on if low price found, or trig off if no low price found
         return state.onofftrigger === true && lowPriceNow.size() === 1 ||
             state.onofftrigger === false && lowPriceNow.size() === 0;
     }
