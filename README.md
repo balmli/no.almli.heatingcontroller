@@ -28,7 +28,7 @@ The 'Set heat on' and 'Set heat off' triggers can be used to turn heaters on / o
 - Set heat on
 - Set heat off
 - Utility price changed
-- Heating on if low price
+- Heating off if high price
 - Low price [x] hours of the day
 
 #### Conditions

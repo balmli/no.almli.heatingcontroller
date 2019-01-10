@@ -57,12 +57,12 @@ class HeatingControllerDevice extends Homey.Device {
         this._setLowPriceHeatOnTrigger = new Homey.FlowCardTriggerDevice('low_price_heating');
         this._setLowPriceHeatOnTrigger
             .register()
-            .registerRunListener(this._lowHoursComparer.bind(this));
+            .registerRunListener(this._heatingOffHighPriceComparer.bind(this));
 
         this._setLowPriceHeatOffTrigger = new Homey.FlowCardTriggerDevice('low_price_heating');
         this._setLowPriceHeatOffTrigger
             .register()
-            .registerRunListener(this._lowHoursComparer.bind(this));
+            .registerRunListener(this._heatingOffHighPriceComparer.bind(this));
 
         this._lowHoursOnTrigger = new Homey.FlowCardTriggerDevice('low_x_hours_of_day');
         this._lowHoursOnTrigger
@@ -275,6 +275,8 @@ class HeatingControllerDevice extends Homey.Device {
             this._setLowPriceHeatOnTrigger.trigger(this, {
                 onoff: true
             }, {
+                atHome: this._at_home,
+                homeOverride: this._home_override,
                 heating: calcHeating.heating,
                 onofftrigger: true,
                 prices: this._prices
@@ -283,6 +285,8 @@ class HeatingControllerDevice extends Homey.Device {
             this._setLowPriceHeatOffTrigger.trigger(this, {
                 onoff: false
             }, {
+                atHome: this._at_home,
+                homeOverride: this._home_override,
                 heating: calcHeating.heating,
                 onofftrigger: false,
                 prices: this._prices
@@ -293,7 +297,6 @@ class HeatingControllerDevice extends Homey.Device {
             this._lowHoursOnTrigger.trigger(this, {
                 onoff: true
             }, {
-                heating: undefined,
                 onofftrigger: true,
                 prices: this._prices
             }).catch(console.error);
@@ -301,22 +304,19 @@ class HeatingControllerDevice extends Homey.Device {
             this._lowHoursOffTrigger.trigger(this, {
                 onoff: false
             }, {
-                heating: undefined,
                 onofftrigger: false,
                 prices: this._prices
             }).catch(console.error);
         }
     }
 
-    _lowHoursComparer(args, state) {
-        if (!args.low_hours) {
+    _heatingOffHighPriceComparer(args, state) {
+        if (!args.low_hours || args.low_hours <= 0 || args.low_hours >= 24) {
             return false;
         }
 
-        const now = moment();
-        const startingAt = moment().hours(0).minutes(0).second(0).millisecond(0);
-
         // Finds prices starting at 00:00 today
+        const startingAt = moment().hours(0).minutes(0).second(0).millisecond(0);
         let pricesNextHours = _(state.prices)
             .filter(p => moment(p.startsAt).isSameOrAfter(startingAt))
             .take(24)
@@ -325,15 +325,50 @@ class HeatingControllerDevice extends Homey.Device {
             return false;
         }
 
-        // Search for X lowest prices
-        let onNowOrOff = _(pricesNextHours)
+        // Check if price now.  Skip consecutive hours.
+        const now = moment();
+        let highPriceNow = _(pricesNextHours)
+            .map(p => {
+                p.heating = heating.calcHeating(moment(p.startsAt).toDate(), state.atHome, state.homeOverride, heatingOptions);
+                return p;
+            })
+            .filter(p => p.heating.heating === false)
+            .filter((p, idx) => idx % 2 === 0)
+            .sortBy(['price'])
+            .reverse()
+            .take(24 - args.low_hours)
+            .filter(p => moment(p.startsAt).isBefore(now) && moment(p.startsAt).add(1, 'hours').minutes(0).second(0).millisecond(0).isAfter(now));
+
+        // Trig off if not heating and high price found.  Otherwise, trig on.
+        return state.onofftrigger === true && (state.heating || !state.heating && highPriceNow.size() === 0) ||
+            state.onofftrigger === false && !state.heating && highPriceNow.size() === 1;
+    }
+
+    _lowHoursComparer(args, state) {
+        if (!args.low_hours || args.low_hours <= 0 || args.low_hours >= 24) {
+            return false;
+        }
+
+        // Finds prices starting at 00:00 today
+        const startingAt = moment().hours(0).minutes(0).second(0).millisecond(0);
+        let pricesNextHours = _(state.prices)
+            .filter(p => moment(p.startsAt).isSameOrAfter(startingAt))
+            .take(24)
+            .value();
+        if (pricesNextHours.length === 0) {
+            return false;
+        }
+
+        // Check if low price now
+        const now = moment();
+        let lowPriceNow = _(pricesNextHours)
             .sortBy(['price'])
             .take(args.low_hours)
             .filter(p => moment(p.startsAt).isBefore(now) && moment(p.startsAt).add(1, 'hours').minutes(0).second(0).millisecond(0).isAfter(now));
 
-        // Will trig if onofftrigger is true and found, or onofftrigger is false and not found
-        return (state.heating === undefined || state.heating === true) && state.onofftrigger === true && onNowOrOff.size() === 1 ||
-            (state.heating === undefined || state.heating === false) && state.onofftrigger === false && onNowOrOff.size() === 0;
+        // Will trig if onofftrigger is true and low price found, or onofftrigger is false and no low price found
+        return state.onofftrigger === true && lowPriceNow.size() === 1 ||
+            state.onofftrigger === false && lowPriceNow.size() === 0;
     }
 
 }

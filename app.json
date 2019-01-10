@@ -149,7 +149,7 @@
       {
         "id": "low_price_heating",
         "title": {
-          "en": "Heating on if low price"
+          "en": "Heating off if high price"
         },
         "tokens": [
           {
