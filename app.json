@@ -382,26 +382,6 @@
           }
         }
       },
-      "mobile": {
-        "components": [
-          {
-            "id": "icon",
-            "capabilities": [
-              "onoff"
-            ]
-          },
-          {
-            "id": "sensor",
-            "capabilities": [
-              "home_override",
-              "night",
-              "at_work",
-              "heating",
-              "price"
-            ]
-          }
-        ]
-      },
       "settings": [
         {
           "type": "group",
