@@ -1,19 +1,108 @@
 # HeatingController
 
-Has modes for
+The 'HeatingController' is a device to easily manage temperatures and modes for thermostats and sockets for heating. 
 
-- Home
-- Night
-- At work
+#### Install
+
+To install the device:
+
+1. At the 'HeatingController' device.
+2. Select 'Price area' and 'Currency' in 'Advanced settings' for utility prices.
+3. Adjust start and end hours in 'Advanced settings'.
+
+##### Default periods
+
+Default values for periods:
+
+- Comfort mode for working days: 05:00 - 22:30
+- Comfort mode for weekends and holidays: 07:00 - 23:00
+- Work hours: 07:00 - 14:00
+
+#### Modes
+
+The device has modes for:
+
+- Home / Away
+- Night / Day
+- At work / Not at work
 - Home override
 
-Will automatically set 'Home' to true if presence is detected.
-Will automatically set 'Night' to on / off based on time.
-Will automatically set 'At work' based on time, day of week and public holidays.
+The device can be turned 'On' / 'Off' to switch between 'Home' and 'Away' - modes.  If going away for a few days or on a holiday the device can be switched off to enable energy saving mode.  The device must be switched on again to switch back to 'Home' mode.  It is not neccessary to switch to 'Away' mode if going to work, ref. the 'At work' - mode.
 
-The 'Home override' state can be used to override the 'Home' state.
+The 'Night' and 'At work' modes are automatically set based on time, day of week and public holidays.  The start and end hours can be configured for both 'Night' and 'At work'.
 
-The 'Set heat on' and 'Set heat off' triggers can be used to turn heaters on / off, or set the thermostat temperature or thermostat mode.
+The 'Home override' mode can be used to keep comfort mode on, even if 'At work'. 
+
+#### Mode triggers
+
+The 'Night starts', 'Night ends', 'At work starts' and 'At work ends' will trigger based on changes to the 'Night' and 'At work' modes.
+
+#### Utility price changed trigger
+
+The 'Utility price changed' will trig every hour, based on utility prices in the Nordpool area.  The price area and currency can be configured.
+
+##### Price areas
+
+- Norway: Oslo, Kr.sand, Bergen, Molde, Tr.heim, Tromsø
+- Sweden: SE1, SE2, SE3, SE4
+- Denmark: DK1, DK2
+- Finland: FI
+- Estonia: EE
+- Latvia: LT
+- Lithuania: LV
+ 
+##### Currencies
+
+- EUR, DKK, NOK, SEK
+
+#### Comfort and ECO mode triggers
+
+The 'Comfort mode' and 'ECO mode' triggers can be used to turn heaters on / off, or set the thermostat temperatures or thermostat modes, and will trigger if the 'Home', 'Night', 'At work' or 'Home override' modes changes.
+
+##### Rules
+
+- 'Comfort mode': 'Home' and 'Day' and 'Not at work' or 'Home override' and 'Day'
+- 'ECO mode': otherwise
+
+##### Example
+
+Want to automatically adjust the target temperature for thermostats during the night and when at work.  The target temperature for a thermostat is set to 22 ℃ for the period between 14:00 and 22:30, and 19 ℃ in the period from 00:00 - 14:00 and 22:30 - 24:00.
+
+Needs one flow:
+
+- Set thermostat temperature to 22 ℃ if heating is on, otherwise 19 ℃ if heating is off.
+
+#### High prices trigger
+
+The 'High prices [x] hours of the day' trigger can be used to turn heaters off or lower the thermostat temperatures if 'ECO mode' is enabled and the utility prices are high.  The number of hours for high prices can be selected.
+
+##### Rules
+
+- Only hours where 'ECO mode' is enabled are controlled
+- The selected number of hours with the highest prices are found
+- If there are two consecutive hours with high prices the second hour is skipped, to avoid having heaters turned off too long, or having thermostat temperatures to low too long
+
+##### Example
+
+Want to set the target temperature for a thermostat at 22 ℃ during daytime, not at work and not away, 19 ℃ during the night, at work or away, and 17 ℃ when prices are high and at night, at work or away.
+ 
+Needs three flows:
+
+- Flow 1: set thermostat temperature to 22 ℃ if heating is on
+- Flow 2: set thermostat temperature to 19 ℃ if heating is off and low price
+- Flow 3: set thermostat temperature to 17 ℃ if heating is off and high price, but limited to the selected number of hours
+
+#### Low prices trigger
+
+The 'Low prices [x] hours of the day' trigger can be used to keep a heater on if the utility price is low.  The 'Comfort mode' / 'ECO mode' is not taken into consideration for this trigger.
+
+##### Example
+
+Want to turn the socket for the water heater 'On' during the 18 hours with the lowest prices of the day, and 'Off' the other 6 hours. 
+
+Needs one flow:
+
+- Turn socket on if 'low price' and off if 'high price'
 
 ## Flow cards
 
@@ -25,19 +114,19 @@ The 'Set heat on' and 'Set heat off' triggers can be used to turn heaters on / o
 - Night ends
 - At work starts
 - At work ends
-- Set heat on
-- Set heat off
-- Utility price changed
-- Heating off if high price
-- Low price [x] hours of the day
+- Utility price changed (tokens: price, price area, currency)
+- Comfort mode
+- ECO mode
+- High prices [x] hours of the day (tokens: heating, high price)
+- Low prices [x] hours of the day (tokens: heating, low price)
 
 #### Conditions
 
-- Is home
-- Is home override
-- Is night
-- Is at work
-- Is heating on
+- Is home / away
+- Is home override on / off
+- Is night / day 
+- Is at work / not at work
+- Is comfort mode / ECO mode
 
 #### Actions
 
@@ -47,6 +136,10 @@ The 'Set heat on' and 'Set heat off' triggers can be used to turn heaters on / o
 - Set home override off
 
 ### Release Notes
+
+#### 0.2.0 
+
+- Improved triggers 
 
 #### 0.1.0 
 

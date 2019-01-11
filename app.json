@@ -1,7 +1,7 @@
 {
   "id": "no.almli.heatingcontroller",
-  "version": "0.1.0",
-  "compatibility": ">=1.5.0",
+  "version": "0.2.0",
+  "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
     "en": "HeatingController"
@@ -85,9 +85,9 @@
         ]
       },
       {
-        "id": "set_heat_on",
+        "id": "comfort_mode",
         "title": {
-          "en": "Heating on"
+          "en": "Comfort mode"
         },
         "args": [
           {
@@ -98,9 +98,9 @@
         ]
       },
       {
-        "id": "set_heat_off",
+        "id": "eco_mode",
         "title": {
-          "en": "Heating off"
+          "en": "ECO mode"
         },
         "args": [
           {
@@ -147,16 +147,23 @@
         ]
       },
       {
-        "id": "low_price_heating",
+        "id": "high_x_hours_of_day",
         "title": {
-          "en": "Heating off if high price"
+          "en": "High prices [x] hours of the day"
         },
         "tokens": [
           {
-            "name": "onoff",
+            "name": "heating",
             "type": "boolean",
             "title": {
-              "en": "onoff"
+              "en": "heating"
+            }
+          },
+          {
+            "name": "high_price",
+            "type": "boolean",
+            "title": {
+              "en": "high_price"
             }
           }
         ],
@@ -167,10 +174,10 @@
             "filter": "driver_id=HeatingController"
           },
           {
-            "name": "low_hours",
+            "name": "high_hours",
             "type": "number",
             "placeholder": {
-              "en": "low_hours"
+              "en": "high_hours"
             }
           }
         ]
@@ -178,14 +185,21 @@
       {
         "id": "low_x_hours_of_day",
         "title": {
-          "en": "Low price [x] hours of the day"
+          "en": "Low prices [x] hours of the day"
         },
         "tokens": [
           {
-            "name": "onoff",
+            "name": "heating",
             "type": "boolean",
             "title": {
-              "en": "onoff"
+              "en": "heating"
+            }
+          },
+          {
+            "name": "low_price",
+            "type": "boolean",
+            "title": {
+              "en": "low_price"
             }
           }
         ],
@@ -261,7 +275,7 @@
       {
         "id": "is_heating_on",
         "title": {
-          "en": "Is heating !{{on|off}}"
+          "en": "Is !{{comfort mode|ECO mode}}"
         },
         "args": [
           {
@@ -386,7 +400,81 @@
         {
           "type": "group",
           "label": {
-            "en": "General settings"
+            "en": "Period settings"
+          },
+          "children": [
+            {
+              "id": "workdayStartHour",
+              "type": "number",
+              "label": {
+                "en": "Start hour workingdays"
+              },
+              "value": 5,
+              "hint": {
+                "en": "Hour the comfort mode will be enabled for working days"
+              }
+            },
+            {
+              "id": "workdayEndHour",
+              "type": "number",
+              "label": {
+                "en": "End hour workingdays"
+              },
+              "value": 22.5,
+              "hint": {
+                "en": "Hour the ECO mode will be enabled for working days"
+              }
+            },
+            {
+              "id": "notWorkdayStartHour",
+              "type": "number",
+              "label": {
+                "en": "Start hour not workingdays"
+              },
+              "value": 7,
+              "hint": {
+                "en": "Hour the comfort mode will be enabled for weekends and holidays"
+              }
+            },
+            {
+              "id": "notWorkdayEndHour",
+              "type": "number",
+              "label": {
+                "en": "End hour not workingdays"
+              },
+              "value": 23,
+              "hint": {
+                "en": "Hour the ECO mode will be enabled for weekends and holidays"
+              }
+            },
+            {
+              "id": "workHoursStartHour",
+              "type": "number",
+              "label": {
+                "en": "Hour starting at work"
+              },
+              "value": 7,
+              "hint": {
+                "en": "Hour starting at work, which will enable ECO mode"
+              }
+            },
+            {
+              "id": "workHoursEndHour",
+              "type": "number",
+              "label": {
+                "en": "Hour finished at work"
+              },
+              "value": 14,
+              "hint": {
+                "en": "Hour finished at work, which will enable comfort mode"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Price settings"
           },
           "children": [
             {
@@ -400,97 +488,97 @@
                 {
                   "id": "SE1",
                   "label": {
-                    "en": "SE - SE1"
+                    "en": "Sweden - SE1"
                   }
                 },
                 {
                   "id": "SE2",
                   "label": {
-                    "en": "SE - SE2"
+                    "en": "Sweden - SE2"
                   }
                 },
                 {
                   "id": "SE3",
                   "label": {
-                    "en": "SE - SE3"
+                    "en": "Sweden - SE3"
                   }
                 },
                 {
                   "id": "SE4",
                   "label": {
-                    "en": "SE - SE4"
+                    "en": "Sweden - SE4"
                   }
                 },
                 {
                   "id": "DK1",
                   "label": {
-                    "en": "DK - DK1"
+                    "en": "Sweden - DK1"
                   }
                 },
                 {
                   "id": "DK2",
                   "label": {
-                    "en": "DK - DK2"
+                    "en": "Sweden - DK2"
                   }
                 },
                 {
                   "id": "FI",
                   "label": {
-                    "en": "FI"
+                    "en": "Finland - FI"
                   }
                 },
                 {
                   "id": "Oslo",
                   "label": {
-                    "en": "NO - Oslo"
+                    "en": "Norway - Oslo"
                   }
                 },
                 {
                   "id": "Kr.sand",
                   "label": {
-                    "en": "NO - Kr.sand"
+                    "en": "Norway - Kr.sand"
                   }
                 },
                 {
                   "id": "Bergen",
                   "label": {
-                    "en": "NO - Bergen"
+                    "en": "Norway - Bergen"
                   }
                 },
                 {
                   "id": "Molde",
                   "label": {
-                    "en": "NO - Molde"
+                    "en": "Norway - Molde"
                   }
                 },
                 {
                   "id": "Tr.heim",
                   "label": {
-                    "en": "NO - Tr.heim"
+                    "en": "Norway - Tr.heim"
                   }
                 },
                 {
                   "id": "Tromsø",
                   "label": {
-                    "en": "NO - Tromsø"
+                    "en": "Norway - Tromsø"
                   }
                 },
                 {
                   "id": "EE",
                   "label": {
-                    "en": "EE"
+                    "en": "Estonia - EE"
                   }
                 },
                 {
                   "id": "LV",
                   "label": {
-                    "en": "LV"
+                    "en": "Latvia - LV"
                   }
                 },
                 {
                   "id": "LT",
                   "label": {
-                    "en": "LT"
+                    "en": "Lithuania -LT"
                   }
                 }
               ]

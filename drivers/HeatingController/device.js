@@ -6,21 +6,6 @@ const Homey = require('homey'),
     nordpool = require('../../lib/nordpool'),
     heating = require('../../lib/heating');
 
-let heatingOptions = {
-    workday: {
-        startHour: 5,
-        endHour: 22.5,
-    },
-    notWorkday: {
-        startHour: 7,
-        endHour: 23,
-    },
-    workHours: {
-        startHour: 7,
-        endHour: 14
-    }
-};
-
 class HeatingControllerDevice extends Homey.Device {
 
     onInit() {
@@ -45,32 +30,32 @@ class HeatingControllerDevice extends Homey.Device {
         this._atWorkEndsTrigger = new Homey.FlowCardTriggerDevice('at_work_ends');
         this._atWorkEndsTrigger.register();
 
-        this._setHeatOnTrigger = new Homey.FlowCardTriggerDevice('set_heat_on');
-        this._setHeatOnTrigger.register();
+        this._comfortModeTrigger = new Homey.FlowCardTriggerDevice('comfort_mode');
+        this._comfortModeTrigger.register();
 
-        this._setHeatOffTrigger = new Homey.FlowCardTriggerDevice('set_heat_off');
-        this._setHeatOffTrigger.register();
+        this._ecoModeTrigger = new Homey.FlowCardTriggerDevice('eco_mode');
+        this._ecoModeTrigger.register();
 
         this._priceChangedTrigger = new Homey.FlowCardTriggerDevice('price_changed');
         this._priceChangedTrigger.register();
 
-        this._setLowPriceHeatOnTrigger = new Homey.FlowCardTriggerDevice('low_price_heating');
-        this._setLowPriceHeatOnTrigger
+        this._highPriceTrueTrigger = new Homey.FlowCardTriggerDevice('high_x_hours_of_day');
+        this._highPriceTrueTrigger
             .register()
             .registerRunListener(this._heatingOffHighPriceComparer.bind(this));
 
-        this._setLowPriceHeatOffTrigger = new Homey.FlowCardTriggerDevice('low_price_heating');
-        this._setLowPriceHeatOffTrigger
+        this._highPriceFalseTrigger = new Homey.FlowCardTriggerDevice('high_x_hours_of_day');
+        this._highPriceFalseTrigger
             .register()
             .registerRunListener(this._heatingOffHighPriceComparer.bind(this));
 
-        this._lowHoursOnTrigger = new Homey.FlowCardTriggerDevice('low_x_hours_of_day');
-        this._lowHoursOnTrigger
+        this._lowPriceTrueTrigger = new Homey.FlowCardTriggerDevice('low_x_hours_of_day');
+        this._lowPriceTrueTrigger
             .register()
             .registerRunListener(this._lowHoursComparer.bind(this));
 
-        this._lowHoursOffTrigger = new Homey.FlowCardTriggerDevice('low_x_hours_of_day');
-        this._lowHoursOffTrigger
+        this._lowPriceFalseTrigger = new Homey.FlowCardTriggerDevice('low_x_hours_of_day');
+        this._lowPriceFalseTrigger
             .register()
             .registerRunListener(this._lowHoursComparer.bind(this));
 
@@ -187,7 +172,6 @@ class HeatingControllerDevice extends Homey.Device {
         if (this.curTimeout) {
             clearTimeout(this.curTimeout);
             this.curTimeout = undefined;
-            this.log('clear timeout');
         }
     }
 
@@ -201,7 +185,7 @@ class HeatingControllerDevice extends Homey.Device {
         let settings = this.getSettings();
         let priceArea = settings.priceArea || 'Oslo';
         let currency = settings.currency || 'NOK';
-        this.log('fetchData: ', this.getData().id, settings, priceArea);
+        this.log('fetchData: ', this.getData().id, priceArea, currency);
         Promise.all([
             nordpool.getHourlyPrices(moment(), {priceArea: priceArea, currency: currency}),
             nordpool.getHourlyPrices(moment().add(1, 'days'), {priceArea: priceArea, currency: currency})
@@ -218,6 +202,7 @@ class HeatingControllerDevice extends Homey.Device {
 
     async onData() {
 
+        let heatingOptions = this._getHeatingOptions();
         let calcHeating = heating.calcHeating(new Date(), this._at_home, this._home_override, heatingOptions);
         this.log('calcHeating', calcHeating);
 
@@ -250,11 +235,11 @@ class HeatingControllerDevice extends Homey.Device {
         if (heatChanged) {
             this.setCapabilityValue('heating', calcHeating.heating);
             if (calcHeating.heating) {
-                this._setHeatOnTrigger.trigger(this);
-                this.log('heatOnTrigger');
+                this._comfortModeTrigger.trigger(this);
+                this.log('comfortModeTrigger');
             } else {
-                this._setHeatOffTrigger.trigger(this);
-                this.log('heatOffTrigger');
+                this._ecoModeTrigger.trigger(this);
+                this.log('ecoModeTrigger');
             }
         }
 
@@ -272,46 +257,58 @@ class HeatingControllerDevice extends Homey.Device {
         }
 
         if (priceChanged || heatChanged) {
-            this._setLowPriceHeatOnTrigger.trigger(this, {
-                onoff: true
+            this._highPriceTrueTrigger.trigger(this, {
+                heating: calcHeating.heating,
+                high_price: true
             }, {
                 atHome: this._at_home,
                 homeOverride: this._home_override,
                 heating: calcHeating.heating,
-                onofftrigger: true,
+                high_price: true,
+                heatingOptions: heatingOptions,
                 prices: this._prices
             }).catch(console.error);
 
-            this._setLowPriceHeatOffTrigger.trigger(this, {
-                onoff: false
+            this._highPriceFalseTrigger.trigger(this, {
+                heating: calcHeating.heating,
+                high_price: false
             }, {
                 atHome: this._at_home,
                 homeOverride: this._home_override,
                 heating: calcHeating.heating,
-                onofftrigger: false,
-                prices: this._prices
-            }).catch(console.error);
-        }
-
-        if (priceChanged) {
-            this._lowHoursOnTrigger.trigger(this, {
-                onoff: true
-            }, {
-                onofftrigger: true,
+                high_price: false,
+                heatingOptions: heatingOptions,
                 prices: this._prices
             }).catch(console.error);
 
-            this._lowHoursOffTrigger.trigger(this, {
-                onoff: false
+            this._lowPriceTrueTrigger.trigger(this, {
+                heating: calcHeating.heating,
+                low_price: true
             }, {
-                onofftrigger: false,
+                atHome: this._at_home,
+                homeOverride: this._home_override,
+                heating: calcHeating.heating,
+                low_price: true,
+                heatingOptions: heatingOptions,
+                prices: this._prices
+            }).catch(console.error);
+
+            this._lowPriceFalseTrigger.trigger(this, {
+                heating: calcHeating.heating,
+                low_price: false
+            }, {
+                atHome: this._at_home,
+                homeOverride: this._home_override,
+                heating: calcHeating.heating,
+                low_price: false,
+                heatingOptions: heatingOptions,
                 prices: this._prices
             }).catch(console.error);
         }
     }
 
     _heatingOffHighPriceComparer(args, state) {
-        if (!args.low_hours || args.low_hours <= 0 || args.low_hours >= 24) {
+        if (!args.high_hours || args.high_hours <= 0 || args.high_hours >= 24) {
             return false;
         }
 
@@ -325,27 +322,25 @@ class HeatingControllerDevice extends Homey.Device {
             return false;
         }
 
-        // Check if high price now.  Skip consecutive hours.
+        // Check if high price now.  Must be ECO mode, and will skip consecutive hours.
         const now = moment();
         let highPriceNow = _(pricesNextHours)
             .map(p => {
-                p.heating = heating.calcHeating(moment(p.startsAt).toDate(), state.atHome, state.homeOverride, heatingOptions);
+                p.heating = heating.calcHeating(moment(p.startsAt).toDate(), state.atHome, state.homeOverride, state.heatingOptions);
                 return p;
             })
             .filter(p => p.heating.heating === false)
             .filter((p, idx) => idx % 2 === 0)
             .sortBy(['price'])
             .reverse()
-            .take(24 - args.low_hours)
+            .take(args.high_hours)
             .filter(p => moment(p.startsAt).isBefore(now) && moment(p.startsAt).add(1, 'hours').minutes(0).second(0).millisecond(0).isAfter(now));
 
-        // Trig off if not heating and high price found.  Otherwise, trig on.
-        return state.onofftrigger === true && (state.heating || !state.heating && highPriceNow.size() === 0) ||
-            state.onofftrigger === false && !state.heating && highPriceNow.size() === 1;
+        return state.high_price === false && highPriceNow.size() === 0 || state.high_price === true && highPriceNow.size() === 1;
     }
 
     _lowHoursComparer(args, state) {
-        if (!args.low_hours || args.low_hours <= 0 || args.low_hours >= 24) {
+        if (!args.low_hours || args.low_hours <= 0 || args.low_hours >= 24) {
             return false;
         }
 
@@ -366,9 +361,25 @@ class HeatingControllerDevice extends Homey.Device {
             .take(args.low_hours)
             .filter(p => moment(p.startsAt).isBefore(now) && moment(p.startsAt).add(1, 'hours').minutes(0).second(0).millisecond(0).isAfter(now));
 
-        // Will trig on if low price found, or trig off if no low price found
-        return state.onofftrigger === true && lowPriceNow.size() === 1 ||
-            state.onofftrigger === false && lowPriceNow.size() === 0;
+        return state.low_price === true && lowPriceNow.size() === 1 || state.low_price === false && lowPriceNow.size() === 0;
+    }
+
+    _getHeatingOptions() {
+        const settings = this.getSettings();
+        return {
+            workday: {
+                startHour: settings.workdayStartHour || 5,
+                endHour: settings.workdayEndHour || 22.5,
+            },
+            notWorkday: {
+                startHour: settings.notWorkdayStartHour || 7,
+                endHour: settings.notWorkdayEndHour || 23,
+            },
+            workHours: {
+                startHour: settings.workHoursStartHour || 7,
+                endHour: settings.workHoursEndHour || 14
+            }
+        };
     }
 
 }
