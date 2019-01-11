@@ -42,3 +42,9 @@ console.log('calcHeating', aDate, heating.calcHeating(aDate, false, false, heati
 aDate = new Date(2019, 0, 12, 10, 0, 0, 0);
 console.log('calcHeating', aDate, heating.calcHeating(aDate, false, true, heatingOptions));
 
+aDate = new Date(2019, 0, 11, 10, 0, 0, 0);
+console.log('calcHeating', aDate, heating.calcHeating(aDate, true, false, heatingOptions));
+
+heatingOptions.holiday_today = 'holiday';
+aDate = new Date(2019, 0, 11, 10, 0, 0, 0);
+console.log('calcHeating', aDate, heating.calcHeating(aDate, true, false, heatingOptions));

@@ -122,6 +122,16 @@ class HeatingControllerDevice extends Homey.Device {
                 return this.checkTime(undefined, false);
             });
 
+        this._setHolidayTodayAction = new Homey.FlowCardAction('set_holiday_today')
+            .register()
+            .registerRunListener((args, state) => {
+                this.setSettings({
+                    holiday_today: args.holiday
+                })
+                .catch( this.error );
+                return this.checkTime(undefined, false);
+            });
+
         this.registerCapabilityListener('onoff', (value, opts) => {
             this.log(this.getName() + ' -> onoff changed: ', value, opts);
             return this.checkTime(value);
@@ -385,7 +395,8 @@ class HeatingControllerDevice extends Homey.Device {
             workHours: {
                 startHour: settings.workHoursStartHour || 7,
                 endHour: settings.workHoursEndHour || 14
-            }
+            },
+            holiday_today: settings.holiday_today
         };
     }
 

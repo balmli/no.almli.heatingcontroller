@@ -135,6 +135,7 @@ Default values for periods:
 - Set away
 - Set home override on
 - Set home override off
+- Set holiday today.  Default is Norwegian holidays, but can be overridden with this action.
 
 ### Release Notes
 
