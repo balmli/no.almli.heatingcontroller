@@ -1,6 +1,6 @@
 # HeatingController
 
-The 'HeatingController' is a device to easily manage temperatures and modes for thermostats and sockets for heating. 
+The 'HeatingController' is a device to easily manage temperatures and modes for thermostats and sockets for heating.
 
 #### Modes
 
@@ -15,7 +15,7 @@ The device can be turned 'On' / 'Off' to switch between 'Home' and 'Away' - mode
 
 The 'Night' and 'At work' modes are automatically set based on time, day of week and public holidays.  The start and end hours can be configured for both 'Night' and 'At work'.
 
-The 'Home override' mode can be used to keep comfort mode on, even if 'At work'. 
+The 'Home override' mode can be used to keep comfort mode on, even if 'At work'.
 
 #### Mode triggers
 
@@ -34,7 +34,7 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 - Estonia: EE
 - Latvia: LT
 - Lithuania: LV
- 
+
 ##### Currencies
 
 - EUR, DKK, NOK, SEK
@@ -86,7 +86,9 @@ The 'Low prices [x] hours of the day' trigger can be used to keep a heater on if
 
 ##### Example
 
-Turn the socket for the water heater 'On' during the 18 hours with the lowest prices of the day, and 'Off' the other 6 hours. 
+Turn the socket for the water heater 'On' during the 18 hours with the lowest prices of the day, and 'Off' the other 6 hours.
+
+![Example](example3.png "Example 3")
 
 Needs one flow:
 
@@ -128,7 +130,7 @@ Default values for periods:
 
 - Is home / away
 - Is home override on / off
-- Is night / day 
+- Is night / day
 - Is at work / not at work
 - Is comfort mode / ECO mode
 - Is current price below/above
@@ -147,11 +149,11 @@ Default values for periods:
 
 - Added is current utility price below / above
 
-#### 0.2.0 
+#### 0.2.0
 
-- Improved triggers 
+- Improved triggers
 
-#### 0.1.0 
+#### 0.1.0
 
 - Fetches utility prices
 
