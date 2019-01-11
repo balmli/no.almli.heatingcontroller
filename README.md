@@ -50,7 +50,7 @@ The 'Comfort mode' and 'ECO mode' triggers can be used to turn heaters on / off,
 
 ##### Example
 
-Adjust the target temperature for thermostats based on comfort / ECO modes.  The target temperature for a thermostat is set to 22 ℃ for the period between 05:00 - 07:00 and 14:00 - 22:30, and 19 ℃ in the period from 07:00 - 14:00 and 22:30 - 24:00.
+Adjust the target temperature for thermostats based on comfort / ECO modes.  The target temperature for a thermostat is set to 22 ℃ for the period between 05:00 - 07:00 and 14:00 - 22:30, and 19 ℃ in the period from 07:00 - 1   4:00 and 22:30 - 24:00.
 
 ![Example](example1.png "Example 1")
 
@@ -58,10 +58,13 @@ Needs one flow:
 
 - Set thermostat temperature to 22 ℃ if comfort mode, otherwise 19 ℃ if ECO mode.
 
-![Comfort mode](comfort1.jpg | width=100)
-![Comport mode](comfort2.jpg | width=100)
-![ECO mode 1](eco1.jpg | width=100)
-![ECO mode 2](eco2.jpg | width=100)
+![Comfort mode](comfort1.jpg)
+
+![Comport mode](comfort2.jpg)
+
+![ECO mode 1](eco1.jpg)
+
+![ECO mode 2](eco2.jpg)
 
 #### High prices trigger
 
