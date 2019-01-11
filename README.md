@@ -58,10 +58,10 @@ Needs one flow:
 
 - Set thermostat temperature to 22 ℃ if comfort mode, otherwise 19 ℃ if ECO mode.
 
-![Comfort mode](comfort1.jpg "Comfort mode 1" | width=100)
-![Comport mode](comfort2.jpg "Comfort mode 2" | width=100)
-![ECO mode 1](eco1.jpg "ECO mode 1" | width=100)
-![ECO mode 2](eco2.jpg "ECO mode 2" | width=100)
+![Comfort mode](comfort1.jpg | width=100)
+![Comport mode](comfort2.jpg | width=100)
+![ECO mode 1](eco1.jpg | width=100)
+![ECO mode 2](eco2.jpg | width=100)
 
 #### High prices trigger
 
