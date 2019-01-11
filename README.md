@@ -58,14 +58,6 @@ Needs one flow:
 
 - Set thermostat temperature to 22 ℃ if comfort mode, otherwise 19 ℃ if ECO mode.
 
-![Comfort mode](comfort1.jpg)
-
-![Comport mode](comfort2.jpg)
-
-![ECO mode 1](eco1.jpg)
-
-![ECO mode 2](eco2.jpg)
-
 #### High prices trigger
 
 The 'High prices [x] hours of the day' trigger can be used to turn heaters off or lower the thermostat temperatures if 'ECO mode' is enabled and the utility prices are high.  The number of hours for high prices can be selected.
