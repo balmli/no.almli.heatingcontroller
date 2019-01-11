@@ -2,22 +2,6 @@
 
 The 'HeatingController' is a device to easily manage temperatures and modes for thermostats and sockets for heating. 
 
-#### Install
-
-To install the device:
-
-1. At the 'HeatingController' device.
-2. Select 'Price area' and 'Currency' in 'Advanced settings' for utility prices.
-3. Adjust start and end hours in 'Advanced settings'.
-
-##### Default periods
-
-Default values for periods:
-
-- Comfort mode for working days: 05:00 - 22:30
-- Comfort mode for weekends and holidays: 07:00 - 23:00
-- Work hours: 07:00 - 14:00
-
 #### Modes
 
 The device has modes for:
@@ -66,11 +50,11 @@ The 'Comfort mode' and 'ECO mode' triggers can be used to turn heaters on / off,
 
 ##### Example
 
-Want to automatically adjust the target temperature for thermostats during the night and when at work.  The target temperature for a thermostat is set to 22 ℃ for the period between 14:00 and 22:30, and 19 ℃ in the period from 00:00 - 14:00 and 22:30 - 24:00.
+Adjust the target temperature for thermostats based on comfort / ECO modes.  The target temperature for a thermostat is set to 22 ℃ for the period between 05:00 - 07:00 and 14:00 - 22:30, and 19 ℃ in the period from 07:00 - 14:00 and 22:30 - 24:00.
 
 Needs one flow:
 
-- Set thermostat temperature to 22 ℃ if heating is on, otherwise 19 ℃ if heating is off.
+- Set thermostat temperature to 22 ℃ if comfort mode, otherwise 19 ℃ if ECO mode.
 
 #### High prices trigger
 
@@ -84,25 +68,41 @@ The 'High prices [x] hours of the day' trigger can be used to turn heaters off o
 
 ##### Example
 
-Want to set the target temperature for a thermostat at 22 ℃ during daytime, not at work and not away, 19 ℃ during the night, at work or away, and 17 ℃ when prices are high and at night, at work or away.
+Set the target temperature for a thermostat to 22 ℃ during daytime, not at work and not away, 19 ℃ during the night, at work or away, and 17 ℃ when prices are high and at night, at work or away.
  
 Needs three flows:
 
-- Flow 1: set thermostat temperature to 22 ℃ if heating is on
-- Flow 2: set thermostat temperature to 19 ℃ if heating is off and low price
-- Flow 3: set thermostat temperature to 17 ℃ if heating is off and high price, but limited to the selected number of hours
+- Flow 1: set thermostat temperature to 22 ℃ if comfort mode.
+- Flow 2: set thermostat temperature to 19 ℃ if ECO mode and low price.
+- Flow 3: set thermostat temperature to 17 ℃ if ECO mode and high price.
 
 #### Low prices trigger
 
-The 'Low prices [x] hours of the day' trigger can be used to keep a heater on if the utility price is low.  The 'Comfort mode' / 'ECO mode' is not taken into consideration for this trigger.
+The 'Low prices [x] hours of the day' trigger can be used to keep a heater on if the utility price is low and off if the utility price is high.  The 'Comfort mode' / 'ECO mode' is not taken into consideration for this trigger.
 
 ##### Example
 
-Want to turn the socket for the water heater 'On' during the 18 hours with the lowest prices of the day, and 'Off' the other 6 hours. 
+Turn the socket for the water heater 'On' during the 18 hours with the lowest prices of the day, and 'Off' the other 6 hours. 
 
 Needs one flow:
 
 - Turn socket on if 'low price' and off if 'high price'
+
+#### Install
+
+To install the device:
+
+1. Add the 'HeatingController' device.
+2. Adjust start and end hours in 'Advanced settings'.
+3. Select 'Price area' and 'Currency' in 'Advanced settings' for utility prices.
+
+##### Default periods
+
+Default values for periods:
+
+- Comfort mode for working days: 05:00 - 22:30
+- Comfort mode for weekends and holidays: 07:00 - 23:00
+- Work hours: 07:00 - 14:00
 
 ## Flow cards
 
