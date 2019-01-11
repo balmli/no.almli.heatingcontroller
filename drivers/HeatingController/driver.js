@@ -12,7 +12,7 @@ class HeatingControllerDriver extends Homey.Driver {
         let devices = [
             {
                 "name": "HeatingController",
-                "data": {"id": "HeatingController"}
+                "data": {"id": "HeatingController2"}
             }
         ];
         callback(null, devices);
