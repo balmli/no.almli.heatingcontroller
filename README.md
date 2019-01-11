@@ -127,6 +127,7 @@ Default values for periods:
 - Is night / day 
 - Is at work / not at work
 - Is comfort mode / ECO mode
+- Is current price below/above
 
 #### Actions
 
@@ -136,6 +137,10 @@ Default values for periods:
 - Set home override off
 
 ### Release Notes
+
+#### 0.3.0
+
+- Added is current utility price below / above
 
 #### 0.2.0 
 

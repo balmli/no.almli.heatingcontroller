@@ -89,6 +89,11 @@ class HeatingControllerDevice extends Homey.Device {
                 return args.device.getCapabilityValue('heating');
             });
 
+        this._currentPriceBelowCondition = new Homey.FlowCardCondition('current_price_below');
+        this._currentPriceBelowCondition
+            .register()
+            .registerRunListener(args => args.price > _.get(this._lastPrice, 'price'));
+
         this._setAtHomeOnAction = new Homey.FlowCardAction('set_at_home_on')
             .register()
             .registerRunListener((args, state) => {
