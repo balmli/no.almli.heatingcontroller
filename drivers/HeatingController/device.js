@@ -246,64 +246,66 @@ class HeatingControllerDevice extends Homey.Device {
         const currentHour = moment().format('YYYY-MM-DD\THH');
         const currentPrice = this._prices.find(p => moment(p.startsAt).format('YYYY-MM-DD\THH') === currentHour);
 
-        this.log('currentPrice', currentPrice.startsAt, currentPrice.price);
+        if (currentPrice && currentPrice.price) {
+            this.log('currentPrice', currentPrice.startsAt, currentPrice.price);
 
-        let priceChanged = !this._lastPrice || currentPrice.startsAt !== this._lastPrice.startsAt;
-        if (priceChanged) {
-            this._lastPrice = currentPrice;
-            this._priceChangedTrigger.trigger(this, currentPrice);
-            this.setCapabilityValue("price", currentPrice.price).catch(console.error);
-            this.log('price_changed trigger', currentPrice);
-        }
+            let priceChanged = !this._lastPrice || currentPrice.startsAt !== this._lastPrice.startsAt;
+            if (priceChanged) {
+                this._lastPrice = currentPrice;
+                this._priceChangedTrigger.trigger(this, currentPrice);
+                this.setCapabilityValue("price", currentPrice.price).catch(console.error);
+                this.log('price_changed trigger', currentPrice);
+            }
 
-        if (priceChanged || heatChanged) {
-            this._highPriceTrueTrigger.trigger(this, {
-                heating: calcHeating.heating,
-                high_price: true
-            }, {
-                atHome: this._at_home,
-                homeOverride: this._home_override,
-                heating: calcHeating.heating,
-                high_price: true,
-                heatingOptions: heatingOptions,
-                prices: this._prices
-            }).catch(console.error);
+            if (priceChanged || heatChanged) {
+                this._highPriceTrueTrigger.trigger(this, {
+                    heating: calcHeating.heating,
+                    high_price: true
+                }, {
+                    atHome: this._at_home,
+                    homeOverride: this._home_override,
+                    heating: calcHeating.heating,
+                    high_price: true,
+                    heatingOptions: heatingOptions,
+                    prices: this._prices
+                }).catch(console.error);
 
-            this._highPriceFalseTrigger.trigger(this, {
-                heating: calcHeating.heating,
-                high_price: false
-            }, {
-                atHome: this._at_home,
-                homeOverride: this._home_override,
-                heating: calcHeating.heating,
-                high_price: false,
-                heatingOptions: heatingOptions,
-                prices: this._prices
-            }).catch(console.error);
+                this._highPriceFalseTrigger.trigger(this, {
+                    heating: calcHeating.heating,
+                    high_price: false
+                }, {
+                    atHome: this._at_home,
+                    homeOverride: this._home_override,
+                    heating: calcHeating.heating,
+                    high_price: false,
+                    heatingOptions: heatingOptions,
+                    prices: this._prices
+                }).catch(console.error);
 
-            this._lowPriceTrueTrigger.trigger(this, {
-                heating: calcHeating.heating,
-                low_price: true
-            }, {
-                atHome: this._at_home,
-                homeOverride: this._home_override,
-                heating: calcHeating.heating,
-                low_price: true,
-                heatingOptions: heatingOptions,
-                prices: this._prices
-            }).catch(console.error);
+                this._lowPriceTrueTrigger.trigger(this, {
+                    heating: calcHeating.heating,
+                    low_price: true
+                }, {
+                    atHome: this._at_home,
+                    homeOverride: this._home_override,
+                    heating: calcHeating.heating,
+                    low_price: true,
+                    heatingOptions: heatingOptions,
+                    prices: this._prices
+                }).catch(console.error);
 
-            this._lowPriceFalseTrigger.trigger(this, {
-                heating: calcHeating.heating,
-                low_price: false
-            }, {
-                atHome: this._at_home,
-                homeOverride: this._home_override,
-                heating: calcHeating.heating,
-                low_price: false,
-                heatingOptions: heatingOptions,
-                prices: this._prices
-            }).catch(console.error);
+                this._lowPriceFalseTrigger.trigger(this, {
+                    heating: calcHeating.heating,
+                    low_price: false
+                }, {
+                    atHome: this._at_home,
+                    homeOverride: this._home_override,
+                    heating: calcHeating.heating,
+                    low_price: false,
+                    heatingOptions: heatingOptions,
+                    prices: this._prices
+                }).catch(console.error);
+            }
         }
     }
 
