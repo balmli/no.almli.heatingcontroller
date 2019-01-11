@@ -129,7 +129,7 @@ class HeatingControllerDevice extends Homey.Device {
                     holiday_today: args.holiday
                 })
                 .catch( this.error );
-                return this.checkTime(undefined, false);
+                return this.checkTime();
             });
 
         this.registerCapabilityListener('onoff', (value, opts) => {
