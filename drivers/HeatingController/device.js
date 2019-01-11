@@ -222,7 +222,7 @@ class HeatingControllerDevice extends Homey.Device {
         this.log('calcHeating', calcHeating);
 
         let curNight = await this.getCapabilityValue('night');
-        if (!curNight || calcHeating.night !== curNight) {
+        if (curNight === undefined || curNight === null || calcHeating.night !== curNight) {
             this.setCapabilityValue('night', calcHeating.night);
             if (calcHeating.night) {
                 this._nightStartsTrigger.trigger(this);
@@ -234,7 +234,7 @@ class HeatingControllerDevice extends Homey.Device {
         }
 
         let curAtWork = await this.getCapabilityValue('at_work');
-        if (!curAtWork || calcHeating.atWork !== curAtWork) {
+        if (curAtWork === undefined || curAtWork === null || calcHeating.atWork !== curAtWork) {
             this.setCapabilityValue('at_work', calcHeating.atWork);
             if (calcHeating.atWork) {
                 this._atWorkStartsTrigger.trigger(this);
@@ -246,7 +246,7 @@ class HeatingControllerDevice extends Homey.Device {
         }
 
         let curHeating = await this.getCapabilityValue('heating');
-        let heatChanged = !curHeating || calcHeating.heating !== curHeating;
+        let heatChanged = curHeating === undefined || curHeating === null || calcHeating.heating !== curHeating;
         if (heatChanged) {
             this.setCapabilityValue('heating', calcHeating.heating);
             if (calcHeating.heating) {
