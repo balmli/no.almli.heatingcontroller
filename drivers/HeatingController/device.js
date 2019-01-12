@@ -156,7 +156,7 @@ class HeatingControllerDevice extends Homey.Device {
         } else {
             this._at_home = await this.getCapabilityValue('onoff');
         }
-        if (!this._at_home) {
+        if (this._at_home === undefined || this._at_home === null) {
             this._at_home = true;
             this.setCapabilityValue('onoff', this._at_home);
         }
@@ -166,7 +166,7 @@ class HeatingControllerDevice extends Homey.Device {
         } else {
             this._home_override = await this.getCapabilityValue('home_override');
         }
-        if (!this._home_override) {
+        if (this._home_override === undefined || this._home_override === null) {
             this._home_override = false;
             this.setCapabilityValue('home_override', this._home_override);
         }
