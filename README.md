@@ -143,11 +143,15 @@ Default values for periods:
 - Set home override off
 - Set holiday today.  Default is Norwegian holidays, but can be overridden with this action.
 
-### Release Notes
+## Feedback:
+
+Please report issues at the [issues section on Github](https://github.com/balmli/no.almli.heatingcontroller/issues).
+
+### Release Notes:
 
 #### 0.3.0
 
-- Added is current utility price below / above
+- Added "if current utility price below / above" condition
 
 #### 0.2.0
 
