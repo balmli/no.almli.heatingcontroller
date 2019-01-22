@@ -61,33 +61,23 @@ class HeatingControllerDevice extends Homey.Device {
 
         this.isHomeCondition = new Homey.FlowCardCondition('is_home')
             .register()
-            .registerRunListener((args, state) => {
-                return args.device.getCapabilityValue('onoff');
-            });
+            .registerRunListener((args, state) => args.device.getCapabilityValue('onoff'));
 
         this.isHomeOverrideCondition = new Homey.FlowCardCondition('is_home_override')
             .register()
-            .registerRunListener((args, state) => {
-                return args.device.getCapabilityValue('home_override');
-            });
+            .registerRunListener((args, state) => args.device.getCapabilityValue('home_override'));
 
         this.isNightCondition = new Homey.FlowCardCondition('is_night')
             .register()
-            .registerRunListener((args, state) => {
-                return args.device.getCapabilityValue('night');
-            });
+            .registerRunListener((args, state) => args.device.getCapabilityValue('night'));
 
         this.isAtWorkCondition = new Homey.FlowCardCondition('is_at_work')
             .register()
-            .registerRunListener((args, state) => {
-                return args.device.getCapabilityValue('at_work');
-            });
+            .registerRunListener((args, state) => args.device.getCapabilityValue('at_work'));
 
         this.isHeatingOnCondition = new Homey.FlowCardCondition('is_heating_on')
             .register()
-            .registerRunListener((args, state) => {
-                return args.device.getCapabilityValue('heating');
-            });
+            .registerRunListener((args, state) => args.device.getCapabilityValue('heating'));
 
         this._currentPriceBelowCondition = new Homey.FlowCardCondition('current_price_below');
         this._currentPriceBelowCondition
@@ -96,48 +86,60 @@ class HeatingControllerDevice extends Homey.Device {
 
         this._setAtHomeOnAction = new Homey.FlowCardAction('set_at_home_on')
             .register()
-            .registerRunListener((args, state) => {
-                args.device.setCapabilityValue('onoff', true);
-                return this.checkTime(true);
-            });
+            .registerRunListener(this.onActionSetAtHomeOn.bind(this));
 
-        this._setAtHomeOffAction = new Homey.FlowCardAction('set_at_home_off')
+        this._setAtHomeOffAction = new Homey.FlowCardAction('set_at_home_on')
             .register()
-            .registerRunListener((args, state) => {
-                args.device.setCapabilityValue('onoff', false);
-                return this.checkTime(false);
-            });
+            .registerRunListener(this.onActionSetAtHomeOff.bind(this));
 
         this._setHomeOverrideOnAction = new Homey.FlowCardAction('set_home_override_on')
             .register()
-            .registerRunListener((args, state) => {
-                args.device.setCapabilityValue('home_override', true);
-                return this.checkTime(undefined, true);
-            });
+            .registerRunListener(this.onActionSetHomeOverrideOn.bind(this));
 
         this._setHomeOverrideOffAction = new Homey.FlowCardAction('set_home_override_off')
             .register()
-            .registerRunListener((args, state) => {
-                args.device.setCapabilityValue('home_override', false);
-                return this.checkTime(undefined, false);
-            });
+            .registerRunListener(this.onActionSetHomeOverrideOff.bind(this));
 
         this._setHolidayTodayAction = new Homey.FlowCardAction('set_holiday_today')
             .register()
-            .registerRunListener((args, state) => {
-                this.setSettings({
-                    holiday_today: args.holiday
-                })
-                .catch( this.error );
-                return this.checkTime();
-            });
+            .registerRunListener(this.onActionSetHolidayToday.bind(this));
 
         this.registerCapabilityListener('onoff', (value, opts) => {
             this.log(this.getName() + ' -> onoff changed: ', value, opts);
-            return this.checkTime(value);
+            return this.checkTime(this, value);
         });
 
         this.scheduleCheckTime(10);
+    }
+
+    onActionSetAtHomeOn(args, state) {
+        const device = args.device;
+        device.setCapabilityValue('onoff', true).catch(console.error);
+        return device.checkTime( true);
+    }
+
+    onActionSetAtHomeOff(args, state) {
+        const device = args.device;
+        device.setCapabilityValue('onoff', false).catch(console.error);
+        return device.checkTime( false);
+    }
+
+    onActionSetHomeOverrideOn(args, state) {
+        const device = args.device;
+        device.setCapabilityValue('home_override', true).catch(console.error);
+        return device.checkTime( undefined, true);
+    }
+
+    onActionSetHomeOverrideOff(args, state) {
+        const device = args.device;
+        device.setCapabilityValue('home_override', false).catch(console.error);
+        return device.checkTime( undefined, false);
+    }
+
+    onActionSetHolidayToday(args, state) {
+        const device = args.device;
+        device.setSettings({holiday_today: args.holiday}).catch(console.error);
+        return device.checkTime();
     }
 
     onAdded() {
@@ -149,6 +151,7 @@ class HeatingControllerDevice extends Homey.Device {
     }
 
     async checkTime(onoff, home_override) {
+        this.log('checkTime with device: ', this.getData().id);
         this.clearCheckTime();
 
         if (onoff === false || onoff === true) {
@@ -158,7 +161,7 @@ class HeatingControllerDevice extends Homey.Device {
         }
         if (this._at_home === undefined || this._at_home === null) {
             this._at_home = true;
-            this.setCapabilityValue('onoff', this._at_home);
+            this.setCapabilityValue('onoff', this._at_home).catch(console.error);
         }
 
         if (home_override === false || home_override === true) {
@@ -168,19 +171,18 @@ class HeatingControllerDevice extends Homey.Device {
         }
         if (this._home_override === undefined || this._home_override === null) {
             this._home_override = false;
-            this.setCapabilityValue('home_override', this._home_override);
+            this.setCapabilityValue('home_override', this._home_override).catch(console.error);
         }
 
         const currentHour = moment().format('YYYY-MM-DD\THH');
         if (!this._prices || !this._lastFetchData || this._lastFetchData.format('YYYY-MM-DD\THH') !== currentHour) {
-            this.fetchData();
+            return this.fetchData();
         } else if (this._prices) {
-            this.onData();
+            return this.onData();
+        } else {
+            this.scheduleCheckTime(60);
+            return Promise.resolve();
         }
-
-        this.scheduleCheckTime(60);
-
-        return Promise.resolve();
     }
 
     clearCheckTime() {
@@ -209,9 +211,12 @@ class HeatingControllerDevice extends Homey.Device {
             Array.prototype.push.apply(prices, result[1]);
             this._lastFetchData = moment();
             this._prices = prices;
+            this.log('fetchData: got data ', this.getData().id, prices.length);
             return this.onData();
         }).catch(err => {
             console.error(err);
+            this.scheduleCheckTime(60);
+            return Promise.reject(err);
         });
     }
 
@@ -223,7 +228,7 @@ class HeatingControllerDevice extends Homey.Device {
 
         let curNight = await this.getCapabilityValue('night');
         if (curNight === undefined || curNight === null || calcHeating.night !== curNight) {
-            this.setCapabilityValue('night', calcHeating.night);
+            this.setCapabilityValue('night', calcHeating.night).catch(console.error);
             if (calcHeating.night) {
                 this._nightStartsTrigger.trigger(this);
                 this.log('night starts trigger');
@@ -235,7 +240,7 @@ class HeatingControllerDevice extends Homey.Device {
 
         let curAtWork = await this.getCapabilityValue('at_work');
         if (curAtWork === undefined || curAtWork === null || calcHeating.atWork !== curAtWork) {
-            this.setCapabilityValue('at_work', calcHeating.atWork);
+            this.setCapabilityValue('at_work', calcHeating.atWork).catch(console.error);
             if (calcHeating.atWork) {
                 this._atWorkStartsTrigger.trigger(this);
                 this.log('at_work starts trigger');
@@ -248,7 +253,7 @@ class HeatingControllerDevice extends Homey.Device {
         let curHeating = await this.getCapabilityValue('heating');
         let heatChanged = curHeating === undefined || curHeating === null || calcHeating.heating !== curHeating;
         if (heatChanged) {
-            this.setCapabilityValue('heating', calcHeating.heating);
+            this.setCapabilityValue('heating', calcHeating.heating).catch(console.error);
             if (calcHeating.heating) {
                 this._comfortModeTrigger.trigger(this);
                 this.log('comfortModeTrigger');
@@ -268,7 +273,7 @@ class HeatingControllerDevice extends Homey.Device {
             if (priceChanged) {
                 this._lastPrice = currentPrice;
                 this._priceChangedTrigger.trigger(this, currentPrice);
-                this.setCapabilityValue("price", currentPrice.price).catch(console.error);
+                this.setCapabilityValue('price', currentPrice.price).catch(console.error);
                 this.log('price_changed trigger', currentPrice);
             }
 
@@ -322,6 +327,9 @@ class HeatingControllerDevice extends Homey.Device {
                 }).catch(console.error);
             }
         }
+
+        this.scheduleCheckTime(60);
+        return Promise.resolve();
     }
 
     _heatingOffHighPriceComparer(args, state) {
