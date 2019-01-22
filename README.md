@@ -50,7 +50,7 @@ The 'Comfort mode' and 'ECO mode' triggers can be used to turn heaters on / off,
 
 ##### Example
 
-Adjust the target temperature for thermostats based on comfort / ECO modes.  The target temperature for a thermostat is set to 22 ℃ for the period between 05:00 - 07:00 and 14:00 - 22:30, and 19 ℃ in the period from 07:00 - 1   4:00 and 22:30 - 24:00.
+Adjust the target temperature for thermostats based on comfort / ECO modes.  The target temperature for a thermostat is set to 22 ℃ for the period between 05:00 - 07:00 and 14:00 - 22:30, and 19 ℃ in the period from 07:00 - 14:00 and 22:30 - 24:00.
 
 ![Example](https://balmli.github.io/no.almli.heatingcontroller/example1.png "Example 1")
 
