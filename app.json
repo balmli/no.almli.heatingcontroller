@@ -772,7 +772,9 @@
         "en": "Current price"
       },
       "getable": true,
-      "setable": false
+      "setable": false,
+      "greyout": true,
+      "icon": "/drivers/HeatingController/assets/images/dollar.svg"
     }
   }
 }
