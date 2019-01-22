@@ -52,7 +52,7 @@ The 'Comfort mode' and 'ECO mode' triggers can be used to turn heaters on / off,
 
 Adjust the target temperature for thermostats based on comfort / ECO modes.  The target temperature for a thermostat is set to 22 ℃ for the period between 05:00 - 07:00 and 14:00 - 22:30, and 19 ℃ in the period from 07:00 - 1   4:00 and 22:30 - 24:00.
 
-![Example](https://balmli.github.io/no.almli.heatingcontroller/docs/example1.png "Example 1")
+![Example](https://balmli.github.io/no.almli.heatingcontroller/example1.png "Example 1")
 
 Needs one flow:
 
@@ -72,7 +72,7 @@ The 'High prices [x] hours of the day' trigger can be used to turn heaters off o
 
 Set the target temperature for a thermostat to 22 ℃ during daytime, not at work and not away, 19 ℃ during the night, at work or away, and 17 ℃ when prices are high and at night, at work or away.
 
-![Example](https://balmli.github.io/no.almli.heatingcontroller/docs/example2.png "Example 2")
+![Example](https://balmli.github.io/no.almli.heatingcontroller/example2.png "Example 2")
 
 Needs three flows:
 
@@ -88,7 +88,7 @@ The 'Low prices [x] hours of the day' trigger can be used to keep a heater on if
 
 Turn the socket for the water heater 'On' during the 18 hours with the lowest prices of the day, and 'Off' the other 6 hours.
 
-![Example](https://balmli.github.io/no.almli.heatingcontroller/docs/example3.png "Example 3")
+![Example](https://balmli.github.io/no.almli.heatingcontroller/example3.png "Example 3")
 
 Needs one flow:
 
