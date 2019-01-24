@@ -149,6 +149,10 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 0.3.1
+
+- Fix parsing of prices with spaces
+
 #### 0.3.0
 
 - Added "if current utility price below / above" condition

@@ -1,6 +1,6 @@
 {
   "id": "no.almli.heatingcontroller",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
@@ -12,6 +12,7 @@
   "category": [
     "tools"
   ],
+  "homeyCommunityTopicId": 7795,
   "permissions": [
   ],
   "images": {
