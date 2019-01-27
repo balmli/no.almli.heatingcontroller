@@ -1,6 +1,7 @@
 'use strict';
 
 const Homey = require('homey'),
+    {HomeyAPI} = require('athom-api'),
     _ = require('lodash'),
     moment = require('moment'),
     nordpool = require('../../lib/nordpool'),
@@ -223,7 +224,8 @@ class HeatingControllerDevice extends Homey.Device {
     async onData() {
 
         let heatingOptions = this._getHeatingOptions();
-        let calcHeating = heating.calcHeating(new Date(), this._at_home, this._home_override, heatingOptions);
+        let presence = await this._getPresence(heatingOptions);
+        let calcHeating = heating.calcHeating(new Date(), this._at_home, this._home_override, heatingOptions, presence);
         this.log('calcHeating', calcHeating);
 
         let curNight = await this.getCapabilityValue('night');
@@ -404,8 +406,25 @@ class HeatingControllerDevice extends Homey.Device {
                 startHour: settings.workHoursStartHour || 7,
                 endHour: settings.workHoursEndHour || 14
             },
+            presenceForModes: settings.presenceForModes,
             holiday_today: settings.holiday_today
         };
+    }
+
+    async _getPresence(heatingOptions) {
+        if (heatingOptions.presenceForModes) {
+            let numPresent = 0;
+            let currentHomey = await HomeyAPI.forCurrentHomey();
+            let users = await currentHomey.users.getUsers();
+            for (let user in users) {
+                let u = users[user];
+                if (u.present === true) {
+                    numPresent++;
+                }
+            }
+            return numPresent > 0;
+        }
+        return undefined;
     }
 
 }

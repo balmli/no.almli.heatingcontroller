@@ -15,6 +15,8 @@ The device can be turned 'On' / 'Off' to switch between 'Home' and 'Away' - mode
 
 The 'Night' and 'At work' modes are automatically set based on time, day of week and public holidays.  The start and end hours can be configured for both 'Night' and 'At work'.
 
+If preferrable, presence can be used for the 'Home' / 'Away' and 'At work' / 'Not at work' modes. The users of the Homey must enable 'Home/Away Detection' in Settings->Privacy, and presence must be enabled in the device 'Advanced settings'.
+
 The 'Home override' mode can be used to keep comfort mode on, even if 'At work'.
 
 #### Mode triggers
@@ -148,6 +150,10 @@ Default values for periods:
 Please report issues at the [issues section on Github](https://github.com/balmli/no.almli.heatingcontroller/issues).
 
 ### Release Notes:
+
+#### 0.4.0
+
+- Presence can be used for Home/Away and At work/Not at work modes. 
 
 #### 0.3.1
 

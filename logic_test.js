@@ -48,3 +48,20 @@ console.log('calcHeating', aDate, heating.calcHeating(aDate, true, false, heatin
 heatingOptions.holiday_today = 'holiday';
 aDate = new Date(2019, 0, 11, 10, 0, 0, 0);
 console.log('calcHeating', aDate, heating.calcHeating(aDate, true, false, heatingOptions));
+heatingOptions.holiday_today = 'not_holiday ';
+
+heatingOptions.presenceForModes = undefined;
+aDate = new Date(2019, 0, 11, 10, 0, 0, 0);
+console.log('calcHeating', aDate, heating.calcHeating(aDate, true, false, heatingOptions, true));
+
+heatingOptions.presenceForModes = false;
+aDate = new Date(2019, 0, 11, 10, 0, 0, 0);
+console.log('calcHeating', aDate, heating.calcHeating(aDate, true, false, heatingOptions, true));
+
+heatingOptions.presenceForModes = true;
+aDate = new Date(2019, 0, 11, 10, 0, 0, 0);
+console.log('calcHeating', aDate, heating.calcHeating(aDate, true, false, heatingOptions, true));
+
+heatingOptions.presenceForModes = true;
+aDate = new Date(2019, 0, 11, 10, 0, 0, 0);
+console.log('calcHeating', aDate, heating.calcHeating(aDate, true, false, heatingOptions, false));

@@ -1,6 +1,6 @@
 {
   "id": "no.almli.heatingcontroller",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
@@ -14,6 +14,7 @@
   ],
   "homeyCommunityTopicId": 7795,
   "permissions": [
+    "homey:manager:api"
   ],
   "images": {
     "large": "/assets/images/large.png",
@@ -529,6 +530,25 @@
               "value": 14,
               "hint": {
                 "en": "Hour finished at work, which will enable comfort mode"
+              }
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": {
+            "en": "Presence"
+          },
+          "children": [
+            {
+              "id": "presenceForModes",
+              "type": "checkbox",
+              "label": {
+                "en": "Presence for modes"
+              },
+              "value": false,
+              "hint": {
+                "en": "Use presence and not time of day for Home/Away and At work modes"
               }
             }
           ]
