@@ -85,11 +85,6 @@ class HeatingControllerDevice extends Homey.Device {
             .register()
             .registerRunListener(args => args.price > _.get(this._lastPrice, 'price'));
 
-        this._lowPriceXhoursCondition = new Homey.FlowCardCondition('low_x_hours_of_day_condition');
-        this._lowPriceXhoursCondition
-            .register()
-            .registerRunListener(this._lowHoursCondition.bind(this));
-
         this._setAtHomeOnAction = new Homey.FlowCardAction('set_at_home_on')
             .register()
             .registerRunListener(this.onActionSetAtHomeOn.bind(this));
@@ -394,13 +389,6 @@ class HeatingControllerDevice extends Homey.Device {
             .filter(p => moment(p.startsAt).isBefore(now) && moment(p.startsAt).add(1, 'hours').minutes(0).second(0).millisecond(0).isAfter(now));
 
         return state.low_price === true && lowPriceNow.size() === 1 || state.low_price === false && lowPriceNow.size() === 0;
-    }
-
-    _lowHoursCondition(args, state) {
-        let _state = state || {};
-        _state.prices = this._prices;
-        _state.low_price = true;
-        return _lowHoursComparer(args, _state);
     }
 
     _getHeatingOptions() {

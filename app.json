@@ -313,26 +313,6 @@
             "filter": "driver_id=HeatingController"
           }
         ]
-      },
-      {
-        "id": "low_x_hours_of_day_condition",
-        "title": {
-          "en": "Current price among [x] hours of the days lowest prices"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          },
-          {
-            "name": "low_hours",
-            "type": "number",
-            "placeholder": {
-              "en": "low_hours"
-            }
-          }
-        ]
       }
     ],
     "actions": [
