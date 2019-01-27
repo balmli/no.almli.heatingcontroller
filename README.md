@@ -156,6 +156,7 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 - Presence can be used for Home/Away and At work/Not at work modes 
 - Added 'Is current price among [x] hours of the days lowest prices' condition
+- Price as EUR/kWh, DKK/kWh, SEK/kWh, NOK/kWh
 
 #### 0.3.1
 

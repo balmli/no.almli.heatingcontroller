@@ -810,7 +810,7 @@
     "price": {
       "type": "number",
       "title": {
-        "en": "Current price"
+        "en": "Current price/kWh"
       },
       "getable": true,
       "setable": false,
