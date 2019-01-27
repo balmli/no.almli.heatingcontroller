@@ -136,6 +136,7 @@ Default values for periods:
 - Is at work / not at work
 - Is comfort mode / ECO mode
 - Is current price below/above
+- Is current price among [x] hours of the days lowest prices
 
 #### Actions
 
@@ -153,7 +154,8 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 #### 0.4.0
 
-- Presence can be used for Home/Away and At work/Not at work modes. 
+- Presence can be used for Home/Away and At work/Not at work modes 
+- Added 'Is current price among [x] hours of the days lowest prices' condition
 
 #### 0.3.1
 
