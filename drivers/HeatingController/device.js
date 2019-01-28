@@ -4,6 +4,7 @@ const Homey = require('homey'),
     {HomeyAPI} = require('athom-api'),
     _ = require('lodash'),
     moment = require('moment'),
+    pricesLib = require('../../lib/prices'),
     nordpool = require('../../lib/nordpool'),
     heating = require('../../lib/heating');
 
@@ -340,28 +341,13 @@ class HeatingControllerDevice extends Homey.Device {
         }
 
         // Finds prices starting at 00:00 today
-        const startingAt = moment().hours(0).minutes(0).second(0).millisecond(0);
-        let pricesNextHours = _(state.prices)
-            .filter(p => moment(p.startsAt).isSameOrAfter(startingAt))
-            .take(24)
-            .value();
+        let pricesNextHours = pricesLib.pricesStarting(state.prices, moment(), 0, 24);
         if (pricesNextHours.length === 0) {
             return false;
         }
 
         // Check if high price now.  Must be ECO mode, and will skip consecutive hours.
-        const now = moment();
-        let highPriceNow = _(pricesNextHours)
-            .map(p => {
-                p.heating = heating.calcHeating(moment(p.startsAt).toDate(), state.atHome, state.homeOverride, state.heatingOptions);
-                return p;
-            })
-            .filter(p => p.heating.heating === false)
-            .filter((p, idx) => idx % 2 === 0)
-            .sortBy(['price'])
-            .reverse()
-            .take(args.high_hours)
-            .filter(p => moment(p.startsAt).isBefore(now) && moment(p.startsAt).add(1, 'hours').minutes(0).second(0).millisecond(0).isAfter(now));
+        let highPriceNow = pricesLib.checkHighPrice(pricesNextHours, args.high_hours, moment(), state);
 
         return state.high_price === false && highPriceNow.size() === 0 || state.high_price === true && highPriceNow.size() === 1;
     }
@@ -372,21 +358,13 @@ class HeatingControllerDevice extends Homey.Device {
         }
 
         // Finds prices starting at 00:00 today
-        const startingAt = moment().hours(0).minutes(0).second(0).millisecond(0);
-        let pricesNextHours = _(state.prices)
-            .filter(p => moment(p.startsAt).isSameOrAfter(startingAt))
-            .take(24)
-            .value();
+        let pricesNextHours = pricesLib.pricesStarting(state.prices, moment(), 0, 24);
         if (pricesNextHours.length === 0) {
             return false;
         }
 
         // Check if low price now
-        const now = moment();
-        let lowPriceNow = _(pricesNextHours)
-            .sortBy(['price'])
-            .take(args.low_hours)
-            .filter(p => moment(p.startsAt).isBefore(now) && moment(p.startsAt).add(1, 'hours').minutes(0).second(0).millisecond(0).isAfter(now));
+        let lowPriceNow = pricesLib.checkLowPrice(pricesNextHours, args.low_hours, moment());
 
         return state.low_price === true && lowPriceNow.size() === 1 || state.low_price === false && lowPriceNow.size() === 0;
     }

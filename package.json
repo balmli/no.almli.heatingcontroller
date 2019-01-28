@@ -4,7 +4,9 @@
   "description": "HeatingController with utility prices from Nordpoolspot",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "eslint --ignore-path .gitignore app.js lib drivers test",
+    "test": "./node_modules/.bin/mocha --reporter spec",
+    "posttest": "athom app validate --level publish"
   },
   "author": "Bjørnar Almli",
   "license": "ISC",
@@ -14,5 +16,10 @@
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.23"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^5.12.1",
+    "mocha": "^5.2.0"
   }
 }

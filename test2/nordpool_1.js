@@ -1,9 +1,10 @@
 'use strict';
 
 const moment = require('moment-timezone');
-const nordpool = require('./lib/nordpool');
 const _ = require('lodash');
-const heating = require('./lib/heating');
+const nordpool = require('../lib/nordpool');
+const heating = require('../lib/heating');
+const pricesLib = require('../lib/prices');
 
 let heatingOptions = {
     workday: {
@@ -20,15 +21,11 @@ let heatingOptions = {
     }
 };
 
-let handleData = function (prices, low_hours, num_hours, starting) {
+let handleData = function (prices, low_hours, num_hours) {
     const high_hours = num_hours - low_hours;
-    const startingAt = moment().hours(starting).minutes(0).second(0).millisecond(0);
+    const startingAt = moment().hours(0).minutes(0).second(0).millisecond(0);
 
-    let pricesNextHours = _(prices)
-        .filter(p => moment(p.startsAt).isSameOrAfter(startingAt))
-        .take(num_hours)
-        .value();
-
+    let pricesNextHours = pricesLib.pricesStarting(prices, moment(), 0, 24);
     console.log('pricesNextHours', pricesNextHours.length);
     //console.log('pricesNextHours ' + num_hours + ' hours starting ' + starting, pricesNextHours);
 
@@ -56,14 +53,10 @@ let handleData = function (prices, low_hours, num_hours, starting) {
     console.log('onNowOrOff ', onNowOrOff);
 };
 
-let findHeatingOffWhenHighPrices = function (prices, high_hours, num_hours, starting) {
+let findHeatingOffWhenHighPrices = function (prices, high_hours, num_hours) {
     const now = moment();
-    const startingAt = moment().hours(starting).minutes(0).second(0).millisecond(0);
-    let pricesNextHours = _(prices)
-        .filter(p => moment(p.startsAt).isSameOrAfter(startingAt))
-        .take(num_hours)
-        .value();
-    //console.log('pricesNextHours ', pricesNextHours.length, pricesNextHours);
+
+    let pricesNextHours = pricesLib.pricesStarting(prices, moment(), 0, 24);
 
     let heatingOffWithHighPrices = _(pricesNextHours)
         .map(p => {
@@ -91,8 +84,8 @@ Promise.all([
 ]).then(result => {
     let prices = result[0];
     Array.prototype.push.apply(prices, result[1]);
-    handleData(prices, 18, 24, 0);
-    findHeatingOffWhenHighPrices(prices, 6, 24, 0);
+    handleData(prices, 18, 24);
+    findHeatingOffWhenHighPrices(prices, 6, 24);
 }).catch(console.error);
 
 
