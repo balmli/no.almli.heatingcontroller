@@ -117,25 +117,25 @@ class HeatingControllerDevice extends Homey.Device {
     onActionSetAtHomeOn(args, state) {
         const device = args.device;
         device.setCapabilityValue('onoff', true).catch(console.error);
-        return device.checkTime( true);
+        return device.checkTime(true);
     }
 
     onActionSetAtHomeOff(args, state) {
         const device = args.device;
         device.setCapabilityValue('onoff', false).catch(console.error);
-        return device.checkTime( false);
+        return device.checkTime(false);
     }
 
     onActionSetHomeOverrideOn(args, state) {
         const device = args.device;
         device.setCapabilityValue('home_override', true).catch(console.error);
-        return device.checkTime( undefined, true);
+        return device.checkTime(undefined, true);
     }
 
     onActionSetHomeOverrideOff(args, state) {
         const device = args.device;
         device.setCapabilityValue('home_override', false).catch(console.error);
-        return device.checkTime( undefined, false);
+        return device.checkTime(undefined, false);
     }
 
     onActionSetHolidayToday(args, state) {
@@ -389,15 +389,32 @@ class HeatingControllerDevice extends Homey.Device {
         };
     }
 
+    async getApi() {
+        if (!this._api) {
+            this._api = await HomeyAPI.forCurrentHomey();
+        }
+        return this._api;
+    }
+
+    async getUsers() {
+        try {
+            const api = await this.getApi();
+            return await api.users.getUsers();
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     async _getPresence(heatingOptions) {
         if (heatingOptions.presenceForModes) {
             let numPresent = 0;
-            let currentHomey = await HomeyAPI.forCurrentHomey();
-            let users = await currentHomey.users.getUsers();
-            for (let user in users) {
-                let u = users[user];
-                if (u.present === true) {
-                    numPresent++;
+            let users = await this.getUsers();
+            if (users) {
+                for (let user in users) {
+                    let u = users[user];
+                    if (u.present === true) {
+                        numPresent++;
+                    }
                 }
             }
             return numPresent > 0;

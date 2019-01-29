@@ -151,6 +151,10 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 0.4.1
+
+- Minor bug fixes
+
 #### 0.4.0
 
 - Presence can be used for Home/Away and At work/Not at work modes 
