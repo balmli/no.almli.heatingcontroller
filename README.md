@@ -19,28 +19,6 @@ If preferrable, presence can be used for the 'Home' / 'Away' and 'At work' / 'No
 
 The 'Home override' mode can be used to keep comfort mode on, even if 'At work'.
 
-#### Mode triggers
-
-The 'Night starts', 'Night ends', 'At work starts' and 'At work ends' will trigger based on changes to the 'Night' and 'At work' modes.
-
-#### Utility price changed trigger
-
-The 'Utility price changed' will trig every hour, based on utility prices in the Nordpool area.  The price area and currency can be configured.
-
-##### Price areas
-
-- Norway: Oslo, Kr.sand, Bergen, Molde, Tr.heim, Tromsø
-- Sweden: SE1, SE2, SE3, SE4
-- Denmark: DK1, DK2
-- Finland: FI
-- Estonia: EE
-- Latvia: LT
-- Lithuania: LV
-
-##### Currencies
-
-- EUR, DKK, NOK, SEK
-
 #### Comfort and ECO mode triggers
 
 The 'Comfort mode' and 'ECO mode' triggers can be used to turn heaters on / off, or set the thermostat temperatures or thermostat modes, and will trigger if the 'Home', 'Night', 'At work' or 'Home override' modes changes.
@@ -96,6 +74,30 @@ Needs one flow:
 
 - Turn socket on if 'low price' and off if 'high price'
 
+#### Mode triggers
+
+The 'Home mode set to on', 'Home mode set to off', 'Home override set to on' and 'Home override set to off' will trigger based on changes to 'Home' and 'Home override' modes.
+
+The 'Night starts', 'Night ends', 'At work starts' and 'At work ends' will trigger based on changes to the 'Night' and 'At work' modes.
+
+#### Utility price changed trigger
+
+The 'Utility price changed' will trig every hour, based on utility prices in the Nordpool area.  The price area and currency can be configured.
+
+##### Price areas
+
+- Norway: Oslo, Kr.sand, Bergen, Molde, Tr.heim, Tromsø
+- Sweden: SE1, SE2, SE3, SE4
+- Denmark: DK1, DK2
+- Finland: FI
+- Estonia: EE
+- Latvia: LT
+- Lithuania: LV
+
+##### Currencies
+
+- EUR, DKK, NOK, SEK
+
 #### Install
 
 To install the device:
@@ -118,15 +120,19 @@ Default values for periods:
 
 #### Triggers
 
+- Comfort mode
+- ECO mode
+- High prices [x] hours of the day (tokens: heating, high price)
+- Low prices [x] hours of the day (tokens: heating, low price)
+- Home mode set to on
+- Home mode set to off
+- Home override set to on
+- Home override set to off
 - Night starts
 - Night ends
 - At work starts
 - At work ends
 - Utility price changed (tokens: price, price area, currency)
-- Comfort mode
-- ECO mode
-- High prices [x] hours of the day (tokens: heating, high price)
-- Low prices [x] hours of the day (tokens: heating, low price)
 
 #### Conditions
 
@@ -150,6 +156,10 @@ Default values for periods:
 Please report issues at the [issues section on Github](https://github.com/balmli/no.almli.heatingcontroller/issues).
 
 ### Release Notes:
+
+#### 0.5.0
+
+- Added triggers for 'Home' and 'Home override' modes
 
 #### 0.4.1
 

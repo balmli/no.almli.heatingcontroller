@@ -20,6 +20,18 @@ class HeatingControllerDevice extends Homey.Device {
         this._lastPrice = undefined;
         this._prices = undefined;
 
+        this._homeWasSetOnTrigger = new Homey.FlowCardTriggerDevice('home_was_set_on');
+        this._homeWasSetOnTrigger.register();
+
+        this._homeWasSetOffTrigger = new Homey.FlowCardTriggerDevice('home_was_set_off');
+        this._homeWasSetOffTrigger.register();
+
+        this._homeOverrideSetOnTrigger = new Homey.FlowCardTriggerDevice('homeoverride_set_on');
+        this._homeOverrideSetOnTrigger.register();
+
+        this._homeOverrideSetOffTrigger = new Homey.FlowCardTriggerDevice('home_override_set_off');
+        this._homeOverrideSetOffTrigger.register();
+
         this._nightStartsTrigger = new Homey.FlowCardTriggerDevice('night_starts');
         this._nightStartsTrigger.register();
 
@@ -107,6 +119,11 @@ class HeatingControllerDevice extends Homey.Device {
             .registerRunListener(this.onActionSetHolidayToday.bind(this));
 
         this.registerCapabilityListener('onoff', (value, opts) => {
+            if (value) {
+                this._homeWasSetOnTrigger.trigger(this);
+            } else {
+                this._homeWasSetOffTrigger.trigger(this);
+            }
             this.log(this.getName() + ' -> onoff changed: ', value, opts);
             return this.checkTime(this, value);
         });
@@ -116,24 +133,28 @@ class HeatingControllerDevice extends Homey.Device {
 
     onActionSetAtHomeOn(args, state) {
         const device = args.device;
+        device._homeWasSetOnTrigger.trigger(device);
         device.setCapabilityValue('onoff', true).catch(console.error);
         return device.checkTime(true);
     }
 
     onActionSetAtHomeOff(args, state) {
         const device = args.device;
+        device._homeWasSetOffTrigger.trigger(device);
         device.setCapabilityValue('onoff', false).catch(console.error);
         return device.checkTime(false);
     }
 
     onActionSetHomeOverrideOn(args, state) {
         const device = args.device;
+        device._homeOverrideSetOnTrigger.trigger(device);
         device.setCapabilityValue('home_override', true).catch(console.error);
         return device.checkTime(undefined, true);
     }
 
     onActionSetHomeOverrideOff(args, state) {
         const device = args.device;
+        device._homeOverrideSetOffTrigger.trigger(device);
         device.setCapabilityValue('home_override', false).catch(console.error);
         return device.checkTime(undefined, false);
     }

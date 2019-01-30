@@ -1,6 +1,6 @@
 {
   "id": "no.almli.heatingcontroller",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
@@ -41,6 +41,58 @@
   },
   "flow": {
     "triggers": [
+      {
+        "id": "home_was_set_on",
+        "title": {
+          "en": "Home mode set to on"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "home_was_set_off",
+        "title": {
+          "en": "Home mode set to off"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "homeoverride_set_on",
+        "title": {
+          "en": "Home override set to on"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "home_override_set_off",
+        "title": {
+          "en": "Home override set to off"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
       {
         "id": "night_starts",
         "title": {
