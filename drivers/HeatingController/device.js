@@ -98,6 +98,16 @@ class HeatingControllerDevice extends Homey.Device {
             .register()
             .registerRunListener(args => args.price > _.get(this._lastPrice, 'price'));
 
+        this._lowPriceXhoursCondition = new Homey.FlowCardCondition('low_x_hours_of_day_condition');
+        this._lowPriceXhoursCondition
+            .register()
+            .registerRunListener((args, state) => {
+                const device = args.device;
+                state.prices = device._prices;
+                state.low_price = true;
+                return device._lowHoursComparer(args, state);
+            });
+
         this._setAtHomeOnAction = new Homey.FlowCardAction('set_at_home_on')
             .register()
             .registerRunListener(this.onActionSetAtHomeOn.bind(this));

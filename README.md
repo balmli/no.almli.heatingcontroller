@@ -142,6 +142,7 @@ Default values for periods:
 - Is at work / not at work
 - Is comfort mode / ECO mode
 - Is current price below/above
+- Current price among [x] hours of the days lowest prices
 
 #### Actions
 
@@ -160,6 +161,7 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 #### 0.5.0
 
 - Added triggers for 'Home' and 'Home override' modes
+- Added 'Current price among [x] hours of the days lowest prices' condition
 
 #### 0.4.1
 
