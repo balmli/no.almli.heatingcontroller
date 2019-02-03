@@ -30,6 +30,23 @@ const getHeatingOptionsPresence = function () {
     return opts;
 };
 
+const getHeatingOptionsNewDay = function () {
+    return {
+        workday: {
+            startHour: 5,
+            endHour: 22.5,
+        },
+        notWorkday: {
+            startHour: 7,
+            endHour: 1,
+        },
+        workHours: {
+            startHour: 7,
+            endHour: 14
+        }
+    };
+};
+
 describe("Heating", function () {
 
     describe("Heating on a Monday, at home, no home override", function () {
@@ -395,6 +412,89 @@ describe("Heating", function () {
             expect(heat.night).to.equal(true);
             expect(heat.atWork).to.equal(false);
             expect(heat.heating).to.equal(false);
+        });
+    });
+
+    describe("Heating on a saturday - options ", function () {
+        it("Saturday 00:00", function () {
+            const aDate = new Date(2018, 10, 24, 0, 0, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptionsNewDay());
+            expect(heat.day).to.equal(true);
+            expect(heat.night).to.equal(false);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(true);
+        });
+
+        it("Saturday 00:30", function () {
+            const aDate = new Date(2018, 10, 24, 0, 30, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptionsNewDay());
+            expect(heat.day).to.equal(true);
+            expect(heat.night).to.equal(false);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(true);
+        });
+
+        it("Saturday 00:59", function () {
+            const aDate = new Date(2018, 10, 24, 0, 59, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptionsNewDay());
+            expect(heat.day).to.equal(true);
+            expect(heat.night).to.equal(false);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(true);
+        });
+
+        it("Saturday 01:00", function () {
+            const aDate = new Date(2018, 10, 24, 1, 0, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptionsNewDay());
+            expect(heat.day).to.equal(false);
+            expect(heat.night).to.equal(true);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(false);
+        });
+
+        it("Saturday 01:01", function () {
+            const aDate = new Date(2018, 10, 24, 1, 1, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptionsNewDay());
+            expect(heat.day).to.equal(false);
+            expect(heat.night).to.equal(true);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(false);
+        });
+
+        it("Saturday 06:55", function () {
+            const aDate = new Date(2018, 10, 24, 6, 55, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptionsNewDay());
+            expect(heat.day).to.equal(false);
+            expect(heat.night).to.equal(true);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(false);
+        });
+
+        it("Saturday 07:00", function () {
+            const aDate = new Date(2018, 10, 24, 7, 0, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptionsNewDay());
+            expect(heat.day).to.equal(true);
+            expect(heat.night).to.equal(false);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(true);
+        });
+
+        it("Saturday 10:00", function () {
+            const aDate = new Date(2018, 10, 24, 10, 0, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptionsNewDay());
+            expect(heat.day).to.equal(true);
+            expect(heat.night).to.equal(false);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(true);
+        });
+
+        it("Saturday 23:30", function () {
+            const aDate = new Date(2018, 10, 24, 23, 30, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptionsNewDay());
+            expect(heat.day).to.equal(true);
+            expect(heat.night).to.equal(false);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(true);
         });
     });
 

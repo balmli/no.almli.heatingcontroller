@@ -158,6 +158,10 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 0.5.2
+
+- Support end hours after midnight.
+
 #### 0.5.1
 
 - Fixed bug for 'Set home' and 'Set away' actions.
