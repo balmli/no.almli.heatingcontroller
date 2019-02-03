@@ -158,6 +158,10 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 0.5.1
+
+- Fixed bug for 'Set home' and 'Set away' actions.
+
 #### 0.5.0
 
 - Added triggers for 'Home' and 'Home override' modes

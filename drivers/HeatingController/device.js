@@ -112,7 +112,7 @@ class HeatingControllerDevice extends Homey.Device {
             .register()
             .registerRunListener(this.onActionSetAtHomeOn.bind(this));
 
-        this._setAtHomeOffAction = new Homey.FlowCardAction('set_at_home_on')
+        this._setAtHomeOffAction = new Homey.FlowCardAction('set_at_home_off')
             .register()
             .registerRunListener(this.onActionSetAtHomeOff.bind(this));
 

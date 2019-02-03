@@ -1,6 +1,6 @@
 {
   "name": "no.almli.heatingcontroller",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "HeatingController with utility prices from Nordpoolspot",
   "main": "app.js",
   "scripts": {
