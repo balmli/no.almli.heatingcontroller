@@ -135,7 +135,7 @@ class HeatingControllerDevice extends Homey.Device {
                 this._homeWasSetOffTrigger.trigger(this);
             }
             this.log(this.getName() + ' -> onoff changed: ', value, opts);
-            return this.checkTime(this, value);
+            return this.checkTime(value);
         });
 
         this.scheduleCheckTime(10);

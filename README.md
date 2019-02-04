@@ -158,6 +158,11 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 0.5.3
+
+- Take 'working day the next day' into consideration for 'Comfort' and 'ECO' - modes.
+- Fixed bug for 'onoff' capability.
+
 #### 0.5.2
 
 - Support end hours after midnight.
