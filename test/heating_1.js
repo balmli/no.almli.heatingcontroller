@@ -14,7 +14,8 @@ const getHeatingOptions = function () {
         workHours: {
             startHour: 7,
             endHour: 14
-        }
+        },
+        country: 'NO'
     };
 };
 

@@ -415,6 +415,7 @@ class HeatingControllerDevice extends Homey.Device {
                 startHour: settings.workHoursStartHour || 7,
                 endHour: settings.workHoursEndHour || 14
             },
+            country: settings.country,
             presenceForModes: settings.presenceForModes,
             holiday_today: settings.holiday_today
         };

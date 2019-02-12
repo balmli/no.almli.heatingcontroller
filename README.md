@@ -105,6 +105,7 @@ To install the device:
 1. Add the 'HeatingController' device.
 2. Adjust start and end hours in 'Advanced settings'.
 3. Select 'Price area' and 'Currency' in 'Advanced settings' for utility prices.
+4. Select 'Country' in 'Advanced settings' for public and bank holidays.
 
 ##### Default periods
 
@@ -143,6 +144,10 @@ Default values for periods:
 - Is comfort mode / ECO mode
 - Is current price below/above
 - Current price among [x] hours of the days lowest prices
+- Is public holiday today / yesterday / tomorrow.
+- Is bank holiday today / yesterday / tomorrow.
+- Is observance holiday today / yesterday / tomorrow.
+- Is holiday (public, bank or observance) today / yesterday / tomorrow.
 
 #### Actions
 
@@ -150,13 +155,18 @@ Default values for periods:
 - Set away
 - Set home override on
 - Set home override off
-- Set holiday today.  Default is Norwegian holidays, but can be overridden with this action.
+- Set holiday today.  Holiday can be overridden with this action.
 
 ## Feedback:
 
 Please report issues at the [issues section on Github](https://github.com/balmli/no.almli.heatingcontroller/issues).
 
 ### Release Notes:
+
+#### 0.6.0
+
+- Can select country for holidays.
+- Added conditions for holidays (public, bank, observance).
 
 #### 0.5.4
 
