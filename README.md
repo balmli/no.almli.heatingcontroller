@@ -2,6 +2,29 @@
 
 The 'HeatingController' is a device to easily manage temperatures and modes for thermostats and sockets for heating.
 
+To switch between 'Comfort' and 'ECO' modes, just two flows are necessary: one 'Comfort' flow with comfort temperatures and modes, and one 'ECO' flow with ECO temperatures and modes.
+
+Each 'HeatingController' device has its own schedule that can be changed from 'Advanced settings'. Several devices can be used, each with their own schedule.
+
+The app has support for public holidays for several countries, and utility prices for Nordic and Baltic countries.
+
+#### Install
+
+To install the device:
+
+1. Add the 'HeatingController' device.
+2. Go to 'Advanced settings' and adjust the schedule.
+3. Select 'Price area' and 'Currency' for utility prices.
+4. Select 'Country for holidays' for public and bank holidays.
+
+##### Default schedule
+
+Default schedule:
+
+- Comfort mode for working days: 05:00 - 22:30
+- Comfort mode for weekends and holidays: 07:00 - 23:00
+- Work hours: 07:00 - 14:00
+
 #### Modes
 
 The device has modes for:
@@ -11,13 +34,15 @@ The device has modes for:
 - At work / Not at work
 - Home override
 
-The device can be turned 'On' / 'Off' to switch between 'Home' and 'Away' - modes.  If going away for a few days or on a holiday the device can be switched off to enable energy saving mode.  The device must be switched on again to switch back to 'Home' mode.  It is not neccessary to switch to 'Away' mode if going to work, ref. the 'At work' - mode.
+The device can be turned 'On' / 'Off' to switch between 'Home' and 'Away' - modes.  If going away for a few days or on a holiday the device can be switched off to enable energy saving mode.  The device must be switched on again to switch back to 'Home' mode, or the 'Set away, and automatically switch to home mode on next schedule' action can be used to automatically go back to 'Home' mode when the next 'Night / Day' or 'At work / Not at work' modes triggers. 
+
+It is not neccessary to switch to 'Away' mode if going to work, ref. the 'At work' - mode.
 
 The 'Night' and 'At work' modes are automatically set based on time, day of week and public holidays.  The start and end hours can be configured for both 'Night' and 'At work'.
 
 If preferrable, presence can be used for the 'Home' / 'Away' and 'At work' / 'Not at work' modes. The users of the Homey must enable 'Home/Away Detection' in Settings->Privacy, and presence must be enabled in the device 'Advanced settings'.
 
-The 'Home override' mode can be used to keep comfort mode on, even if 'At work'.
+The 'Home override' mode can be used to keep comfort mode on, even if 'At work'.  The 'Set home override on, and automatically off on next schedule' action can be used to automatically turn the 'Home override' mode off when the next 'Night / Day' or 'At work / Not at work' modes triggers. 
 
 #### Comfort and ECO mode triggers
 
@@ -34,9 +59,10 @@ Adjust the target temperature for thermostats based on comfort / ECO modes.  The
 
 ![Example](https://balmli.github.io/no.almli.heatingcontroller/example1.png "Example 1")
 
-Needs one flow:
+Needs two flows:
 
-- Set thermostat temperature to 22 ℃ if comfort mode, otherwise 19 ℃ if ECO mode.
+- Set thermostat temperature to 22 ℃ if comfort mode.
+- Set thermostat temperature to 19 ℃ if ECO mode.
 
 #### High prices trigger
 
@@ -97,23 +123,6 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 ##### Currencies
 
 - EUR, DKK, NOK, SEK
-
-#### Install
-
-To install the device:
-
-1. Add the 'HeatingController' device.
-2. Adjust start and end hours in 'Advanced settings'.
-3. Select 'Price area' and 'Currency' in 'Advanced settings' for utility prices.
-4. Select 'Country' in 'Advanced settings' for public and bank holidays.
-
-##### Default periods
-
-Default values for periods:
-
-- Comfort mode for working days: 05:00 - 22:30
-- Comfort mode for weekends and holidays: 07:00 - 23:00
-- Work hours: 07:00 - 14:00
 
 ## Flow cards
 
