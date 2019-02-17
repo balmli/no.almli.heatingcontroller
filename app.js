@@ -23,6 +23,11 @@ class HeatingControllerApp extends Homey.App {
         new Homey.FlowCardCondition('is_holiday').register().registerRunListener((args) => {
             return this.check(args, {'public': true, 'bank': true, 'observance': true});
         });
+
+        new Homey.FlowCardCondition('is_workingday').register().registerRunListener((args) => {
+            let theDay = holidays.calcDate(new Date(), args.condition);
+            return theDay.getDay() >= 1 && theDay.getDay() <= 5 && this.check(args, {'public': true, 'bank': true, 'observance': true});
+        });
     }
 
     check(args, types) {

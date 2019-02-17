@@ -15,6 +15,8 @@ class HeatingControllerDevice extends Homey.Device {
 
         this._at_home = undefined;
         this._home_override = undefined;
+        this._home_on_next_period = false;
+        this._ho_off_next_period = false;
 
         this._lastFetchData = undefined;
         this._lastPrice = undefined;
@@ -116,9 +118,17 @@ class HeatingControllerDevice extends Homey.Device {
             .register()
             .registerRunListener(this.onActionSetAtHomeOff.bind(this));
 
+        this._setAtHomeOffAction = new Homey.FlowCardAction('set_at_home_off_auto')
+            .register()
+            .registerRunListener(this.onActionSetAtHomeOffAuto.bind(this));
+
         this._setHomeOverrideOnAction = new Homey.FlowCardAction('set_home_override_on')
             .register()
             .registerRunListener(this.onActionSetHomeOverrideOn.bind(this));
+
+        this._setHomeOverrideOnAction = new Homey.FlowCardAction('set_home_override_on_auto')
+            .register()
+            .registerRunListener(this.onActionSetHomeOverrideOnAuto.bind(this));
 
         this._setHomeOverrideOffAction = new Homey.FlowCardAction('set_home_override_off')
             .register()
@@ -150,6 +160,15 @@ class HeatingControllerDevice extends Homey.Device {
 
     onActionSetAtHomeOff(args, state) {
         const device = args.device;
+        device._home_on_next_period = false;
+        device._homeWasSetOffTrigger.trigger(device);
+        device.setCapabilityValue('onoff', false).catch(console.error);
+        return device.checkTime(false);
+    }
+
+    onActionSetAtHomeOffAuto(args, state) {
+        const device = args.device;
+        device._home_on_next_period = true;
         device._homeWasSetOffTrigger.trigger(device);
         device.setCapabilityValue('onoff', false).catch(console.error);
         return device.checkTime(false);
@@ -157,6 +176,15 @@ class HeatingControllerDevice extends Homey.Device {
 
     onActionSetHomeOverrideOn(args, state) {
         const device = args.device;
+        device._ho_off_next_period = false;
+        device._homeOverrideSetOnTrigger.trigger(device);
+        device.setCapabilityValue('home_override', true).catch(console.error);
+        return device.checkTime(undefined, true);
+    }
+
+    onActionSetHomeOverrideOnAuto(args, state) {
+        const device = args.device;
+        device._ho_off_next_period = true;
         device._homeOverrideSetOnTrigger.trigger(device);
         device.setCapabilityValue('home_override', true).catch(console.error);
         return device.checkTime(undefined, true);
@@ -258,10 +286,12 @@ class HeatingControllerDevice extends Homey.Device {
         let heatingOptions = this._getHeatingOptions();
         let presence = await this._getPresence(heatingOptions);
         let calcHeating = heating.calcHeating(new Date(), this._at_home, this._home_override, heatingOptions, presence);
+        let nigthAtWorkChanged = false;
         this.log('calcHeating', calcHeating);
 
         let curNight = await this.getCapabilityValue('night');
         if (curNight === undefined || curNight === null || calcHeating.night !== curNight) {
+            nigthAtWorkChanged = true;
             this.setCapabilityValue('night', calcHeating.night).catch(console.error);
             if (calcHeating.night) {
                 this._nightStartsTrigger.trigger(this);
@@ -274,6 +304,7 @@ class HeatingControllerDevice extends Homey.Device {
 
         let curAtWork = await this.getCapabilityValue('at_work');
         if (curAtWork === undefined || curAtWork === null || calcHeating.atWork !== curAtWork) {
+            nigthAtWorkChanged = true;
             this.setCapabilityValue('at_work', calcHeating.atWork).catch(console.error);
             if (calcHeating.atWork) {
                 this._atWorkStartsTrigger.trigger(this);
@@ -281,6 +312,30 @@ class HeatingControllerDevice extends Homey.Device {
             } else {
                 this._atWorkEndsTrigger.trigger(this);
                 this.log('at_work ends trigger');
+            }
+        }
+
+        if (nigthAtWorkChanged) {
+            let recalcHeating = false;
+            if (this._home_on_next_period) {
+                recalcHeating = true;
+                this._home_on_next_period = false;
+                this._at_home = true;
+                this._homeWasSetOnTrigger.trigger(this);
+                this.setCapabilityValue('onoff', true).catch(console.error);
+                this.log('automatically set home mode');
+            }
+            if (this._ho_off_next_period) {
+                recalcHeating = true;
+                this._ho_off_next_period = false;
+                this._home_override = false;
+                this._homeOverrideSetOffTrigger.trigger(this);
+                this.setCapabilityValue('home_override', false).catch(console.error);
+                this.log('automatically set home override off');
+            }
+            if (recalcHeating) {
+                calcHeating = heating.calcHeating(new Date(), this._at_home, this._home_override, heatingOptions, presence);
+                this.log('calcHeating recalc', calcHeating);
             }
         }
 

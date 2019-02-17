@@ -1,6 +1,6 @@
 {
   "id": "no.almli.heatingcontroller",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
@@ -1041,6 +1041,170 @@
             ]
           }
         ]
+      },
+      {
+        "id": "is_workingday",
+        "title": {
+          "en": "Is !{{working day|not working day}}"
+        },
+        "args": [
+          {
+            "name": "condition",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "today",
+                "label": {
+                  "en": "Today"
+                }
+              },
+              {
+                "id": "yesterday",
+                "label": {
+                  "en": "Yesterday"
+                }
+              },
+              {
+                "id": "tomorrow",
+                "label": {
+                  "en": "Tomorrow"
+                }
+              }
+            ]
+          },
+          {
+            "name": "country",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "AU",
+                "label": {
+                  "en": "Australia"
+                }
+              },
+              {
+                "id": "AT",
+                "label": {
+                  "en": "Austria"
+                }
+              },
+              {
+                "id": "BE",
+                "label": {
+                  "en": "Belgium"
+                }
+              },
+              {
+                "id": "DK",
+                "label": {
+                  "en": "Denmark"
+                }
+              },
+              {
+                "id": "EE",
+                "label": {
+                  "en": "Estonia"
+                }
+              },
+              {
+                "id": "FI",
+                "label": {
+                  "en": "Finland"
+                }
+              },
+              {
+                "id": "FR",
+                "label": {
+                  "en": "France"
+                }
+              },
+              {
+                "id": "DE",
+                "label": {
+                  "en": "Germany"
+                }
+              },
+              {
+                "id": "IS",
+                "label": {
+                  "en": "Iceland"
+                }
+              },
+              {
+                "id": "IE",
+                "label": {
+                  "en": "Ireland"
+                }
+              },
+              {
+                "id": "IT",
+                "label": {
+                  "en": "Italy"
+                }
+              },
+              {
+                "id": "LV",
+                "label": {
+                  "en": "Latvia"
+                }
+              },
+              {
+                "id": "LT",
+                "label": {
+                  "en": "Lithuania"
+                }
+              },
+              {
+                "id": "NL",
+                "label": {
+                  "en": "Netherlands"
+                }
+              },
+              {
+                "id": "NO",
+                "label": {
+                  "en": "Norway"
+                }
+              },
+              {
+                "id": "PL",
+                "label": {
+                  "en": "Poland"
+                }
+              },
+              {
+                "id": "PT",
+                "label": {
+                  "en": "Portugal"
+                }
+              },
+              {
+                "id": "ES",
+                "label": {
+                  "en": "Spain"
+                }
+              },
+              {
+                "id": "SE",
+                "label": {
+                  "en": "Sweden"
+                }
+              },
+              {
+                "id": "CH",
+                "label": {
+                  "en": "Switzerland"
+                }
+              },
+              {
+                "id": "GB",
+                "label": {
+                  "en": "United Kingdom"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "actions": [
@@ -1048,6 +1212,9 @@
         "id": "set_at_home_on",
         "title": {
           "en": "Set home"
+        },
+        "hint": {
+          "en": "Set home mode on."
         },
         "args": [
           {
@@ -1061,6 +1228,25 @@
         "id": "set_at_home_off",
         "title": {
           "en": "Set away"
+        },
+        "hint": {
+          "en": "Set away mode on."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "set_at_home_off_auto",
+        "title": {
+          "en": "Set away, and automatically switch to home mode on next schedule"
+        },
+        "hint": {
+          "en": "Set away mode on. Will automatically switch to home mode on next schedule."
         },
         "args": [
           {
@@ -1076,7 +1262,23 @@
           "en": "Set home override on"
         },
         "hint": {
-          "en": "True will keep heating on even if at work"
+          "en": "Keep heating on even if at work."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "set_home_override_on_auto",
+        "title": {
+          "en": "Set home override on, and automatically off on next schdule"
+        },
+        "hint": {
+          "en": "Keep heating on even if at work. Will automatically turn home override off on next schedule."
         },
         "args": [
           {

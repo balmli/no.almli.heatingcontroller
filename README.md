@@ -148,12 +148,15 @@ Default values for periods:
 - Is bank holiday today / yesterday / tomorrow.
 - Is observance holiday today / yesterday / tomorrow.
 - Is holiday (public, bank or observance) today / yesterday / tomorrow.
+- Is working day today / yesterday / tomorrow.
 
 #### Actions
 
 - Set home
 - Set away
+- Set away, and automatically switch to home mode on next schedule
 - Set home override on
+- Set home override on, and automatically off on next schdule
 - Set home override off
 - Set holiday today.  Holiday can be overridden with this action.
 
@@ -162,6 +165,12 @@ Default values for periods:
 Please report issues at the [issues section on Github](https://github.com/balmli/no.almli.heatingcontroller/issues).
 
 ### Release Notes:
+
+#### 0.7.0
+
+- Added 'Set away, and automatically switch to home mode on next schedule' action.
+- Added 'Set home override on, and automatically off on next schdule' action.
+- Added condition for working day.
 
 #### 0.6.0
 
