@@ -156,7 +156,7 @@ Default values for periods:
 - Set away
 - Set away, and automatically switch to home mode on next schedule
 - Set home override on
-- Set home override on, and automatically off on next schdule
+- Set home override on, and automatically off on next schedule
 - Set home override off
 - Set holiday today.  Holiday can be overridden with this action.
 
@@ -169,7 +169,7 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 #### 0.7.0
 
 - Added 'Set away, and automatically switch to home mode on next schedule' action.
-- Added 'Set home override on, and automatically off on next schdule' action.
+- Added 'Set home override on, and automatically off on next schedule' action.
 - Added condition for working day.
 
 #### 0.6.0

@@ -1275,7 +1275,7 @@
       {
         "id": "set_home_override_on_auto",
         "title": {
-          "en": "Set home override on, and automatically off on next schdule"
+          "en": "Set home override on, and automatically off on next schedule"
         },
         "hint": {
           "en": "Keep heating on even if at work. Will automatically turn home override off on next schedule."
