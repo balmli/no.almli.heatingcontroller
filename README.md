@@ -100,6 +100,20 @@ Needs one flow:
 
 - Turn socket on if 'low price' and off if 'high price'
 
+#### Average price condition
+
+The 'Current price is [x] percent above / below today's average' conditions will compare the current price to the average price for the whole day.
+
+##### Example
+
+Turn the socket for the water heater 'Off' when the price is 3 % higher than the average for the whole day, and 'On' otherwise.
+
+Needs one flow:
+
+- When: Utility price changed, 
+- And: Current price is 3 percent above today's average
+- Then: Turn socket off, Else: Turn socket on
+
 #### Mode triggers
 
 The 'Home mode set to on', 'Home mode set to off', 'Home override set to on' and 'Home override set to off' will trigger based on changes to 'Home' and 'Home override' modes.
@@ -153,6 +167,8 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 - Is comfort mode / ECO mode
 - Is current price below/above
 - Current price among [x] hours of the days lowest prices
+- Current price is [x] percent below today's average
+- Current price is [x] percent above today's average
 - Is public holiday today / yesterday / tomorrow.
 - Is bank holiday today / yesterday / tomorrow.
 - Is observance holiday today / yesterday / tomorrow.
@@ -174,6 +190,11 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 Please report issues at the [issues section on Github](https://github.com/balmli/no.almli.heatingcontroller/issues).
 
 ### Release Notes:
+
+#### 0.8.0
+
+- Added 'Current price is [x] percent below today's average' condition.
+- Added 'Current price is [x] percent above today's average' condition. 
 
 #### 0.7.0
 

@@ -1,6 +1,6 @@
 {
   "id": "no.almli.heatingcontroller",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
@@ -382,6 +382,46 @@
             "type": "number",
             "placeholder": {
               "en": "low_hours"
+            }
+          }
+        ]
+      },
+      {
+        "id": "price_below_avg_condition",
+        "title": {
+          "en": "Current price is [x] percent !{{below|not below}} today's average"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "percentage",
+            "type": "number",
+            "placeholder": {
+              "en": "percentage"
+            }
+          }
+        ]
+      },
+      {
+        "id": "price_above_avg_condition",
+        "title": {
+          "en": "Current price is [x] percent !{{above|not above}} today's average"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "percentage",
+            "type": "number",
+            "placeholder": {
+              "en": "percentage"
             }
           }
         ]

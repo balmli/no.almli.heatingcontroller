@@ -110,6 +110,28 @@ class HeatingControllerDevice extends Homey.Device {
                 return device._lowHoursComparer(args, state);
             });
 
+        this._priceBelowAvgCondition = new Homey.FlowCardCondition('price_below_avg_condition');
+        this._priceBelowAvgCondition
+            .register()
+            .registerRunListener((args, state) => {
+                const device = args.device;
+                state.prices = device._prices;
+                state.currentPrice = device._getCurrentPrice(device._prices);
+                state.below = true;
+                return device._priceAvgComparer(args, state);
+            });
+
+        this._priceAboveAvgCondition = new Homey.FlowCardCondition('price_above_avg_condition');
+        this._priceAboveAvgCondition
+            .register()
+            .registerRunListener((args, state) => {
+                const device = args.device;
+                state.prices = device._prices;
+                state.currentPrice = device._getCurrentPrice(device._prices);
+                state.below = false;
+                return device._priceAvgComparer(args, state);
+            });
+
         this._setAtHomeOnAction = new Homey.FlowCardAction('set_at_home_on')
             .register()
             .registerRunListener(this.onActionSetAtHomeOn.bind(this));
@@ -352,8 +374,7 @@ class HeatingControllerDevice extends Homey.Device {
             }
         }
 
-        const currentHour = moment().format('YYYY-MM-DD\THH');
-        const currentPrice = this._prices.find(p => moment(p.startsAt).format('YYYY-MM-DD\THH') === currentHour);
+        const currentPrice = this._getCurrentPrice(this._prices);
 
         if (currentPrice && currentPrice.price) {
             this.log('currentPrice', currentPrice.startsAt, currentPrice.price);
@@ -421,6 +442,11 @@ class HeatingControllerDevice extends Homey.Device {
         return Promise.resolve();
     }
 
+    _getCurrentPrice(prices) {
+        const currentHour = moment().format('YYYY-MM-DD\THH');
+        return prices.find(p => moment(p.startsAt).format('YYYY-MM-DD\THH') === currentHour);
+    }
+
     _heatingOffHighPriceComparer(args, state) {
         if (!args.high_hours || args.high_hours <= 0 || args.high_hours >= 24) {
             return false;
@@ -453,6 +479,20 @@ class HeatingControllerDevice extends Homey.Device {
         let lowPriceNow = pricesLib.checkLowPrice(pricesNextHours, args.low_hours, moment());
 
         return state.low_price === true && lowPriceNow.size() === 1 || state.low_price === false && lowPriceNow.size() === 0;
+    }
+
+    _priceAvgComparer(args, state) {
+        if (!args.percentage || args.percentage <= 0 || args.percentage >= 100) {
+            return false;
+        }
+
+        // Finds average of prices starting at 00:00 today
+        let averagePriceToday = pricesLib.averagePricesStarting(state.prices, moment(), 0, 24);
+        if (!averagePriceToday) {
+            return false;
+        }
+
+        return pricesLib.checkAveragePrice(state.currentPrice.price, averagePriceToday, state.below, args.percentage);
     }
 
     _getHeatingOptions() {
