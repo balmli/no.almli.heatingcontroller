@@ -162,6 +162,7 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 - ECO mode
 - High prices [x] hours of the day (tokens: heating, high price)
 - Low prices [x] hours of the day (tokens: heating, low price)
+- Low prices [x] of [y] hours of the day starting at [z] (tokens: heating, low price)
 - Home mode set to on
 - Home mode set to off
 - Home override set to on
