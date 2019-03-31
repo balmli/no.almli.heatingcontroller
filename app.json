@@ -273,8 +273,11 @@
           {
             "name": "low_hours",
             "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
             "placeholder": {
-              "en": "low_hours"
+              "en": "Low hours (x)"
             }
           }
         ]
@@ -309,22 +312,31 @@
           {
             "name": "low_hours",
             "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
             "placeholder": {
-              "en": "low_hours"
+              "en": "Low hours (x)"
             }
           },
           {
             "name": "num_hours",
             "type": "number",
+            "min": 1,
+            "max": 24,
+            "step": 1,
             "placeholder": {
-              "en": "num_hours"
+              "en": "Number of hours (y)"
             }
           },
           {
             "name": "start_hour",
             "type": "number",
+            "min": 0,
+            "max": 23,
+            "step": 1,
             "placeholder": {
-              "en": "start_hour"
+              "en": "Start hour (z)"
             }
           }
         ]
@@ -430,8 +442,11 @@
           {
             "name": "low_hours",
             "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
             "placeholder": {
-              "en": "low_hours"
+              "en": "Low hours (x)"
             }
           }
         ]
