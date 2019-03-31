@@ -1,6 +1,6 @@
 {
   "id": "no.almli.heatingcontroller",
-  "version": "0.8.0",
+  "version": "1.0.0",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
@@ -275,6 +275,56 @@
             "type": "number",
             "placeholder": {
               "en": "low_hours"
+            }
+          }
+        ]
+      },
+      {
+        "id": "low_x_of_y_hours_of_day_starting_z",
+        "title": {
+          "en": "Low prices [x] of [y] hours of the day starting at [z]"
+        },
+        "tokens": [
+          {
+            "name": "heating",
+            "type": "boolean",
+            "title": {
+              "en": "heating"
+            }
+          },
+          {
+            "name": "low_price",
+            "type": "boolean",
+            "title": {
+              "en": "low_price"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "low_hours",
+            "type": "number",
+            "placeholder": {
+              "en": "low_hours"
+            }
+          },
+          {
+            "name": "num_hours",
+            "type": "number",
+            "placeholder": {
+              "en": "num_hours"
+            }
+          },
+          {
+            "name": "start_hour",
+            "type": "number",
+            "placeholder": {
+              "en": "start_hour"
             }
           }
         ]

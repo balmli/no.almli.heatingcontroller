@@ -100,6 +100,20 @@ Needs one flow:
 
 - Turn socket on if 'low price' and off if 'high price'
 
+#### Low prices trigger X of Y hours of the day starting at Z
+
+The 'Low prices [x] of [y] hours of the day starting at [z]' trigger can be used to charge an eletric car if the utility price is low.  The 'Comfort mode' / 'ECO mode' is not taken into consideration for this trigger.
+
+##### Example
+
+Charge the car between 22:00 and 07:00, but only charge the 6 hours with the lowest utility price.
+
+Needs one flow:
+
+- When: "Low prices '6' of '9' hours of the day starting at '22'"
+- And: Logic 'low_price' is equal to 'yes'
+- Then: Turn charging on, Else: Turn charging off
+
 #### Average price condition
 
 The 'Current price is [x] percent above / below today's average' conditions will compare the current price to the average price for the whole day.
@@ -190,6 +204,10 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 Please report issues at the [issues section on Github](https://github.com/balmli/no.almli.heatingcontroller/issues).
 
 ### Release Notes:
+
+#### 1.0.0
+
+- Added 'Low prices [x] of [y] hours of the day starting at [z]' trigger.
 
 #### 0.8.0
 
