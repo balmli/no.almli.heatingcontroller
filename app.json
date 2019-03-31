@@ -237,8 +237,14 @@
           {
             "name": "high_hours",
             "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "High hours (x)"
+            },
             "placeholder": {
-              "en": "high_hours"
+              "en": "High hours (x)"
             }
           }
         ]
@@ -276,6 +282,9 @@
             "min": 1,
             "max": 23,
             "step": 1,
+            "title": {
+              "en": "Low hours (x)"
+            },
             "placeholder": {
               "en": "Low hours (x)"
             }
@@ -315,6 +324,9 @@
             "min": 1,
             "max": 23,
             "step": 1,
+            "title": {
+              "en": "Low hours (x)"
+            },
             "placeholder": {
               "en": "Low hours (x)"
             }
@@ -325,6 +337,9 @@
             "min": 1,
             "max": 24,
             "step": 1,
+            "title": {
+              "en": "Number of hours (y)"
+            },
             "placeholder": {
               "en": "Number of hours (y)"
             }
@@ -335,6 +350,9 @@
             "min": 0,
             "max": 23,
             "step": 1,
+            "title": {
+              "en": "Start hour (z)"
+            },
             "placeholder": {
               "en": "Start hour (z)"
             }
@@ -445,6 +463,9 @@
             "min": 1,
             "max": 23,
             "step": 1,
+            "title": {
+              "en": "Low hours (x)"
+            },
             "placeholder": {
               "en": "Low hours (x)"
             }
@@ -465,8 +486,11 @@
           {
             "name": "percentage",
             "type": "number",
+            "title": {
+              "en": "Percentage"
+            },
             "placeholder": {
-              "en": "percentage"
+              "en": "Percentage"
             }
           }
         ]
@@ -485,8 +509,11 @@
           {
             "name": "percentage",
             "type": "number",
+            "title": {
+              "en": "Percentage"
+            },
             "placeholder": {
-              "en": "percentage"
+              "en": "Percentage"
             }
           }
         ]
