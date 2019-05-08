@@ -75,16 +75,6 @@ class HeatingControllerDevice extends Homey.Device {
             .register()
             .registerRunListener(this._lowHoursComparer.bind(this));
 
-        this._low2PriceTrueTrigger = new Homey.FlowCardTriggerDevice('low_x_of_y_hours_of_day_starting_z');
-        this._low2PriceTrueTrigger
-            .register()
-            .registerRunListener(this._lowHours2Comparer.bind(this));
-
-        this._low2PriceFalseTrigger = new Homey.FlowCardTriggerDevice('low_x_of_y_hours_of_day_starting_z');
-        this._low2PriceFalseTrigger
-            .register()
-            .registerRunListener(this._lowHours2Comparer.bind(this));
-
         this.isHomeCondition = new Homey.FlowCardCondition('is_home')
             .register()
             .registerRunListener((args, state) => args.device.getCapabilityValue('onoff'));
@@ -445,30 +435,6 @@ class HeatingControllerDevice extends Homey.Device {
                     heatingOptions: heatingOptions,
                     prices: this._prices
                 }).catch(console.error);
-
-                this._low2PriceTrueTrigger.trigger(this, {
-                    heating: calcHeating.heating,
-                    low_price: true
-                }, {
-                    atHome: this._at_home,
-                    homeOverride: this._home_override,
-                    heating: calcHeating.heating,
-                    low_price: true,
-                    heatingOptions: heatingOptions,
-                    prices: this._prices
-                }).catch(console.error);
-
-                this._low2PriceFalseTrigger.trigger(this, {
-                    heating: calcHeating.heating,
-                    low_price: false
-                }, {
-                    atHome: this._at_home,
-                    homeOverride: this._home_override,
-                    heating: calcHeating.heating,
-                    low_price: false,
-                    heatingOptions: heatingOptions,
-                    prices: this._prices
-                }).catch(console.error);
             }
         }
 
@@ -505,25 +471,6 @@ class HeatingControllerDevice extends Homey.Device {
 
         // Finds prices starting at 00:00 today
         let pricesNextHours = pricesLib.pricesStarting(state.prices, moment(), 0, 24);
-        if (pricesNextHours.length === 0) {
-            return false;
-        }
-
-        // Check if low price now
-        let lowPriceNow = pricesLib.checkLowPrice(pricesNextHours, args.low_hours, moment());
-
-        return state.low_price === true && lowPriceNow.size() === 1 || state.low_price === false && lowPriceNow.size() === 0;
-    }
-
-    _lowHours2Comparer(args, state) {
-        if (!args.low_hours || args.low_hours <= 0 || args.low_hours >= 24 ||
-            !args.num_hours || args.num_hours <= 0 || args.num_hours > 24 ||
-            !args.start_hour || args.start_hour < 0 || args.start_hour >= 24) {
-            return false;
-        }
-
-        // Finds prices
-        let pricesNextHours = pricesLib.pricesStarting(state.prices, moment(), args.start_hour, args.num_hours);
         if (pricesNextHours.length === 0) {
             return false;
         }

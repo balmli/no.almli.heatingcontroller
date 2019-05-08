@@ -1,6 +1,6 @@
 {
   "id": "no.almli.heatingcontroller",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
@@ -287,74 +287,6 @@
             },
             "placeholder": {
               "en": "Low hours (x)"
-            }
-          }
-        ]
-      },
-      {
-        "id": "low_x_of_y_hours_of_day_starting_z",
-        "title": {
-          "en": "Low prices [x] of [y] hours of the day starting at [z]"
-        },
-        "tokens": [
-          {
-            "name": "heating",
-            "type": "boolean",
-            "title": {
-              "en": "heating"
-            }
-          },
-          {
-            "name": "low_price",
-            "type": "boolean",
-            "title": {
-              "en": "low_price"
-            }
-          }
-        ],
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          },
-          {
-            "name": "low_hours",
-            "type": "number",
-            "min": 1,
-            "max": 23,
-            "step": 1,
-            "title": {
-              "en": "Low hours (x)"
-            },
-            "placeholder": {
-              "en": "Low hours (x)"
-            }
-          },
-          {
-            "name": "num_hours",
-            "type": "number",
-            "min": 1,
-            "max": 24,
-            "step": 1,
-            "title": {
-              "en": "Number of hours (y)"
-            },
-            "placeholder": {
-              "en": "Number of hours (y)"
-            }
-          },
-          {
-            "name": "start_hour",
-            "type": "number",
-            "min": 0,
-            "max": 23,
-            "step": 1,
-            "title": {
-              "en": "Start hour (z)"
-            },
-            "placeholder": {
-              "en": "Start hour (z)"
             }
           }
         ]

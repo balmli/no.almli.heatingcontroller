@@ -33,6 +33,9 @@ describe("Norwegian holidays", function () {
         it("Check 02.05.2019", function () {
             expect(holidays.isHoliday('NO', new Date(2019, 4, 2))).to.equal(false);
         });
+        it("Check 08.05.2019", function () {
+            expect(holidays.isHoliday('NO', new Date(2019, 4, 8)).type).to.equal('observance');
+        });
         it("Check 17.05.2019", function () {
             expect(holidays.isHoliday('NO', new Date(2019, 4, 17)).type).to.equal('public');
         });
@@ -67,7 +70,7 @@ describe("Norwegian holidays", function () {
             expect(holidays.isHoliday('NO', new Date(2019, 11, 26)).type).to.equal('public');
         });
         it("Check 31.12.2019", function () {
-            expect(holidays.isHoliday('NO', new Date(2019, 11, 31))).to.equal(false);
+            expect(holidays.isHoliday('NO', new Date(2019, 11, 31)).type).to.equal('bank');
         });
     });
 });
