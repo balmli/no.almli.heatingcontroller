@@ -478,7 +478,7 @@ describe("Heating", function () {
 
     describe("Heating on a holiday", function () {
         it("Holiday 04:00", function () {
-            const aDate = new Date(2018, 11, 25, 4, 0, 0, 0);
+            const aDate = new Date(2019, 11, 25, 4, 0, 0, 0);
             let heat = heating.calcHeating(aDate, true, false, getHeatingOptions());
             expect(heat.day).to.equal(false);
             expect(heat.night).to.equal(true);
@@ -487,7 +487,7 @@ describe("Heating", function () {
         });
 
         it("Holiday 10:00", function () {
-            const aDate = new Date(2018, 11, 25, 10, 0, 0, 0);
+            const aDate = new Date(2019, 11, 25, 10, 0, 0, 0);
             let heat = heating.calcHeating(aDate, true, false, getHeatingOptions());
             expect(heat.day).to.equal(true);
             expect(heat.night).to.equal(false);
@@ -496,7 +496,7 @@ describe("Heating", function () {
         });
 
         it("Holiday 22:59", function () {
-            const aDate = new Date(2018, 11, 25, 22, 59, 0, 0);
+            const aDate = new Date(2019, 11, 25, 22, 59, 0, 0);
             let heat = heating.calcHeating(aDate, true, false, getHeatingOptions());
             expect(heat.day).to.equal(true);
             expect(heat.night).to.equal(false);
@@ -505,7 +505,7 @@ describe("Heating", function () {
         });
 
         it("Holiday 23:00", function () {
-            const aDate = new Date(2018, 11, 25, 23, 0, 0, 0);
+            const aDate = new Date(2019, 11, 25, 23, 0, 0, 0);
             let heat = heating.calcHeating(aDate, true, false, getHeatingOptions());
             expect(heat.day).to.equal(false);
             expect(heat.night).to.equal(true);
@@ -600,6 +600,62 @@ describe("Heating", function () {
 
         it("Holiday 23:00", function () {
             const aDate = new Date(2019, 3, 22, 23, 0, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptions());
+            expect(heat.day).to.equal(false);
+            expect(heat.night).to.equal(true);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(false);
+        });
+    });
+
+    describe("Heating on Christmas Eve 2019", function () {
+        it("Holiday 04:00", function () {
+            const aDate = new Date(2019, 11, 24, 4, 0, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptions());
+            expect(heat.day).to.equal(false);
+            expect(heat.night).to.equal(true);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(false);
+        });
+
+        it("Holiday 10:00", function () {
+            const aDate = new Date(2019, 11, 24, 10, 0, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptions());
+            expect(heat.day).to.equal(true);
+            expect(heat.night).to.equal(false);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(true);
+        });
+
+        it("Holiday 22:29", function () {
+            const aDate = new Date(2019, 11, 24, 22, 29, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptions());
+            expect(heat.day).to.equal(true);
+            expect(heat.night).to.equal(false);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(true);
+        });
+
+        it("Holiday 22:30", function () {
+            const aDate = new Date(2019, 11, 24, 22, 30, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptions());
+            expect(heat.day).to.equal(true);
+            expect(heat.night).to.equal(false);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(true);
+        });
+
+        it("Holiday 22:59", function () {
+            const aDate = new Date(2019, 11, 24, 22, 59, 0, 0);
+            let heat = heating.calcHeating(aDate, true, false, getHeatingOptions());
+            expect(heat.day).to.equal(true);
+            expect(heat.night).to.equal(false);
+            expect(heat.atWork).to.equal(false);
+            expect(heat.heating).to.equal(true);
+        });
+
+        it("Holiday 23:00", function () {
+            const aDate = new Date(2019, 11, 24, 23, 0, 0, 0);
             let heat = heating.calcHeating(aDate, true, false, getHeatingOptions());
             expect(heat.day).to.equal(false);
             expect(heat.night).to.equal(true);
