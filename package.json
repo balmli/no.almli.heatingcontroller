@@ -1,6 +1,6 @@
 {
   "name": "no.almli.heatingcontroller",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "HeatingController with utility prices from Nordpoolspot",
   "main": "app.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "author": "Bjørnar Almli",
   "license": "ISC",
   "dependencies": {
-    "athom-api": "^2.1.161",
+    "athom-api": "^3.1.20",
     "http.min": "1.3.2",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",

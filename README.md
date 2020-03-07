@@ -191,6 +191,10 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 1.2.0
+
+- Updated Athom api
+ 
 #### 1.1.0
 
 - Updated holidays.
