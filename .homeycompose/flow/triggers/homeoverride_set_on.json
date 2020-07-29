@@ -1,0 +1,13 @@
+{
+  "id": "homeoverride_set_on",
+  "title": {
+    "en": "Home override set to on"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    }
+  ]
+}

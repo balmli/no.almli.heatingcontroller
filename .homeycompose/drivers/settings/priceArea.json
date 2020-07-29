@@ -1,0 +1,106 @@
+{
+  "id": "priceArea",
+  "type": "dropdown",
+  "label": {
+    "en": "Price area"
+  },
+  "value": "Oslo",
+  "values": [
+    {
+      "id": "SE1",
+      "label": {
+        "en": "Sweden - SE1"
+      }
+    },
+    {
+      "id": "SE2",
+      "label": {
+        "en": "Sweden - SE2"
+      }
+    },
+    {
+      "id": "SE3",
+      "label": {
+        "en": "Sweden - SE3"
+      }
+    },
+    {
+      "id": "SE4",
+      "label": {
+        "en": "Sweden - SE4"
+      }
+    },
+    {
+      "id": "DK1",
+      "label": {
+        "en": "Sweden - DK1"
+      }
+    },
+    {
+      "id": "DK2",
+      "label": {
+        "en": "Sweden - DK2"
+      }
+    },
+    {
+      "id": "FI",
+      "label": {
+        "en": "Finland - FI"
+      }
+    },
+    {
+      "id": "Oslo",
+      "label": {
+        "en": "Norway - Oslo"
+      }
+    },
+    {
+      "id": "Kr.sand",
+      "label": {
+        "en": "Norway - Kr.sand"
+      }
+    },
+    {
+      "id": "Bergen",
+      "label": {
+        "en": "Norway - Bergen"
+      }
+    },
+    {
+      "id": "Molde",
+      "label": {
+        "en": "Norway - Molde"
+      }
+    },
+    {
+      "id": "Tr.heim",
+      "label": {
+        "en": "Norway - Tr.heim"
+      }
+    },
+    {
+      "id": "Tromsø",
+      "label": {
+        "en": "Norway - Tromsø"
+      }
+    },
+    {
+      "id": "EE",
+      "label": {
+        "en": "Estonia - EE"
+      }
+    },
+    {
+      "id": "LV",
+      "label": {
+        "en": "Latvia - LV"
+      }
+    },
+    {
+      "id": "LT",
+      "label": {
+        "en": "Lithuania -LT"
+      }
+    }
+  ]
+}

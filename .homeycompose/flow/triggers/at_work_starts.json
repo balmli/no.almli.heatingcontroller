@@ -1,0 +1,13 @@
+{
+  "id": "at_work_starts",
+  "title": {
+    "en": "At work starts"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    }
+  ]
+}

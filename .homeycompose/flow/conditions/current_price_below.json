@@ -1,0 +1,20 @@
+{
+  "id": "current_price_below",
+  "title": {
+    "en": "Is current price !{{below|above}}"
+  },
+  "args": [
+    {
+      "name": "price",
+      "type": "number",
+      "placeholder": {
+        "en": "price"
+      }
+    },
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    }
+  ]
+}

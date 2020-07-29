@@ -1,0 +1,34 @@
+{
+  "id": "set_holiday_today",
+  "title": {
+    "en": "Set holiday today"
+  },
+  "hint": {
+    "en": "Use this to inform the heating controller that today is a holiday.  Must be set once each day"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=HeatingController"
+    },
+    {
+      "type": "dropdown",
+      "name": "holiday",
+      "values": [
+        {
+          "id": "holiday",
+          "label": {
+            "en": "Holiday"
+          }
+        },
+        {
+          "id": "not_holiday",
+          "label": {
+            "en": "Not a holiday"
+          }
+        }
+      ]
+    }
+  ]
+}

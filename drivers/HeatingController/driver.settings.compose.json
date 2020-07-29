@@ -1,0 +1,74 @@
+[
+  {
+    "type": "group",
+    "label": {
+      "en": "Period settings"
+    },
+    "children": [
+      {
+        "id": "workdayStartHour",
+        "$extends": "workdayStartHour"
+      },
+      {
+        "id": "workdayEndHour",
+        "$extends": "workdayEndHour"
+      },
+      {
+        "id": "notWorkdayStartHour",
+        "$extends": "notWorkdayStartHour"
+      },
+      {
+        "id": "notWorkdayEndHour",
+        "$extends": "notWorkdayEndHour"
+      },
+      {
+        "id": "workHoursStartHour",
+        "$extends": "workHoursStartHour"
+      },
+      {
+        "id": "workHoursEndHour",
+        "$extends": "workHoursEndHour"
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Price settings"
+    },
+    "children": [
+      {
+        "id": "priceArea",
+        "$extends": "priceArea"
+      },
+      {
+        "id": "currency",
+        "$extends": "currency"
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Country"
+    },
+    "children": [
+      {
+        "id": "country",
+        "$extends": "country"
+      }
+    ]
+  },
+  {
+    "type": "group",
+    "label": {
+      "en": "Presence"
+    },
+    "children": [
+      {
+        "id": "presenceForModes",
+        "$extends": "presenceForModes"
+      }
+    ]
+  }
+]

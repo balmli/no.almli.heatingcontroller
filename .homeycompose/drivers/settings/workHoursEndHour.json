@@ -1,0 +1,11 @@
+{
+  "id": "workHoursEndHour",
+  "type": "number",
+  "label": {
+    "en": "Hour finished at work"
+  },
+  "value": 14,
+  "hint": {
+    "en": "Hour finished at work, which will enable comfort mode"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "set_home_override_off",
+  "title": {
+    "en": "Set home override off"
+  },
+  "hint": {
+    "en": "True will keep heating on even if at work"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=HeatingController"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "id": "comfort_mode",
+  "title": {
+    "en": "Comfort mode"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    }
+  ]
+}

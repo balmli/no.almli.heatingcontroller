@@ -1,0 +1,67 @@
+{
+  "id": "HeatingController",
+  "name": {
+    "en": "Heating Controller"
+  },
+  "icon": "{{driverAssetsPath}}/icon.svg",
+  "images": {
+    "large": "{{driverAssetsPath}}/images/large.png",
+    "small": "{{driverAssetsPath}}/images/small.png"
+  },
+  "class": "other",
+  "capabilities": [
+    "onoff",
+    "home_override",
+    "night",
+    "at_work",
+    "heating",
+    "price"
+  ],
+  "capabilitiesOptions": {
+    "onoff": {
+      "titleTrue": {
+        "en": "Home"
+      },
+      "titleFalse": {
+        "en": "Away"
+      }
+    },
+    "night": {
+      "titleTrue": {
+        "en": "Night"
+      },
+      "titleFalse": {
+        "en": "Day"
+      }
+    },
+    "at_work": {
+      "titleTrue": {
+        "en": "At work"
+      },
+      "titleFalse": {
+        "en": "Not at work"
+      }
+    },
+    "heating": {
+      "titleTrue": {
+        "en": "Heating on"
+      },
+      "titleFalse": {
+        "en": "Heating off"
+      }
+    }
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_my_devices"
+      }
+    },
+    {
+      "id": "add_my_devices",
+      "template": "add_devices"
+    }
+  ]
+}

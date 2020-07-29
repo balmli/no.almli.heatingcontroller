@@ -11,8 +11,8 @@
   "author": "Bjørnar Almli",
   "license": "ISC",
   "dependencies": {
-    "athom-api": "^3.1.20",
-    "http.min": "1.3.2",
+    "athom-api": "^3.2.13",
+    "http.min": "2.0.1",
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.23"

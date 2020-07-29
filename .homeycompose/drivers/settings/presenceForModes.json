@@ -1,0 +1,11 @@
+{
+  "id": "presenceForModes",
+  "type": "checkbox",
+  "label": {
+    "en": "Presence for modes"
+  },
+  "value": false,
+  "hint": {
+    "en": "Use presence and not time of day for Home/Away and At work modes"
+  }
+}

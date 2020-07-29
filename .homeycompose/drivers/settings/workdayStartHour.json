@@ -1,0 +1,11 @@
+{
+  "id": "workdayStartHour",
+  "type": "number",
+  "label": {
+    "en": "Start hour workingdays"
+  },
+  "value": 5,
+  "hint": {
+    "en": "Hour the comfort mode will be enabled for working days"
+  }
+}

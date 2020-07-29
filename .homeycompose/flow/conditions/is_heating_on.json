@@ -1,0 +1,13 @@
+{
+  "id": "is_heating_on",
+  "title": {
+    "en": "Is !{{comfort mode|ECO mode}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    }
+  ]
+}

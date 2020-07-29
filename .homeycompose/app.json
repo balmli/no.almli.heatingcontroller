@@ -1,0 +1,57 @@
+{
+  "id": "no.almli.heatingcontroller",
+  "version": "1.3.0",
+  "compatibility": ">=2.0.0",
+  "sdk": 2,
+  "name": {
+    "en": "Heating Controller"
+  },
+  "description": {
+    "en": "Heating schedules with utility price support"
+  },
+  "category": [
+    "tools",
+    "climate"
+  ],
+  "tags": {
+    "en": [
+      "heating",
+      "heatingcontroller",
+      "schedule",
+      "utility",
+      "price",
+      "prices"
+    ]
+  },
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  },
+  "permissions": [
+    "homey:manager:api"
+  ],
+  "author": {
+    "name": "Bjørnar Almli",
+    "email": "bjornar.almli@gmail.com"
+  },
+  "contributors": {
+    "developers": [
+      {
+        "name": "Bjørnar Almli",
+        "email": "bjornar.almli@gmail.com"
+      }
+    ]
+  },
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "bjornaralmli"
+      }
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/balmli/no.almli.heatingcontroller/issues"
+  },
+  "homeyCommunityTopicId": 7795,
+  "source": "https://github.com/balmli/no.almli.heatingcontroller"
+}

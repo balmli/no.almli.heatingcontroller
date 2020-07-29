@@ -1,0 +1,16 @@
+{
+  "id": "set_at_home_off",
+  "title": {
+    "en": "Set away"
+  },
+  "hint": {
+    "en": "Set away mode on."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=HeatingController"
+    }
+  ]
+}

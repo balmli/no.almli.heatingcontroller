@@ -1,0 +1,11 @@
+{
+  "id": "workdayEndHour",
+  "type": "number",
+  "label": {
+    "en": "End hour workingdays"
+  },
+  "value": 22.5,
+  "hint": {
+    "en": "Hour the ECO mode will be enabled for working days"
+  }
+}

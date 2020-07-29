@@ -1,0 +1,16 @@
+{
+  "id": "set_at_home_off_auto",
+  "title": {
+    "en": "Set away, and automatically switch to home mode on next schedule"
+  },
+  "hint": {
+    "en": "Set away mode on. Will automatically switch to home mode on next schedule."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=HeatingController"
+    }
+  ]
+}

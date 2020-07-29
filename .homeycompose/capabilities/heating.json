@@ -1,0 +1,13 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Heating"
+  },
+  "desc": {
+    "en": "Heating on or off"
+  },
+  "getable": true,
+  "setable": false,
+  "greyout": true,
+  "icon": "/drivers/HeatingController/assets/images/onoff.svg"
+}

@@ -1,35 +1,38 @@
 {
   "id": "no.almli.heatingcontroller",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
-    "en": "HeatingController"
+    "en": "Heating Controller"
   },
   "description": {
-    "en": "HeatingController"
+    "en": "Heating schedules with utility price support"
   },
   "category": [
-    "tools"
+    "tools",
+    "climate"
   ],
-  "homeyCommunityTopicId": 7795,
-  "permissions": [
-    "homey:manager:api"
-  ],
+  "tags": {
+    "en": [
+      "heating",
+      "heatingcontroller",
+      "schedule",
+      "utility",
+      "price",
+      "prices"
+    ]
+  },
   "images": {
     "large": "/assets/images/large.png",
     "small": "/assets/images/small.png"
   },
+  "permissions": [
+    "homey:manager:api"
+  ],
   "author": {
     "name": "Bjørnar Almli",
     "email": "bjornar.almli@gmail.com"
-  },
-  "contributing": {
-    "donate": {
-      "paypal": {
-        "username": "bjornaralmli"
-      }
-    }
   },
   "contributors": {
     "developers": [
@@ -39,77 +42,24 @@
       }
     ]
   },
+  "contributing": {
+    "donate": {
+      "paypal": {
+        "username": "bjornaralmli"
+      }
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/balmli/no.almli.heatingcontroller/issues"
+  },
+  "homeyCommunityTopicId": 7795,
+  "source": "https://github.com/balmli/no.almli.heatingcontroller",
   "flow": {
     "triggers": [
       {
-        "id": "home_was_set_on",
+        "id": "at_work_ends",
         "title": {
-          "en": "Home mode set to on"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          }
-        ]
-      },
-      {
-        "id": "home_was_set_off",
-        "title": {
-          "en": "Home mode set to off"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          }
-        ]
-      },
-      {
-        "id": "homeoverride_set_on",
-        "title": {
-          "en": "Home override set to on"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          }
-        ]
-      },
-      {
-        "id": "home_override_set_off",
-        "title": {
-          "en": "Home override set to off"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          }
-        ]
-      },
-      {
-        "id": "night_starts",
-        "title": {
-          "en": "Night starts"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          }
-        ]
-      },
-      {
-        "id": "night_ends",
-        "title": {
-          "en": "Night ends"
+          "en": "At work ends"
         },
         "args": [
           {
@@ -123,19 +73,6 @@
         "id": "at_work_starts",
         "title": {
           "en": "At work starts"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          }
-        ]
-      },
-      {
-        "id": "at_work_ends",
-        "title": {
-          "en": "At work ends"
         },
         "args": [
           {
@@ -163,42 +100,6 @@
         "title": {
           "en": "ECO mode"
         },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          }
-        ]
-      },
-      {
-        "id": "price_changed",
-        "title": {
-          "en": "Utility price changed"
-        },
-        "tokens": [
-          {
-            "name": "price",
-            "type": "number",
-            "title": {
-              "en": "price"
-            }
-          },
-          {
-            "name": "priceArea",
-            "type": "string",
-            "title": {
-              "en": "price area"
-            }
-          },
-          {
-            "name": "currency",
-            "type": "string",
-            "title": {
-              "en": "currency"
-            }
-          }
-        ],
         "args": [
           {
             "name": "device",
@@ -250,6 +151,58 @@
         ]
       },
       {
+        "id": "home_override_set_off",
+        "title": {
+          "en": "Home override set to off"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "home_was_set_off",
+        "title": {
+          "en": "Home mode set to off"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "home_was_set_on",
+        "title": {
+          "en": "Home mode set to on"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "homeoverride_set_on",
+        "title": {
+          "en": "Home override set to on"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
         "id": "low_x_hours_of_day",
         "title": {
           "en": "Low prices [x] hours of the day"
@@ -290,74 +243,71 @@
             }
           }
         ]
+      },
+      {
+        "id": "night_ends",
+        "title": {
+          "en": "Night ends"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "night_starts",
+        "title": {
+          "en": "Night starts"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "price_changed",
+        "title": {
+          "en": "Utility price changed"
+        },
+        "tokens": [
+          {
+            "name": "price",
+            "type": "number",
+            "title": {
+              "en": "price"
+            }
+          },
+          {
+            "name": "priceArea",
+            "type": "string",
+            "title": {
+              "en": "price area"
+            }
+          },
+          {
+            "name": "currency",
+            "type": "string",
+            "title": {
+              "en": "currency"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
       }
     ],
     "conditions": [
-      {
-        "id": "is_home",
-        "title": {
-          "en": "Is !{{home|away}}"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          }
-        ]
-      },
-      {
-        "id": "is_home_override",
-        "title": {
-          "en": "Is home override !{{on|off}}"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          }
-        ]
-      },
-      {
-        "id": "is_night",
-        "title": {
-          "en": "Is !{{night|day}}"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          }
-        ]
-      },
-      {
-        "id": "is_at_work",
-        "title": {
-          "en": "Is !{{at work|not at work}}"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          }
-        ]
-      },
-      {
-        "id": "is_heating_on",
-        "title": {
-          "en": "Is !{{comfort mode|ECO mode}}"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          }
-        ]
-      },
       {
         "id": "current_price_below",
         "title": {
@@ -379,238 +329,15 @@
         ]
       },
       {
-        "id": "low_x_hours_of_day_condition",
+        "id": "is_at_work",
         "title": {
-          "en": "Current price !{{among|not among}} [x] hours of the days lowest prices"
+          "en": "Is !{{at work|not at work}}"
         },
         "args": [
           {
             "name": "device",
             "type": "device",
             "filter": "driver_id=HeatingController"
-          },
-          {
-            "name": "low_hours",
-            "type": "number",
-            "min": 1,
-            "max": 23,
-            "step": 1,
-            "title": {
-              "en": "Low hours (x)"
-            },
-            "placeholder": {
-              "en": "Low hours (x)"
-            }
-          }
-        ]
-      },
-      {
-        "id": "price_below_avg_condition",
-        "title": {
-          "en": "Current price is [x] percent !{{below|not below}} today's average"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          },
-          {
-            "name": "percentage",
-            "type": "number",
-            "title": {
-              "en": "Percentage"
-            },
-            "placeholder": {
-              "en": "Percentage"
-            }
-          }
-        ]
-      },
-      {
-        "id": "price_above_avg_condition",
-        "title": {
-          "en": "Current price is [x] percent !{{above|not above}} today's average"
-        },
-        "args": [
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=HeatingController"
-          },
-          {
-            "name": "percentage",
-            "type": "number",
-            "title": {
-              "en": "Percentage"
-            },
-            "placeholder": {
-              "en": "Percentage"
-            }
-          }
-        ]
-      },
-      {
-        "id": "is_public_holiday",
-        "title": {
-          "en": "Is !{{public|not public}} holiday"
-        },
-        "args": [
-          {
-            "name": "condition",
-            "type": "dropdown",
-            "values": [
-              {
-                "id": "today",
-                "label": {
-                  "en": "Today"
-                }
-              },
-              {
-                "id": "yesterday",
-                "label": {
-                  "en": "Yesterday"
-                }
-              },
-              {
-                "id": "tomorrow",
-                "label": {
-                  "en": "Tomorrow"
-                }
-              }
-            ]
-          },
-          {
-            "name": "country",
-            "type": "dropdown",
-            "values": [
-              {
-                "id": "AU",
-                "label": {
-                  "en": "Australia"
-                }
-              },
-              {
-                "id": "AT",
-                "label": {
-                  "en": "Austria"
-                }
-              },
-              {
-                "id": "BE",
-                "label": {
-                  "en": "Belgium"
-                }
-              },
-              {
-                "id": "DK",
-                "label": {
-                  "en": "Denmark"
-                }
-              },
-              {
-                "id": "EE",
-                "label": {
-                  "en": "Estonia"
-                }
-              },
-              {
-                "id": "FI",
-                "label": {
-                  "en": "Finland"
-                }
-              },
-              {
-                "id": "FR",
-                "label": {
-                  "en": "France"
-                }
-              },
-              {
-                "id": "DE",
-                "label": {
-                  "en": "Germany"
-                }
-              },
-              {
-                "id": "IS",
-                "label": {
-                  "en": "Iceland"
-                }
-              },
-              {
-                "id": "IE",
-                "label": {
-                  "en": "Ireland"
-                }
-              },
-              {
-                "id": "IT",
-                "label": {
-                  "en": "Italy"
-                }
-              },
-              {
-                "id": "LV",
-                "label": {
-                  "en": "Latvia"
-                }
-              },
-              {
-                "id": "LT",
-                "label": {
-                  "en": "Lithuania"
-                }
-              },
-              {
-                "id": "NL",
-                "label": {
-                  "en": "Netherlands"
-                }
-              },
-              {
-                "id": "NO",
-                "label": {
-                  "en": "Norway"
-                }
-              },
-              {
-                "id": "PL",
-                "label": {
-                  "en": "Poland"
-                }
-              },
-              {
-                "id": "PT",
-                "label": {
-                  "en": "Portugal"
-                }
-              },
-              {
-                "id": "ES",
-                "label": {
-                  "en": "Spain"
-                }
-              },
-              {
-                "id": "SE",
-                "label": {
-                  "en": "Sweden"
-                }
-              },
-              {
-                "id": "CH",
-                "label": {
-                  "en": "Switzerland"
-                }
-              },
-              {
-                "id": "GB",
-                "label": {
-                  "en": "United Kingdom"
-                }
-              }
-            ]
           }
         ]
       },
@@ -779,6 +506,222 @@
         ]
       },
       {
+        "id": "is_heating_on",
+        "title": {
+          "en": "Is !{{comfort mode|ECO mode}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "is_holiday",
+        "title": {
+          "en": "Is !{{holiday|not holiday}}"
+        },
+        "args": [
+          {
+            "name": "condition",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "today",
+                "label": {
+                  "en": "Today"
+                }
+              },
+              {
+                "id": "yesterday",
+                "label": {
+                  "en": "Yesterday"
+                }
+              },
+              {
+                "id": "tomorrow",
+                "label": {
+                  "en": "Tomorrow"
+                }
+              }
+            ]
+          },
+          {
+            "name": "country",
+            "type": "dropdown",
+            "values": [
+              {
+                "id": "AU",
+                "label": {
+                  "en": "Australia"
+                }
+              },
+              {
+                "id": "AT",
+                "label": {
+                  "en": "Austria"
+                }
+              },
+              {
+                "id": "BE",
+                "label": {
+                  "en": "Belgium"
+                }
+              },
+              {
+                "id": "DK",
+                "label": {
+                  "en": "Denmark"
+                }
+              },
+              {
+                "id": "EE",
+                "label": {
+                  "en": "Estonia"
+                }
+              },
+              {
+                "id": "FI",
+                "label": {
+                  "en": "Finland"
+                }
+              },
+              {
+                "id": "FR",
+                "label": {
+                  "en": "France"
+                }
+              },
+              {
+                "id": "DE",
+                "label": {
+                  "en": "Germany"
+                }
+              },
+              {
+                "id": "IS",
+                "label": {
+                  "en": "Iceland"
+                }
+              },
+              {
+                "id": "IE",
+                "label": {
+                  "en": "Ireland"
+                }
+              },
+              {
+                "id": "IT",
+                "label": {
+                  "en": "Italy"
+                }
+              },
+              {
+                "id": "LV",
+                "label": {
+                  "en": "Latvia"
+                }
+              },
+              {
+                "id": "LT",
+                "label": {
+                  "en": "Lithuania"
+                }
+              },
+              {
+                "id": "NL",
+                "label": {
+                  "en": "Netherlands"
+                }
+              },
+              {
+                "id": "NO",
+                "label": {
+                  "en": "Norway"
+                }
+              },
+              {
+                "id": "PL",
+                "label": {
+                  "en": "Poland"
+                }
+              },
+              {
+                "id": "PT",
+                "label": {
+                  "en": "Portugal"
+                }
+              },
+              {
+                "id": "ES",
+                "label": {
+                  "en": "Spain"
+                }
+              },
+              {
+                "id": "SE",
+                "label": {
+                  "en": "Sweden"
+                }
+              },
+              {
+                "id": "CH",
+                "label": {
+                  "en": "Switzerland"
+                }
+              },
+              {
+                "id": "GB",
+                "label": {
+                  "en": "United Kingdom"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "is_home",
+        "title": {
+          "en": "Is !{{home|away}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "is_home_override",
+        "title": {
+          "en": "Is home override !{{on|off}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "is_night",
+        "title": {
+          "en": "Is !{{night|day}}"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
         "id": "is_observance_holiday",
         "title": {
           "en": "Is !{{observance|not observance}} holiday"
@@ -943,9 +886,9 @@
         ]
       },
       {
-        "id": "is_holiday",
+        "id": "is_public_holiday",
         "title": {
-          "en": "Is !{{holiday|not holiday}}"
+          "en": "Is !{{public|not public}} holiday"
         },
         "args": [
           {
@@ -1269,25 +1212,81 @@
             ]
           }
         ]
-      }
-    ],
-    "actions": [
+      },
       {
-        "id": "set_at_home_on",
+        "id": "low_x_hours_of_day_condition",
         "title": {
-          "en": "Set home"
-        },
-        "hint": {
-          "en": "Set home mode on."
+          "en": "Current price !{{among|not among}} [x] hours of the days lowest prices"
         },
         "args": [
           {
-            "type": "device",
             "name": "device",
+            "type": "device",
             "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "low_hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "Low hours (x)"
+            },
+            "placeholder": {
+              "en": "Low hours (x)"
+            }
           }
         ]
       },
+      {
+        "id": "price_above_avg_condition",
+        "title": {
+          "en": "Current price is [x] percent !{{above|not above}} today's average"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "percentage",
+            "type": "number",
+            "title": {
+              "en": "Percentage"
+            },
+            "placeholder": {
+              "en": "Percentage"
+            }
+          }
+        ]
+      },
+      {
+        "id": "price_below_avg_condition",
+        "title": {
+          "en": "Current price is [x] percent !{{below|not below}} today's average"
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "percentage",
+            "type": "number",
+            "title": {
+              "en": "Percentage"
+            },
+            "placeholder": {
+              "en": "Percentage"
+            }
+          }
+        ]
+      }
+    ],
+    "actions": [
       {
         "id": "set_at_home_off",
         "title": {
@@ -1321,44 +1320,12 @@
         ]
       },
       {
-        "id": "set_home_override_on",
+        "id": "set_at_home_on",
         "title": {
-          "en": "Set home override on"
+          "en": "Set home"
         },
         "hint": {
-          "en": "Keep heating on even if at work."
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=HeatingController"
-          }
-        ]
-      },
-      {
-        "id": "set_home_override_on_auto",
-        "title": {
-          "en": "Set home override on, and automatically off on next schedule"
-        },
-        "hint": {
-          "en": "Keep heating on even if at work. Will automatically turn home override off on next schedule."
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=HeatingController"
-          }
-        ]
-      },
-      {
-        "id": "set_home_override_off",
-        "title": {
-          "en": "Set home override off"
-        },
-        "hint": {
-          "en": "True will keep heating on even if at work"
+          "en": "Set home mode on."
         },
         "args": [
           {
@@ -1401,6 +1368,54 @@
             ]
           }
         ]
+      },
+      {
+        "id": "set_home_override_off",
+        "title": {
+          "en": "Set home override off"
+        },
+        "hint": {
+          "en": "True will keep heating on even if at work"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "set_home_override_on",
+        "title": {
+          "en": "Set home override on"
+        },
+        "hint": {
+          "en": "Keep heating on even if at work."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "set_home_override_on_auto",
+        "title": {
+          "en": "Set home override on, and automatically off on next schedule"
+        },
+        "hint": {
+          "en": "Keep heating on even if at work. Will automatically turn home override off on next schedule."
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
       }
     ]
   },
@@ -1408,7 +1423,12 @@
     {
       "id": "HeatingController",
       "name": {
-        "en": "HeatingController"
+        "en": "Heating Controller"
+      },
+      "icon": "/drivers/HeatingController/assets/icon.svg",
+      "images": {
+        "large": "/drivers/HeatingController/assets/images/large.png",
+        "small": "/drivers/HeatingController/assets/images/small.png"
       },
       "class": "other",
       "capabilities": [
@@ -1453,6 +1473,19 @@
           }
         }
       },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_my_devices"
+          }
+        },
+        {
+          "id": "add_my_devices",
+          "template": "add_devices"
+        }
+      ],
       "settings": [
         {
           "type": "group",
@@ -1839,24 +1872,7 @@
             }
           ]
         }
-      ],
-      "pair": [
-        {
-          "id": "list_devices",
-          "template": "list_devices",
-          "navigation": {
-            "next": "add_my_devices"
-          }
-        },
-        {
-          "id": "add_my_devices",
-          "template": "add_devices"
-        }
-      ],
-      "images": {
-        "large": "/drivers/HeatingController/assets/images/large.png",
-        "small": "/drivers/HeatingController/assets/images/small.png"
-      }
+      ]
     }
   ],
   "capabilities": {
@@ -1872,32 +1888,6 @@
       "setable": false,
       "greyout": true,
       "icon": "/drivers/HeatingController/assets/images/house.svg"
-    },
-    "home_override": {
-      "type": "boolean",
-      "title": {
-        "en": "Home override"
-      },
-      "desc": {
-        "en": "Will turn on heating even if at work"
-      },
-      "getable": true,
-      "setable": false,
-      "greyout": true,
-      "icon": "/drivers/HeatingController/assets/images/house.svg"
-    },
-    "night": {
-      "type": "boolean",
-      "title": {
-        "en": "Night"
-      },
-      "desc": {
-        "en": "Night or day"
-      },
-      "getable": true,
-      "setable": false,
-      "greyout": true,
-      "icon": "/drivers/HeatingController/assets/images/night.svg"
     },
     "at_work": {
       "type": "boolean",
@@ -1924,6 +1914,32 @@
       "setable": false,
       "greyout": true,
       "icon": "/drivers/HeatingController/assets/images/onoff.svg"
+    },
+    "home_override": {
+      "type": "boolean",
+      "title": {
+        "en": "Home override"
+      },
+      "desc": {
+        "en": "Will turn on heating even if at work"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/drivers/HeatingController/assets/images/house.svg"
+    },
+    "night": {
+      "type": "boolean",
+      "title": {
+        "en": "Night"
+      },
+      "desc": {
+        "en": "Night or day"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/drivers/HeatingController/assets/images/night.svg"
     },
     "price": {
       "type": "number",

@@ -1,0 +1,11 @@
+{
+  "id": "workHoursStartHour",
+  "type": "number",
+  "label": {
+    "en": "Hour starting at work"
+  },
+  "value": 7,
+  "hint": {
+    "en": "Hour starting at work, which will enable ECO mode"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Home override"
+  },
+  "desc": {
+    "en": "Will turn on heating even if at work"
+  },
+  "getable": true,
+  "setable": false,
+  "greyout": true,
+  "icon": "/drivers/HeatingController/assets/images/house.svg"
+}

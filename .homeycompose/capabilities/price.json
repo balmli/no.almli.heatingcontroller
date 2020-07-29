@@ -1,0 +1,10 @@
+{
+  "type": "number",
+  "title": {
+    "en": "Current price/kWh"
+  },
+  "getable": true,
+  "setable": false,
+  "greyout": true,
+  "icon": "/drivers/HeatingController/assets/images/dollar.svg"
+}

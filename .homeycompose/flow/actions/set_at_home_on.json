@@ -1,0 +1,16 @@
+{
+  "id": "set_at_home_on",
+  "title": {
+    "en": "Set home"
+  },
+  "hint": {
+    "en": "Set home mode on."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=HeatingController"
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+{
+  "id": "country",
+  "type": "dropdown",
+  "label": {
+    "en": "Country for holidays"
+  },
+  "value": "NO",
+  "values": [
+    {
+      "id": "AU",
+      "label": {
+        "en": "Australia"
+      }
+    },
+    {
+      "id": "AT",
+      "label": {
+        "en": "Austria"
+      }
+    },
+    {
+      "id": "BE",
+      "label": {
+        "en": "Belgium"
+      }
+    },
+    {
+      "id": "DK",
+      "label": {
+        "en": "Denmark"
+      }
+    },
+    {
+      "id": "EE",
+      "label": {
+        "en": "Estonia"
+      }
+    },
+    {
+      "id": "FI",
+      "label": {
+        "en": "Finland"
+      }
+    },
+    {
+      "id": "FR",
+      "label": {
+        "en": "France"
+      }
+    },
+    {
+      "id": "DE",
+      "label": {
+        "en": "Germany"
+      }
+    },
+    {
+      "id": "IS",
+      "label": {
+        "en": "Iceland"
+      }
+    },
+    {
+      "id": "IE",
+      "label": {
+        "en": "Ireland"
+      }
+    },
+    {
+      "id": "IT",
+      "label": {
+        "en": "Italy"
+      }
+    },
+    {
+      "id": "LV",
+      "label": {
+        "en": "Latvia"
+      }
+    },
+    {
+      "id": "LT",
+      "label": {
+        "en": "Lithuania"
+      }
+    },
+    {
+      "id": "NL",
+      "label": {
+        "en": "Netherlands"
+      }
+    },
+    {
+      "id": "NO",
+      "label": {
+        "en": "Norway"
+      }
+    },
+    {
+      "id": "PL",
+      "label": {
+        "en": "Poland"
+      }
+    },
+    {
+      "id": "PT",
+      "label": {
+        "en": "Portugal"
+      }
+    },
+    {
+      "id": "ES",
+      "label": {
+        "en": "Spain"
+      }
+    },
+    {
+      "id": "SE",
+      "label": {
+        "en": "Sweden"
+      }
+    },
+    {
+      "id": "CH",
+      "label": {
+        "en": "Switzerland"
+      }
+    },
+    {
+      "id": "GB",
+      "label": {
+        "en": "United Kingdom"
+      }
+    }
+  ]
+}

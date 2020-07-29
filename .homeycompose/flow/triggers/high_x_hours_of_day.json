@@ -1,0 +1,42 @@
+{
+  "id": "high_x_hours_of_day",
+  "title": {
+    "en": "High prices [x] hours of the day"
+  },
+  "tokens": [
+    {
+      "name": "heating",
+      "type": "boolean",
+      "title": {
+        "en": "heating"
+      }
+    },
+    {
+      "name": "high_price",
+      "type": "boolean",
+      "title": {
+        "en": "high_price"
+      }
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    },
+    {
+      "name": "high_hours",
+      "type": "number",
+      "min": 1,
+      "max": 23,
+      "step": 1,
+      "title": {
+        "en": "High hours (x)"
+      },
+      "placeholder": {
+        "en": "High hours (x)"
+      }
+    }
+  ]
+}

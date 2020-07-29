@@ -1,0 +1,13 @@
+{
+  "id": "eco_mode",
+  "title": {
+    "en": "ECO mode"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    }
+  ]
+}

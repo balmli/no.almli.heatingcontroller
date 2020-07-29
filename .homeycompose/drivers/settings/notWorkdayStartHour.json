@@ -1,0 +1,11 @@
+{
+  "id": "notWorkdayStartHour",
+  "type": "number",
+  "label": {
+    "en": "Start hour not workingdays"
+  },
+  "value": 7,
+  "hint": {
+    "en": "Hour the comfort mode will be enabled for weekends and holidays"
+  }
+}

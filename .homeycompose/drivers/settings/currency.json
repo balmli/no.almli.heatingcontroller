@@ -1,0 +1,34 @@
+{
+  "id": "currency",
+  "type": "dropdown",
+  "label": {
+    "en": "Currency"
+  },
+  "value": "EUR",
+  "values": [
+    {
+      "id": "EUR",
+      "label": {
+        "en": "EUR"
+      }
+    },
+    {
+      "id": "DKK",
+      "label": {
+        "en": "DKK"
+      }
+    },
+    {
+      "id": "NOK",
+      "label": {
+        "en": "NOK"
+      }
+    },
+    {
+      "id": "SEK",
+      "label": {
+        "en": "SEK"
+      }
+    }
+  ]
+}

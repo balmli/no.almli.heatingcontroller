@@ -1,0 +1,13 @@
+{
+  "id": "is_night",
+  "title": {
+    "en": "Is !{{night|day}}"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    }
+  ]
+}

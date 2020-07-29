@@ -191,6 +191,11 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 1.3.0
+
+- Use Homey compose
+- Updated Athom api
+
 #### 1.2.0
 
 - Updated Athom api

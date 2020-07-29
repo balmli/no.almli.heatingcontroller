@@ -1,0 +1,13 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "At work"
+  },
+  "desc": {
+    "en": "At work or not at work"
+  },
+  "getable": true,
+  "setable": false,
+  "greyout": true,
+  "icon": "/drivers/HeatingController/assets/images/work.svg"
+}

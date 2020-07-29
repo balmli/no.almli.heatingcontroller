@@ -1,0 +1,36 @@
+{
+  "id": "price_changed",
+  "title": {
+    "en": "Utility price changed"
+  },
+  "tokens": [
+    {
+      "name": "price",
+      "type": "number",
+      "title": {
+        "en": "price"
+      }
+    },
+    {
+      "name": "priceArea",
+      "type": "string",
+      "title": {
+        "en": "price area"
+      }
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "title": {
+        "en": "currency"
+      }
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    }
+  ]
+}

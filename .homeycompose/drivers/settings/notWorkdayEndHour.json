@@ -1,0 +1,11 @@
+{
+  "id": "notWorkdayEndHour",
+  "type": "number",
+  "label": {
+    "en": "End hour not workingdays"
+  },
+  "value": 23,
+  "hint": {
+    "en": "Hour the ECO mode will be enabled for weekends and holidays"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "price_below_avg_condition",
+  "title": {
+    "en": "Current price is [x] percent !{{below|not below}} today's average"
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    },
+    {
+      "name": "percentage",
+      "type": "number",
+      "title": {
+        "en": "Percentage"
+      },
+      "placeholder": {
+        "en": "Percentage"
+      }
+    }
+  ]
+}

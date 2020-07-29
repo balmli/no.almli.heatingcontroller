@@ -11,7 +11,7 @@ class HeatingControllerDriver extends Homey.Driver {
     onPairListDevices(data, callback) {
         let devices = [
             {
-                "name": "HeatingController",
+                "name": "Heating Controller",
                 "data": {
                     "id": guid()
                 }
