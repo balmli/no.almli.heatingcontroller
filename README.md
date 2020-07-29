@@ -193,6 +193,7 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 #### 1.3.0
 
+- Fixed price capability
 - Use Homey compose
 - Updated Athom api
 

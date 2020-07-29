@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey'),
-    {HomeyAPI} = require('athom-api'),
+    { HomeyAPI } = require('athom-api'),
     _ = require('lodash'),
     moment = require('moment'),
     pricesLib = require('../../lib/prices'),
@@ -10,9 +10,9 @@ const Homey = require('homey'),
 
 class HeatingControllerDevice extends Homey.Device {
 
-    onInit() {
+    async onInit() {
         this.log(this.getName() + ' -> device initialized');
-
+        await this.fixPrice(this.getSetting('currency'));
         this._at_home = undefined;
         this._home_override = undefined;
         this._home_on_next_period = false;
@@ -32,7 +32,32 @@ class HeatingControllerDevice extends Homey.Device {
             return this.checkTime(value);
         });
 
-        this.scheduleCheckTime(10);
+        this.scheduleCheckTime(5);
+    }
+
+    async fixPrice(selectedCurrency) {
+        if (this.hasCapability('price')) {
+            await this.removeCapability('price');
+        }
+        for (let currency of ['DKK', 'EUR', 'NOK', 'SEK']) {
+            if (currency !== selectedCurrency &&
+                this.hasCapability(`price_${currency}`)) {
+                await this.removeCapability(`price_${currency}`);
+            }
+        }
+        if (!this.hasCapability(`price_${selectedCurrency}`)) {
+            await this.addCapability(`price_${selectedCurrency}`);
+        }
+    }
+
+    async onSettings(oldSettingsObj, newSettingsObj, changedKeysArr, callback) {
+        if (changedKeysArr.includes('currency')) {
+            await this.fixPrice(newSettingsObj.currency);
+            this._lastFetchData = undefined;
+            this._lastPrice = undefined;
+            this.scheduleCheckTime(5);
+        }
+        callback(null, true);
     }
 
     onActionSetAtHomeOn(args, state) {
@@ -83,7 +108,7 @@ class HeatingControllerDevice extends Homey.Device {
 
     onActionSetHolidayToday(args, state) {
         const device = args.device;
-        device.setSettings({holiday_today: args.holiday}).catch(console.error);
+        device.setSettings({ holiday_today: args.holiday }).catch(console.error);
         return device.checkTime();
     }
 
@@ -149,8 +174,8 @@ class HeatingControllerDevice extends Homey.Device {
         let currency = settings.currency || 'NOK';
         this.log('fetchData: ', this.getData().id, priceArea, currency);
         Promise.all([
-            nordpool.getHourlyPrices(moment(), {priceArea: priceArea, currency: currency}),
-            nordpool.getHourlyPrices(moment().add(1, 'days'), {priceArea: priceArea, currency: currency})
+            nordpool.getHourlyPrices(moment(), { priceArea: priceArea, currency: currency }),
+            nordpool.getHourlyPrices(moment().add(1, 'days'), { priceArea: priceArea, currency: currency })
         ]).then(result => {
             let prices = result[0];
             Array.prototype.push.apply(prices, result[1]);
@@ -245,7 +270,12 @@ class HeatingControllerDevice extends Homey.Device {
             if (priceChanged) {
                 this._lastPrice = currentPrice;
                 Homey.app._priceChangedTrigger.trigger(this, currentPrice);
-                this.setCapabilityValue('price', currentPrice.price).catch(console.error);
+                const priceCapability = `price_${this.getSetting('currency')}`;
+                if (this.hasCapability(priceCapability)) {
+                    this.setCapabilityValue(priceCapability, currentPrice.price).catch(console.error);
+                } else {
+                    this.log('ERORR: missing price capability', priceCapability);
+                }
                 this.log('price_changed trigger', currentPrice);
             }
 

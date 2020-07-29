@@ -1437,7 +1437,11 @@
         "night",
         "at_work",
         "heating",
-        "price"
+        "price",
+        "price_DKK",
+        "price_EUR",
+        "price_NOK",
+        "price_SEK"
       ],
       "capabilitiesOptions": {
         "onoff": {
@@ -1887,7 +1891,7 @@
       "getable": true,
       "setable": false,
       "greyout": true,
-      "icon": "/drivers/HeatingController/assets/images/house.svg"
+      "icon": "/assets/house.svg"
     },
     "at_work": {
       "type": "boolean",
@@ -1900,7 +1904,7 @@
       "getable": true,
       "setable": false,
       "greyout": true,
-      "icon": "/drivers/HeatingController/assets/images/work.svg"
+      "icon": "/assets/work.svg"
     },
     "heating": {
       "type": "boolean",
@@ -1913,7 +1917,7 @@
       "getable": true,
       "setable": false,
       "greyout": true,
-      "icon": "/drivers/HeatingController/assets/images/onoff.svg"
+      "icon": "/assets/onoff.svg"
     },
     "home_override": {
       "type": "boolean",
@@ -1926,7 +1930,7 @@
       "getable": true,
       "setable": false,
       "greyout": true,
-      "icon": "/drivers/HeatingController/assets/images/house.svg"
+      "icon": "/assets/house.svg"
     },
     "night": {
       "type": "boolean",
@@ -1939,7 +1943,7 @@
       "getable": true,
       "setable": false,
       "greyout": true,
-      "icon": "/drivers/HeatingController/assets/images/night.svg"
+      "icon": "/assets/night.svg"
     },
     "price": {
       "type": "number",
@@ -1949,7 +1953,47 @@
       "getable": true,
       "setable": false,
       "greyout": true,
-      "icon": "/drivers/HeatingController/assets/images/dollar.svg"
+      "icon": "/assets/dollar.svg"
+    },
+    "price_DKK": {
+      "type": "number",
+      "title": {
+        "en": "Price DKK/kWh"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/dkk.svg"
+    },
+    "price_EUR": {
+      "type": "number",
+      "title": {
+        "en": "Price EUR/kWh"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/eur.svg"
+    },
+    "price_NOK": {
+      "type": "number",
+      "title": {
+        "en": "Price NOK/kWh"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/nok.svg"
+    },
+    "price_SEK": {
+      "type": "number",
+      "title": {
+        "en": "Price SEK/kWh"
+      },
+      "getable": true,
+      "setable": false,
+      "greyout": true,
+      "icon": "/assets/sek.svg"
     }
   }
 }

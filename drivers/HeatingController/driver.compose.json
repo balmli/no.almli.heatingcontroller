@@ -15,7 +15,11 @@
     "night",
     "at_work",
     "heating",
-    "price"
+    "price",
+    "price_DKK",
+    "price_EUR",
+    "price_NOK",
+    "price_SEK"
   ],
   "capabilitiesOptions": {
     "onoff": {

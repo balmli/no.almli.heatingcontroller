@@ -9,5 +9,5 @@
   "getable": true,
   "setable": false,
   "greyout": true,
-  "icon": "/drivers/HeatingController/assets/images/night.svg"
+  "icon": "/assets/night.svg"
 }
