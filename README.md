@@ -1,6 +1,6 @@
-# HeatingController
+# Heating Controller
 
-The 'HeatingController' is a device to easily manage temperatures and modes for thermostats and sockets for heating.
+The 'Heating Controller' is a device for easily controlling temperatures and modes for thermostats and sockets for heating.
 
 To switch between 'Comfort' and 'ECO' modes, just two flows are necessary: one 'Comfort' flow with comfort temperatures and modes, and one 'ECO' flow with ECO temperatures and modes.
 
@@ -190,6 +190,10 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 Please report issues at the [issues section on Github](https://github.com/balmli/no.almli.heatingcontroller/issues).
 
 ### Release Notes:
+
+#### 1.3.1
+
+- Added README.txt
 
 #### 1.3.0
 
