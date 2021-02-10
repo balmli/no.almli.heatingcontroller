@@ -191,6 +191,10 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 1.3.2
+
+- Fixed utility prices.
+
 #### 1.3.1
 
 - Added README.txt
