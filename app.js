@@ -2,6 +2,7 @@
 
 const Homey = require('homey');
 const holidays = require('./lib/holidays');
+const _ = require('lodash');
 
 class HeatingControllerApp extends Homey.App {
 
