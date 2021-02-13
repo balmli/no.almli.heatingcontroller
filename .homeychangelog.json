@@ -1,4 +1,7 @@
 {
+  "1.3.3": {
+    "en": "Fix 'Is current price below / above' condition. "
+  },
   "1.3.2": {
     "en": "Fixed utility prices. "
   },

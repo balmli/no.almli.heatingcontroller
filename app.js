@@ -105,7 +105,7 @@ class HeatingControllerApp extends Homey.App {
 
         new Homey.FlowCardCondition('current_price_below')
             .register()
-            .registerRunListener(args => args.price > _.get(this._lastPrice, 'price'));
+            .registerRunListener(args => args.price > _.get(args.device._lastPrice, 'price'));
 
         new Homey.FlowCardCondition('low_x_hours_of_day_condition')
             .register()

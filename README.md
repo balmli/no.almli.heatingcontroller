@@ -193,7 +193,7 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 #### 1.3.3
 
-- Bug fix
+- Fix 'Is current price below / above' condition
 
 #### 1.3.2
 
