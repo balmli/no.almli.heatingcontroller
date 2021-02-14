@@ -27,7 +27,7 @@ let handleData = function (prices, low_hours, num_hours) {
 
     let pricesNextHours = pricesLib.pricesStarting(prices, moment(), 0, 24);
     console.log('pricesNextHours', pricesNextHours.length);
-    //console.log('pricesNextHours ' + num_hours + ' hours starting ' + starting, pricesNextHours);
+    //console.log('pricesNextHours ' + num_hours + ' hours ', pricesNextHours);
 
     let pricesSorted = _.sortBy(pricesNextHours, ['price']);
     //console.log('pricesSorted ', pricesSorted);

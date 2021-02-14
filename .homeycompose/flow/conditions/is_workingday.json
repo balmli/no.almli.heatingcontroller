@@ -3,6 +3,9 @@
   "title": {
     "en": "Is !{{working day|not working day}}"
   },
+  "titleFormatted": {
+    "en": "Is !{{working|not working}} holiday [[condition]] in [[country]]"
+  },
   "args": [
     {
       "name": "condition",

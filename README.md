@@ -165,10 +165,13 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 - Is night / day
 - Is at work / not at work
 - Is comfort mode / ECO mode
-- Is current price below/above
-- Current price among [x] hours of the days lowest prices
-- Current price is [x] percent below today's average
-- Current price is [x] percent above today's average
+- Is current price below / above
+- Current price is among / is not among the [x] hours of the days lowest prices
+- Current price is among / is not among the [x] hours of the days highest prices
+- Current price is / is not [x] % above today's average
+- Current price is / is not [x] % below today's average
+- Current price is / is not [x] % above the average of the next [y] hours
+- Current price is / is not [x] % below the average of the next [y] hours
 - Is public holiday today / yesterday / tomorrow.
 - Is bank holiday today / yesterday / tomorrow.
 - Is observance holiday today / yesterday / tomorrow.
@@ -190,6 +193,12 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 Please report issues at the [issues section on Github](https://github.com/balmli/no.almli.heatingcontroller/issues).
 
 ### Release Notes:
+
+#### 1.4.0
+
+- Added 'Current price is among / is not among the [x] hours of the days highest prices' condition
+- Added 'Current price is / is not [x] % above the average of the next [y] hours' condition
+- Added 'Current price is / is not [x] % below the average of the next [y] hours' condition
 
 #### 1.3.3
 

@@ -326,7 +326,7 @@ const checkLowPrice = function (aDate, aTime, numRows) {
 const checkHighPrice = function (aDate, aTime, state, numRows) {
     it("High price at " + aTime, function () {
         let x = pricesLib.pricesStarting(getPrices(), moment(aDate), 0, 24);
-        expect(pricesLib.checkHighPrice(x, 6, moment(aDate + 'T' + aTime), state).value().length).to.equal(numRows);
+        expect(pricesLib.checkHighPrice2(x, 6, moment(aDate + 'T' + aTime), state).value().length).to.equal(numRows);
     });
 };
 
@@ -346,7 +346,7 @@ describe("Prices", function () {
             expect(pricesLib.checkLowPrice([], 18, moment('2019-01-21')).length).to.equal(undefined);
         });
         it("No prices: checkHighPrice", function () {
-            expect(pricesLib.checkHighPrice([], 6, moment('2019-01-21'), {}).length).to.equal(undefined);
+            expect(pricesLib.checkHighPrice2([], 6, moment('2019-01-21'), {}).length).to.equal(undefined);
         });
     });
 

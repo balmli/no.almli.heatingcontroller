@@ -107,6 +107,15 @@ class HeatingControllerApp extends Homey.App {
             .register()
             .registerRunListener(args => args.price > _.get(args.device._lastPrice, 'price'));
 
+        new Homey.FlowCardCondition('high_x_hours_of_day_condition')
+            .register()
+            .registerRunListener((args, state) => {
+                const device = args.device;
+                state.prices = device._prices;
+                state.high_price = true;
+                return device._highHoursComparer(args, state);
+            });
+
         new Homey.FlowCardCondition('low_x_hours_of_day_condition')
             .register()
             .registerRunListener((args, state) => {
@@ -126,7 +135,27 @@ class HeatingControllerApp extends Homey.App {
                 return device._priceAvgComparer(args, state);
             });
 
+        new Homey.FlowCardCondition('price_below_avg_next_hours_condition')
+            .register()
+            .registerRunListener((args, state) => {
+                const device = args.device;
+                state.prices = device._prices;
+                state.currentPrice = device._getCurrentPrice(device._prices);
+                state.below = true;
+                return device._priceAvgComparer(args, state);
+            });
+
         new Homey.FlowCardCondition('price_above_avg_condition')
+            .register()
+            .registerRunListener((args, state) => {
+                const device = args.device;
+                state.prices = device._prices;
+                state.currentPrice = device._getCurrentPrice(device._prices);
+                state.below = false;
+                return device._priceAvgComparer(args, state);
+            });
+
+        new Homey.FlowCardCondition('price_above_avg_next_hours_condition')
             .register()
             .registerRunListener((args, state) => {
                 const device = args.device;

@@ -3,6 +3,9 @@
   "title": {
     "en": "Is current price !{{below|above}}"
   },
+  "titleFormatted": {
+    "en": "Is current price !{{below|above}} [[price]]"
+  },
   "args": [
     {
       "name": "price",

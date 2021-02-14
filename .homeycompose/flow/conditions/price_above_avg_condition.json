@@ -1,7 +1,10 @@
 {
   "id": "price_above_avg_condition",
   "title": {
-    "en": "Current price is [x] percent !{{above|not above}} today's average"
+    "en": "Current price is !{{|not}} [x] % above today's average"
+  },
+  "titleFormatted": {
+    "en": "Current price is !{{|not}} [[percentage]] % above today's average"
   },
   "args": [
     {

@@ -1,7 +1,10 @@
 {
   "id": "low_x_hours_of_day_condition",
   "title": {
-    "en": "Current price !{{among|not among}} [x] hours of the days lowest prices"
+    "en": "Current price is !{{among|not among}} the [x] hours of the days lowest prices"
+  },
+  "titleFormatted": {
+    "en": "Current price is !{{among|not among}} the [[low_hours]] hours of the days lowest prices"
   },
   "args": [
     {

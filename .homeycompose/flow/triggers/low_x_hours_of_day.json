@@ -3,6 +3,9 @@
   "title": {
     "en": "Low prices [x] hours of the day"
   },
+  "titleFormatted": {
+    "en": "Low prices [[low_hours]] hours of the day"
+  },
   "tokens": [
     {
       "name": "heating",

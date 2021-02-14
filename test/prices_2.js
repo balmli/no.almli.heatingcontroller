@@ -319,7 +319,7 @@ const getState = function (atHome) {
 const checkHighPrice = function (aDate, aTime, state, numRows) {
     it("High price at " + aTime, function () {
         let x = pricesLib.pricesStarting(getPrices(), moment(aDate), 0, 24);
-        expect(pricesLib.checkHighPrice(x, 4, moment(aDate + 'T' + aTime), state).value().length).to.equal(numRows);
+        expect(pricesLib.checkHighPrice2(x, 4, moment(aDate + 'T' + aTime), state).value().length).to.equal(numRows);
     });
 };
 

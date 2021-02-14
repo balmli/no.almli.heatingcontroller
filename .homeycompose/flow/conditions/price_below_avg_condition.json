@@ -1,7 +1,10 @@
 {
   "id": "price_below_avg_condition",
   "title": {
-    "en": "Current price is [x] percent !{{below|not below}} today's average"
+    "en": "Current price is !{{|not}} [x] % below today's average"
+  },
+  "titleFormatted": {
+    "en": "Current price is !{{|not}} [[percentage]] % below today's average"
   },
   "args": [
     {

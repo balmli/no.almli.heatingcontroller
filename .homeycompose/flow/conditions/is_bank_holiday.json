@@ -3,6 +3,9 @@
   "title": {
     "en": "Is !{{bank|not bank}} holiday"
   },
+  "titleFormatted": {
+    "en": "Is !{{bank|not bank}} holiday [[condition]] in [[country]]"
+  },
   "args": [
     {
       "name": "condition",

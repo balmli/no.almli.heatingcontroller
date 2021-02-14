@@ -351,7 +351,24 @@ class HeatingControllerDevice extends Homey.Device {
         }
 
         // Check if high price now.  Must be ECO mode, and will skip consecutive hours.
-        let highPriceNow = pricesLib.checkHighPrice(pricesNextHours, args.high_hours, moment(), state);
+        let highPriceNow = pricesLib.checkHighPrice2(pricesNextHours, args.high_hours, moment(), state);
+
+        return state.high_price === false && highPriceNow.size() === 0 || state.high_price === true && highPriceNow.size() === 1;
+    }
+
+    _highHoursComparer(args, state) {
+        if (!args.high_hours || args.high_hours <= 0 || args.high_hours >= 24) {
+            return false;
+        }
+
+        // Finds prices starting at 00:00 today
+        let pricesNextHours = pricesLib.pricesStarting(state.prices, moment(), 0, 24);
+        if (pricesNextHours.length === 0) {
+            return false;
+        }
+
+        // Check if high price now.
+        let highPriceNow = pricesLib.checkHighPrice(pricesNextHours, args.high_hours, moment());
 
         return state.high_price === false && highPriceNow.size() === 0 || state.high_price === true && highPriceNow.size() === 1;
     }
@@ -377,14 +394,20 @@ class HeatingControllerDevice extends Homey.Device {
         if (!args.percentage || args.percentage <= 0 || args.percentage >= 100) {
             return false;
         }
+        let startHour = 0;
+        let numHours = 24;
+        if (args.hours) {
+            startHour = moment().hour();
+            numHours = args.hours;
+        }
 
-        // Finds average of prices starting at 00:00 today
-        let averagePriceToday = pricesLib.averagePricesStarting(state.prices, moment(), 0, 24);
-        if (!averagePriceToday) {
+        // Finds average of prices
+        const averagePrice = pricesLib.averagePricesStarting(state.prices, moment(), startHour, numHours);
+        if (!averagePrice) {
             return false;
         }
 
-        return pricesLib.checkAveragePrice(state.currentPrice.price, averagePriceToday, state.below, args.percentage);
+        return pricesLib.checkAveragePrice(state.currentPrice.price, averagePrice, state.below, args.percentage);
     }
 
     _getHeatingOptions() {

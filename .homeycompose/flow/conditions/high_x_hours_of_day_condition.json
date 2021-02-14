@@ -1,27 +1,11 @@
 {
-  "id": "high_x_hours_of_day",
+  "id": "high_x_hours_of_day_condition",
   "title": {
-    "en": "High prices [x] hours of the day"
+    "en": "Current price is !{{among|not among}} the [x] hours of the days highest prices"
   },
   "titleFormatted": {
-    "en": "High prices [[high_hours]] hours of the day"
+    "en": "Current price is !{{among|not among}} the [[high_hours]] hours of the days highest prices"
   },
-  "tokens": [
-    {
-      "name": "heating",
-      "type": "boolean",
-      "title": {
-        "en": "heating"
-      }
-    },
-    {
-      "name": "high_price",
-      "type": "boolean",
-      "title": {
-        "en": "high_price"
-      }
-    }
-  ],
   "args": [
     {
       "name": "device",

@@ -3,6 +3,9 @@
   "title": {
     "en": "Is !{{holiday|not holiday}}"
   },
+  "titleFormatted": {
+    "en": "Is !{{holiday|not holiday}} [[condition]] in [[country]]"
+  },
   "args": [
     {
       "name": "condition",
