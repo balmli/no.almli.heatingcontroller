@@ -1,4 +1,7 @@
 {
+  "1.4.1": {
+    "en": "Price in insights. "
+  },
   "1.4.0": {
     "en": "Added 'Current price is among / is not among the [x] hours of the days highest prices' condition. Added 'Current price is / is not [x] % above the average of the next [y] hours' condition. Added 'Current price is / is not [x] % below the average of the next [y] hours' condition. "
   },

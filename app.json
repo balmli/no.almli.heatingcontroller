@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.almli.heatingcontroller",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "compatibility": ">=2.0.0",
   "sdk": 2,
   "name": {
@@ -2094,6 +2094,7 @@
       "getable": true,
       "setable": false,
       "greyout": true,
+      "insights": true,
       "icon": "/assets/dollar.svg"
     },
     "price_DKK": {
@@ -2104,6 +2105,7 @@
       "getable": true,
       "setable": false,
       "greyout": true,
+      "insights": true,
       "icon": "/assets/dkk.svg"
     },
     "price_EUR": {
@@ -2114,6 +2116,7 @@
       "getable": true,
       "setable": false,
       "greyout": true,
+      "insights": true,
       "icon": "/assets/eur.svg"
     },
     "price_NOK": {
@@ -2124,6 +2127,7 @@
       "getable": true,
       "setable": false,
       "greyout": true,
+      "insights": true,
       "icon": "/assets/nok.svg"
     },
     "price_SEK": {
@@ -2134,6 +2138,7 @@
       "getable": true,
       "setable": false,
       "greyout": true,
+      "insights": true,
       "icon": "/assets/sek.svg"
     }
   }

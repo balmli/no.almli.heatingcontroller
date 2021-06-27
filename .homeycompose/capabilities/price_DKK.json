@@ -6,5 +6,6 @@
   "getable": true,
   "setable": false,
   "greyout": true,
+  "insights": true,
   "icon": "/assets/dkk.svg"
 }

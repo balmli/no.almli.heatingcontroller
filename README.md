@@ -131,8 +131,8 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 - Denmark: DK1, DK2
 - Finland: FI
 - Estonia: EE
-- Latvia: LT
-- Lithuania: LV
+- Latvia: LV
+- Lithuania: LT
 
 ##### Currencies
 
@@ -193,6 +193,10 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 Please report issues at the [issues section on Github](https://github.com/balmli/no.almli.heatingcontroller/issues).
 
 ### Release Notes:
+
+#### 1.4.1
+
+- Price in insights
 
 #### 1.4.0
 
