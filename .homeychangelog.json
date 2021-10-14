@@ -1,4 +1,7 @@
 {
+  "1.5.0": {
+    "en": "SDK3 - changes. 'Presence for modes' option removed. Updated holidays. Fixed decimals for Insights. Fixed issue with timezones."
+  },
   "1.4.1": {
     "en": "Price in insights. "
   },

@@ -58,17 +58,5 @@
         "$extends": "country"
       }
     ]
-  },
-  {
-    "type": "group",
-    "label": {
-      "en": "Presence"
-    },
-    "children": [
-      {
-        "id": "presenceForModes",
-        "$extends": "presenceForModes"
-      }
-    ]
   }
 ]

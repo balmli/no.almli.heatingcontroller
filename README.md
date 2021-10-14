@@ -194,6 +194,14 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 1.5.0
+
+- SDK3 - changes
+- "Presence for modes" option removed
+- Updated holidays
+- Fixed decimals for Insights
+- Fixed issue with timezones
+
 #### 1.4.1
 
 - Price in insights

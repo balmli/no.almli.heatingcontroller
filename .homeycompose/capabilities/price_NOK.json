@@ -7,5 +7,9 @@
   "setable": false,
   "greyout": true,
   "insights": true,
+  "units": {
+    "en": "NOK/kWh"
+  },
+  "decimals": 4,
   "icon": "/assets/nok.svg"
 }

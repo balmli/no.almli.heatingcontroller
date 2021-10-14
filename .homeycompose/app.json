@@ -1,8 +1,9 @@
 {
   "id": "no.almli.heatingcontroller",
-  "version": "1.4.1",
-  "compatibility": ">=2.0.0",
-  "sdk": 2,
+  "version": "1.5.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "brandColor": "#d06830",
   "name": {
     "en": "Heating Controller"
   },
@@ -27,9 +28,7 @@
     "large": "/assets/images/large.png",
     "small": "/assets/images/small.png"
   },
-  "permissions": [
-    "homey:manager:api"
-  ],
+  "permissions": [],
   "author": {
     "name": "Bjørnar Almli",
     "email": "bjornar.almli@gmail.com"
@@ -49,9 +48,5 @@
       }
     }
   },
-  "bugs": {
-    "url": "https://github.com/balmli/no.almli.heatingcontroller/issues"
-  },
-  "homeyCommunityTopicId": 7795,
-  "source": "https://github.com/balmli/no.almli.heatingcontroller"
+  "homeyCommunityTopicId": 7795
 }

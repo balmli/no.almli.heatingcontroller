@@ -12,290 +12,290 @@ const getPrices = function () {
     const prices = [
         {
             startsAt: '2019-01-20T23:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.49599
         },
         {
             startsAt: '2019-01-21T00:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.49103
         },
         {
             startsAt: '2019-01-21T01:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.48919
         },
         {
             startsAt: '2019-01-21T02:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.48987
         },
         {
             startsAt: '2019-01-21T03:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.4955
         },
         {
             startsAt: '2019-01-21T04:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.52078
         },
         {
             startsAt: '2019-01-21T05:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.53604
         },
         {
             startsAt: '2019-01-21T06:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.60264
         },
         {
             startsAt: '2019-01-21T07:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.63073
         },
         {
             startsAt: '2019-01-21T08:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.60176
         },
         {
             startsAt: '2019-01-21T09:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.56754
         },
         {
             startsAt: '2019-01-21T10:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.55704
         },
         {
             startsAt: '2019-01-21T11:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.55344
         },
         {
             startsAt: '2019-01-21T12:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.55315
         },
         {
             startsAt: '2019-01-21T13:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.55772
         },
         {
             startsAt: '2019-01-21T14:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.56385
         },
         {
             startsAt: '2019-01-21T15:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.58008
         },
         {
             startsAt: '2019-01-21T16:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.59671
         },
         {
             startsAt: '2019-01-21T17:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.57979
         },
         {
             startsAt: '2019-01-21T18:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.54868
         },
         {
             startsAt: '2019-01-21T19:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.53634
         },
         {
             startsAt: '2019-01-21T20:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.53264
         },
         {
             startsAt: '2019-01-21T21:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.52185
         },
         {
             startsAt: '2019-01-21T22:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.50902
         },
         {
             startsAt: '2019-01-21T23:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.49599
         },
         {
             startsAt: '2019-01-22T00:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.49103
         },
         {
             startsAt: '2019-01-22T01:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.48919
         },
         {
             startsAt: '2019-01-22T02:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.48987
         },
         {
             startsAt: '2019-01-22T03:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.4955
         },
         {
             startsAt: '2019-01-22T04:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.52078
         },
         {
             startsAt: '2019-01-22T05:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.53604
         },
         {
             startsAt: '2019-01-22T06:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.60264
         },
         {
             startsAt: '2019-01-22T07:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.63073
         },
         {
             startsAt: '2019-01-22T08:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.60176
         },
         {
             startsAt: '2019-01-22T09:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.56754
         },
         {
             startsAt: '2019-01-22T10:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.55704
         },
         {
             startsAt: '2019-01-22T11:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.55344
         },
         {
             startsAt: '2019-01-22T12:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.55315
         },
         {
             startsAt: '2019-01-22T13:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.55772
         },
         {
             startsAt: '2019-01-22T14:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.56385
         },
         {
             startsAt: '2019-01-22T15:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.58008
         },
         {
             startsAt: '2019-01-22T16:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.59671
         },
         {
             startsAt: '2019-01-22T17:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.57979
         },
         {
             startsAt: '2019-01-22T18:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.54868
         },
         {
             startsAt: '2019-01-22T19:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.53634
         },
         {
             startsAt: '2019-01-22T20:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.53264
         },
         {
             startsAt: '2019-01-22T21:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.52185
         },
         {
             startsAt: '2019-01-22T22:00:00.000Z',
-            priceArea: 'Bergen',
-            currency: 'NOK',
+            priceArea: 'FI',
+            currency: 'EUR',
             price: 0.50902
         }
     ];
@@ -328,7 +328,7 @@ const getState = function (atHome) {
                 startHour: 7,
                 endHour: 14
             },
-            country: 'NO'
+            country: 'FI'
         }
     };
 };
@@ -350,7 +350,7 @@ const checkHighPrice = function (aDate, aTime, state, numRows) {
 describe("Prices", function () {
 
     before(function() {
-        days.setTimeZone('Europe/Oslo');
+        days.setTimeZone('Europe/Helsinki');
     });
 
     describe("Check testdata", function () {
@@ -376,7 +376,6 @@ describe("Prices", function () {
             const forDay = dayjs('2019-01-21').startOf('day').tz();
             const prcs = pricesLib.pricesStarting(getPrices(), forDay, 0, 24)
             expect(prcs.length).to.equal(24);
-            //expect(pricesLib.pricesStarting(getPrices(), dayjs('2019-01-21'), 0, 24).length).to.equal(24);
         });
         it("2019-01-22: 24 hours", function () {
             expect(pricesLib.pricesStarting(getPrices(), dayjs('2019-01-22').tz(), 0, 24).length).to.equal(24);
@@ -384,11 +383,11 @@ describe("Prices", function () {
         it("2019-01-21T10:00:00: 20 hours", function () {
             let prices = pricesLib.pricesStarting(getPrices(), dayjs('2019-01-21').tz(), 10, 20);
             expect(prices.length).to.equal(20);
-            expect(prices[0].startsAt.format()).to.equal('2019-01-21T10:00:00+01:00');
-            expect(prices[prices.length - 1].startsAt.format()).to.equal('2019-01-22T05:00:00+01:00');
+            expect(prices[0].startsAt.format()).to.equal('2019-01-21T10:00:00+02:00');
+            expect(prices[prices.length - 1].startsAt.format()).to.equal('2019-01-22T05:00:00+02:00');
         });
         it("2019-01-23: 0 hours", function () {
-            expect(pricesLib.pricesStarting(getPrices(), dayjs('2019-01-23').tz(), 0, 24).length).to.equal(0);
+            expect(pricesLib.pricesStarting(getPrices(), dayjs('2019-01-23').tz(), 0, 24).length).to.equal(1);
         });
     });
 
@@ -426,9 +425,9 @@ describe("Prices", function () {
         checkHighPrice('2019-01-21', '01:00:00', state, 0);
         checkHighPrice('2019-01-21', '02:00:00', state, 0);
         checkHighPrice('2019-01-21', '03:00:00', state, 0);
-        checkHighPrice('2019-01-21', '04:00:00', state, 1);
+        checkHighPrice('2019-01-21', '04:00:00', state, 0);
         checkHighPrice('2019-01-21', '05:00:00', state, 0);
-        checkHighPrice('2019-01-21', '06:00:00', state, 0);
+        checkHighPrice('2019-01-21', '06:00:00', state, 1);
         checkHighPrice('2019-01-21', '07:00:00', state, 0);
         checkHighPrice('2019-01-21', '08:00:00', state, 1);
         checkHighPrice('2019-01-21', '09:00:00', state, 0);

@@ -7,6 +7,6 @@
   "author": "Bjørnar Almli",
   "license": "ISC",
   "dependencies": {
-    "date-holidays": "^1.4.0"
+    "date-holidays": "^3.10.0"
   }
 }

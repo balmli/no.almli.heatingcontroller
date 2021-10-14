@@ -7,5 +7,6 @@
   "setable": false,
   "greyout": true,
   "insights": true,
+  "decimals": 4,
   "icon": "/assets/dollar.svg"
 }

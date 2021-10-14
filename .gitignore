@@ -2,8 +2,3 @@ env.json
 *.iml
 .idea
 node_modules/*
-!node_modules/athom-api
-!node_modules/http.min
-!node_modules/lodash
-!node_modules/moment
-!node_modules/moment-timezone

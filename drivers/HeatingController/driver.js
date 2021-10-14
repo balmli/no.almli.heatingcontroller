@@ -2,31 +2,29 @@
 
 const Homey = require('homey');
 
-class HeatingControllerDriver extends Homey.Driver {
+module.exports = class HeatingControllerDriver extends Homey.Driver {
 
-    onInit() {
-        this.log('HeatingControllerDriver driver has been initialized');
-    }
+  async onInit() {
+    this.log('HeatingControllerDriver driver has been initialized');
+  }
 
-    onPairListDevices(data, callback) {
-        let devices = [
-            {
-                "name": "Heating Controller",
-                "data": {
-                    "id": guid()
-                }
-            }
-        ];
-        callback(null, devices);
-    }
+  async onPairListDevices() {
+    return [
+      {
+        "name": "Heating Controller",
+        "data": {
+          "id": guid()
+        }
+      }
+    ];
+  }
 
-}
-
-module.exports = HeatingControllerDriver;
+};
 
 function guid() {
-    function s4() {
-        return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-    }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+  }
+
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
 }
