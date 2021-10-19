@@ -1,10 +1,10 @@
 {
   "id": "is_observance_holiday",
   "title": {
-    "en": "Is !{{observance|not observance}} holiday"
+    "en": "Is !{{|not}} observance holiday"
   },
   "titleFormatted": {
-    "en": "Is !{{observance|not observance}} holiday [[condition]] in [[country]]"
+    "en": "Is !{{|not}} observance holiday [[condition]] in [[country]]"
   },
   "args": [
     {

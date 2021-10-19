@@ -3,6 +3,9 @@
   "title": {
     "en": "At work ends"
   },
+  "hint": {
+    "en": "Triggers when the work period ends."
+  },
   "args": [
     {
       "name": "device",

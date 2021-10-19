@@ -4,7 +4,7 @@ To switch between ‘Comfort’ and ‘ECO’ modes, just two flows are necessar
 
 Each ‘HeatingController’ device has its own schedule that can be changed from ‘Advanced settings’. Several devices can be used, each with their own schedule.
 
-The app has support for public holidays for several countries, and utility prices for Nordic and Baltic countries.
+The app has support for public holidays for several countries, and utility prices for Austria, Belgium, Germany, Luxembourg, France, Netherlands, Nordic and Baltic countries.
 
 
 To install the device:

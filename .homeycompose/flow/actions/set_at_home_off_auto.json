@@ -4,7 +4,7 @@
     "en": "Set away, and automatically switch to home mode on next schedule"
   },
   "hint": {
-    "en": "Set away mode on. Will automatically switch to home mode on next schedule."
+    "en": "Will turn the 'Home mode' off. Will automatically switch 'Home mode' back on on the next schedule."
   },
   "args": [
     {

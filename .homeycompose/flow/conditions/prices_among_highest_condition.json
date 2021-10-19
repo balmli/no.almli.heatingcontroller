@@ -1,0 +1,45 @@
+{
+  "id": "prices_among_highest_condition",
+  "title": {
+    "en": "The following [x] hours are !{{|not}} among the [y] hours of today's highest prices"
+  },
+  "titleFormatted": {
+    "en": "The following [[hours]] hours are !{{|not}} among the [[high_hours]] hours of today's highest prices"
+  },
+  "hint": {
+    "en": "Condition to check if one of the following hours are among the today's highest prices. Specify the number of hours from now, including the current hour and the number of hours with highest prices to compare against."
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    },
+    {
+      "name": "hours",
+      "type": "number",
+      "min": 1,
+      "max": 23,
+      "step": 1,
+      "title": {
+        "en": "Hours"
+      },
+      "placeholder": {
+        "en": "Hours"
+      }
+    },
+    {
+      "name": "high_hours",
+      "type": "number",
+      "min": 1,
+      "max": 23,
+      "step": 1,
+      "title": {
+        "en": "High hours"
+      },
+      "placeholder": {
+        "en": "High hours"
+      }
+    }
+  ]
+}

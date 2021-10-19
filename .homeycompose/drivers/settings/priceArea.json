@@ -7,6 +7,36 @@
   "value": "Oslo",
   "values": [
     {
+      "id": "AT",
+      "label": {
+        "en": "Austria - AT"
+      }
+    },
+    {
+      "id": "BE",
+      "label": {
+        "en": "Belgium - BE"
+      }
+    },
+    {
+      "id": "DE-LU",
+      "label": {
+        "en": "Germany and Luxembourg (DE-LU)"
+      }
+    },
+    {
+      "id": "FR",
+      "label": {
+        "en": "France - FR"
+      }
+    },
+    {
+      "id": "NL",
+      "label": {
+        "en": "Netherlands - NL"
+      }
+    },
+    {
       "id": "SE1",
       "label": {
         "en": "Sweden - SE1"

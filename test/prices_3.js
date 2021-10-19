@@ -506,3 +506,126 @@ describe("Average prices Kr.sand 31.01.2019", function () {
     });
 
 });
+
+const checkFollowingHoursLowestPrice = function (aDate, startHour, following_hours, num_lowest_hours, state) {
+    const aDays = dayjs(aDate).tz();
+    const prices = getPrices();
+    it("Lowest price check at " + aDate + ' - ' + startHour, function () {
+        // Finds prices starting at 00:00 today
+        const pricesToday = pricesLib.pricesStarting(prices, aDays, 0, 24);
+        if (pricesToday.length === 0) {
+            return false;
+        }
+
+        // Maximum price of lowest hours today
+        let maxOfPeriodToday = pricesLib.maxOfLowestPrices(pricesToday, num_lowest_hours);
+
+        // X following prices
+        const pricesFollowing = pricesLib.pricesStarting(prices, aDays, startHour, following_hours);
+        if (pricesFollowing.length === 0) {
+            return false;
+        }
+
+        // Maximum price of X following prices
+        let maxOfFollowing = pricesLib.maxOfLowestPrices(pricesFollowing, following_hours);
+
+        const chk = maxOfFollowing.price <= maxOfPeriodToday.price;
+
+        expect(chk).to.equal(state);
+    });
+};
+
+const checkFollowingHoursHighestPrice = function (aDate, startHour, following_hours, num_highest_hours, state) {
+    const aDays = dayjs(aDate).tz();
+    const prices = getPrices();
+    it("Highest price check at " + aDate + ' - ' + startHour, function () {
+        // Finds prices starting at 00:00 today
+        const pricesToday = pricesLib.pricesStarting(prices, aDays, 0, 24);
+        if (pricesToday.length === 0) {
+            return false;
+        }
+
+        // Minimum price of highest hours today
+        let minOfPeriodToday = pricesLib.minOfHighestPrices(pricesToday, num_highest_hours);
+
+        // X following prices
+        const pricesFollowing = pricesLib.pricesStarting(prices, aDays, startHour, following_hours);
+        if (pricesFollowing.length === 0) {
+            return false;
+        }
+
+        // Minimum price of X following prices
+        let minOfFollowing = pricesLib.minOfHighestPrices(pricesFollowing, following_hours);
+
+        const chk = minOfFollowing.price >= minOfPeriodToday.price;
+
+        expect(chk).to.equal(state);
+    });
+};
+
+describe("The following X hours are among Y hours of the days lowest prices Kr.sand 31.01.2019", function () {
+
+    before(function () {
+        days.setTimeZone('Europe/Oslo');
+    });
+
+    describe("The following 3 hours are among 3 hours of the days lowest prices", function () {
+        checkFollowingHoursLowestPrice('2019-01-31', 1, 3, 3, true);
+        checkFollowingHoursLowestPrice('2019-01-31', 2, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 3, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 4, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 5, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 6, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 7, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 8, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 9, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 10, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 11, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 12, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 13, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 14, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 15, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 16, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 17, 3, 3, false);
+        checkFollowingHoursLowestPrice('2019-01-31', 18, 3, 3, false);
+    });
+
+});
+
+describe("The following X hours are among Y hours of the days highest prices Kr.sand 31.01.2019", function () {
+
+    before(function () {
+        days.setTimeZone('Europe/Oslo');
+    });
+
+    describe("The following X hours are among the 6 hours of the days highest prices", function () {
+        checkFollowingHoursHighestPrice('2019-01-31', 1, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 2, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 3, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 4, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 5, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 6, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 7, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 8, 1, 6, true);
+        checkFollowingHoursHighestPrice('2019-01-31', 8, 2, 6, true);
+        checkFollowingHoursHighestPrice('2019-01-31', 8, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 9, 1, 6, true);
+        checkFollowingHoursHighestPrice('2019-01-31', 9, 2, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 9, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 10, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 11, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 12, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 13, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 14, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 15, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 16, 3, 6, true);
+        checkFollowingHoursHighestPrice('2019-01-31', 17, 3, 6, true);
+        checkFollowingHoursHighestPrice('2019-01-31', 18, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 19, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 20, 3, 6, false);
+        checkFollowingHoursHighestPrice('2019-01-31', 21, 3, 6, false);
+
+
+    });
+
+});

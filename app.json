@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.almli.heatingcontroller",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#d06830",
@@ -22,7 +22,8 @@
       "schedule",
       "utility",
       "price",
-      "prices"
+      "prices",
+      "spot"
     ]
   },
   "images": {
@@ -57,6 +58,9 @@
         "title": {
           "en": "At work ends"
         },
+        "hint": {
+          "en": "Triggers when the work period ends."
+        },
         "args": [
           {
             "name": "device",
@@ -69,6 +73,9 @@
         "id": "at_work_starts",
         "title": {
           "en": "At work starts"
+        },
+        "hint": {
+          "en": "Triggers when the work period starts."
         },
         "args": [
           {
@@ -83,6 +90,9 @@
         "title": {
           "en": "Comfort mode"
         },
+        "hint": {
+          "en": "Triggers when Comfort mode is enabled."
+        },
         "args": [
           {
             "name": "device",
@@ -95,6 +105,9 @@
         "id": "eco_mode",
         "title": {
           "en": "ECO mode"
+        },
+        "hint": {
+          "en": "Triggers when ECO mode is enabled."
         },
         "args": [
           {
@@ -111,6 +124,9 @@
         },
         "titleFormatted": {
           "en": "High prices [[high_hours]] hours of the day"
+        },
+        "hint": {
+          "en": "Triggers when the utility price changes, and the price is among the highest prices of the day."
         },
         "tokens": [
           {
@@ -141,10 +157,10 @@
             "max": 23,
             "step": 1,
             "title": {
-              "en": "High hours (x)"
+              "en": "High hours"
             },
             "placeholder": {
-              "en": "High hours (x)"
+              "en": "High hours"
             }
           }
         ]
@@ -153,6 +169,9 @@
         "id": "home_override_set_off",
         "title": {
           "en": "Home override set to off"
+        },
+        "hint": {
+          "en": "Triggers when 'Home override' has been disabled."
         },
         "args": [
           {
@@ -167,6 +186,9 @@
         "title": {
           "en": "Home mode set to off"
         },
+        "hint": {
+          "en": "Triggers when 'Home mode' has been disabled (when the device turned off)."
+        },
         "args": [
           {
             "name": "device",
@@ -180,6 +202,9 @@
         "title": {
           "en": "Home mode set to on"
         },
+        "hint": {
+          "en": "Triggers when 'Home mode' has been enabled (when the device turned on)."
+        },
         "args": [
           {
             "name": "device",
@@ -192,6 +217,9 @@
         "id": "homeoverride_set_on",
         "title": {
           "en": "Home override set to on"
+        },
+        "hint": {
+          "en": "Triggers when 'Home override' has been enabled."
         },
         "args": [
           {
@@ -208,6 +236,9 @@
         },
         "titleFormatted": {
           "en": "Low prices [[low_hours]] hours of the day"
+        },
+        "hint": {
+          "en": "Triggers when the utility price changes, and the price is among the lowest prices of the day."
         },
         "tokens": [
           {
@@ -238,10 +269,10 @@
             "max": 23,
             "step": 1,
             "title": {
-              "en": "Low hours (x)"
+              "en": "Low hours"
             },
             "placeholder": {
-              "en": "Low hours (x)"
+              "en": "Low hours"
             }
           }
         ]
@@ -250,6 +281,9 @@
         "id": "night_ends",
         "title": {
           "en": "Night ends"
+        },
+        "hint": {
+          "en": "Triggers when the night period ends."
         },
         "args": [
           {
@@ -264,6 +298,9 @@
         "title": {
           "en": "Night starts"
         },
+        "hint": {
+          "en": "Triggers when the night period starts."
+        },
         "args": [
           {
             "name": "device",
@@ -276,6 +313,9 @@
         "id": "price_changed",
         "title": {
           "en": "Utility price changed"
+        },
+        "hint": {
+          "en": "Triggers when the utility price changes."
         },
         "tokens": [
           {
@@ -318,6 +358,9 @@
         "titleFormatted": {
           "en": "Is current price !{{below|above}} [[price]]"
         },
+        "hint": {
+          "en": "Condition to check if the current price is below or above a specific value."
+        },
         "args": [
           {
             "name": "price",
@@ -341,6 +384,9 @@
         "titleFormatted": {
           "en": "Current price is !{{among|not among}} the [[high_hours]] hours of the days highest prices"
         },
+        "hint": {
+          "en": "Condition to check if the current price is among the today's highest prices. Specify the number of hours with highest prices to compare against."
+        },
         "args": [
           {
             "name": "device",
@@ -354,10 +400,10 @@
             "max": 23,
             "step": 1,
             "title": {
-              "en": "High hours (x)"
+              "en": "High hours"
             },
             "placeholder": {
-              "en": "High hours (x)"
+              "en": "High hours"
             }
           }
         ]
@@ -365,7 +411,7 @@
       {
         "id": "is_at_work",
         "title": {
-          "en": "Is !{{at work|not at work}}"
+          "en": "Is !{{|not}} at work"
         },
         "args": [
           {
@@ -378,10 +424,10 @@
       {
         "id": "is_bank_holiday",
         "title": {
-          "en": "Is !{{bank|not bank}} holiday"
+          "en": "Is !{{|not}} bank holiday"
         },
         "titleFormatted": {
-          "en": "Is !{{bank|not bank}} holiday [[condition]] in [[country]]"
+          "en": "Is !{{|not}} bank holiday [[condition]] in [[country]]"
         },
         "args": [
           {
@@ -545,7 +591,7 @@
       {
         "id": "is_heating_on",
         "title": {
-          "en": "Is !{{comfort mode|ECO mode}}"
+          "en": "Is !{{Comfort mode|ECO mode}}"
         },
         "args": [
           {
@@ -558,10 +604,10 @@
       {
         "id": "is_holiday",
         "title": {
-          "en": "Is !{{holiday|not holiday}}"
+          "en": "Is !{{|not}} holiday"
         },
         "titleFormatted": {
-          "en": "Is !{{holiday|not holiday}} [[condition]] in [[country]]"
+          "en": "Is !{{|not}} holiday [[condition]] in [[country]]"
         },
         "args": [
           {
@@ -738,7 +784,7 @@
       {
         "id": "is_home_override",
         "title": {
-          "en": "Is home override !{{on|off}}"
+          "en": "Is 'Home override' !{{on|off}}"
         },
         "args": [
           {
@@ -764,10 +810,10 @@
       {
         "id": "is_observance_holiday",
         "title": {
-          "en": "Is !{{observance|not observance}} holiday"
+          "en": "Is !{{|not}} observance holiday"
         },
         "titleFormatted": {
-          "en": "Is !{{observance|not observance}} holiday [[condition]] in [[country]]"
+          "en": "Is !{{|not}} observance holiday [[condition]] in [[country]]"
         },
         "args": [
           {
@@ -931,10 +977,10 @@
       {
         "id": "is_public_holiday",
         "title": {
-          "en": "Is !{{public|not public}} holiday"
+          "en": "Is !{{|not}} public holiday"
         },
         "titleFormatted": {
-          "en": "Is !{{public|not public}} holiday [[condition]] in [[country]]"
+          "en": "Is !{{|not}} public holiday [[condition]] in [[country]]"
         },
         "args": [
           {
@@ -1098,10 +1144,10 @@
       {
         "id": "is_workingday",
         "title": {
-          "en": "Is !{{working day|not working day}}"
+          "en": "Is !{{|not}} working day"
         },
         "titleFormatted": {
-          "en": "Is !{{working|not working}} holiday [[condition]] in [[country]]"
+          "en": "Is !{{|not}} working day [[condition]] in [[country]]"
         },
         "args": [
           {
@@ -1270,6 +1316,9 @@
         "titleFormatted": {
           "en": "Current price is !{{among|not among}} the [[low_hours]] hours of the days lowest prices"
         },
+        "hint": {
+          "en": "Condition to check if the current price is among the today's lowest prices. Specify the number of hours with lowest prices to compare against."
+        },
         "args": [
           {
             "name": "device",
@@ -1283,10 +1332,10 @@
             "max": 23,
             "step": 1,
             "title": {
-              "en": "Low hours (x)"
+              "en": "Low hours"
             },
             "placeholder": {
-              "en": "Low hours (x)"
+              "en": "Low hours"
             }
           }
         ]
@@ -1298,6 +1347,9 @@
         },
         "titleFormatted": {
           "en": "Current price is !{{|not}} [[percentage]] % above today's average"
+        },
+        "hint": {
+          "en": "Condition to check if the current price is X % above today's average."
         },
         "args": [
           {
@@ -1325,6 +1377,9 @@
         "titleFormatted": {
           "en": "Current price is !{{|not}} [[percentage]] % above the average of the next [[hours]] hours"
         },
+        "hint": {
+          "en": "Condition to check if the current price is X % above the average of the next hours."
+        },
         "args": [
           {
             "name": "device",
@@ -1348,10 +1403,10 @@
             "max": 23,
             "step": 1,
             "title": {
-              "en": "Hours (x)"
+              "en": "Hours"
             },
             "placeholder": {
-              "en": "Hours (x)"
+              "en": "Hours"
             }
           }
         ]
@@ -1363,6 +1418,9 @@
         },
         "titleFormatted": {
           "en": "Current price is !{{|not}} [[percentage]] % below today's average"
+        },
+        "hint": {
+          "en": "Condition to check if the current price is X % below today's average."
         },
         "args": [
           {
@@ -1390,6 +1448,9 @@
         "titleFormatted": {
           "en": "Current price is !{{|not}} [[percentage]] % below the average of the next [[hours]] hours"
         },
+        "hint": {
+          "en": "Condition to check if the current price is X % below the average of the next hours."
+        },
         "args": [
           {
             "name": "device",
@@ -1413,10 +1474,100 @@
             "max": 23,
             "step": 1,
             "title": {
-              "en": "Hours (x)"
+              "en": "Hours"
             },
             "placeholder": {
-              "en": "Hours (x)"
+              "en": "Hours"
+            }
+          }
+        ]
+      },
+      {
+        "id": "prices_among_highest_condition",
+        "title": {
+          "en": "The following [x] hours are !{{|not}} among the [y] hours of today's highest prices"
+        },
+        "titleFormatted": {
+          "en": "The following [[hours]] hours are !{{|not}} among the [[high_hours]] hours of today's highest prices"
+        },
+        "hint": {
+          "en": "Condition to check if one of the following hours are among the today's highest prices. Specify the number of hours from now, including the current hour and the number of hours with highest prices to compare against."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "Hours"
+            },
+            "placeholder": {
+              "en": "Hours"
+            }
+          },
+          {
+            "name": "high_hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "High hours"
+            },
+            "placeholder": {
+              "en": "High hours"
+            }
+          }
+        ]
+      },
+      {
+        "id": "prices_among_lowest_condition",
+        "title": {
+          "en": "The following [x] hours are !{{|not}} among the [y] hours of today's lowest prices"
+        },
+        "titleFormatted": {
+          "en": "The following [[hours]] hours are !{{|not}} among the [[low_hours]] hours of today's lowest prices"
+        },
+        "hint": {
+          "en": "Condition to check if one of the following hours are among the today's lowest prices. Specify the number of hours from now, including the current hour and the number of hours with lowest prices to compare against."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "Hours"
+            },
+            "placeholder": {
+              "en": "Hours"
+            }
+          },
+          {
+            "name": "low_hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "Low hours"
+            },
+            "placeholder": {
+              "en": "Low hours"
             }
           }
         ]
@@ -1429,7 +1580,7 @@
           "en": "Set away"
         },
         "hint": {
-          "en": "Set away mode on."
+          "en": "Will turn the 'Home mode' off. The device will be turned off."
         },
         "args": [
           {
@@ -1445,7 +1596,7 @@
           "en": "Set away, and automatically switch to home mode on next schedule"
         },
         "hint": {
-          "en": "Set away mode on. Will automatically switch to home mode on next schedule."
+          "en": "Will turn the 'Home mode' off. Will automatically switch 'Home mode' back on on the next schedule."
         },
         "args": [
           {
@@ -1461,7 +1612,7 @@
           "en": "Set home"
         },
         "hint": {
-          "en": "Set home mode on."
+          "en": "Will turn the 'Home mode' on. The device will be turned on."
         },
         "args": [
           {
@@ -1480,7 +1631,7 @@
           "en": "[[holiday]] today"
         },
         "hint": {
-          "en": "Use this to inform the heating controller that today is a holiday.  Must be set once each day"
+          "en": "Use this to inform the heating controller that today is a holiday.  Must be set once each day."
         },
         "args": [
           {
@@ -1511,10 +1662,10 @@
       {
         "id": "set_home_override_off",
         "title": {
-          "en": "Set home override off"
+          "en": "Set 'Home override' off"
         },
         "hint": {
-          "en": "True will keep heating on even if at work"
+          "en": "This will turn the 'Home override' off."
         },
         "args": [
           {
@@ -1527,10 +1678,10 @@
       {
         "id": "set_home_override_on",
         "title": {
-          "en": "Set home override on"
+          "en": "Set 'Home override' on"
         },
         "hint": {
-          "en": "Keep heating on even if at work."
+          "en": "This will turn the 'Home override' on, so you will keep the Comfort mode during the work period."
         },
         "args": [
           {
@@ -1543,10 +1694,10 @@
       {
         "id": "set_home_override_on_auto",
         "title": {
-          "en": "Set home override on, and automatically off on next schedule"
+          "en": "Set 'Home override' on, and automatically off on next schedule"
         },
         "hint": {
-          "en": "Keep heating on even if at work. Will automatically turn home override off on next schedule."
+          "en": "This will turn the 'Home override' on, so you will keep the Comfort mode during the work period. Will automatically turn 'Home override' off on the next schedule."
         },
         "args": [
           {
@@ -1718,6 +1869,36 @@
               },
               "value": "Oslo",
               "values": [
+                {
+                  "id": "AT",
+                  "label": {
+                    "en": "Austria - AT"
+                  }
+                },
+                {
+                  "id": "BE",
+                  "label": {
+                    "en": "Belgium - BE"
+                  }
+                },
+                {
+                  "id": "DE-LU",
+                  "label": {
+                    "en": "Germany and Luxembourg (DE-LU)"
+                  }
+                },
+                {
+                  "id": "FR",
+                  "label": {
+                    "en": "France - FR"
+                  }
+                },
+                {
+                  "id": "NL",
+                  "label": {
+                    "en": "Netherlands - NL"
+                  }
+                },
                 {
                   "id": "SE1",
                   "label": {

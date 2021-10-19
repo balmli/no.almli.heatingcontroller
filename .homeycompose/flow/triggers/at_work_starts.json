@@ -3,6 +3,9 @@
   "title": {
     "en": "At work starts"
   },
+  "hint": {
+    "en": "Triggers when the work period starts."
+  },
   "args": [
     {
       "name": "device",

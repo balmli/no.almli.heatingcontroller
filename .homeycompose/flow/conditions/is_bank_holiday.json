@@ -1,10 +1,10 @@
 {
   "id": "is_bank_holiday",
   "title": {
-    "en": "Is !{{bank|not bank}} holiday"
+    "en": "Is !{{|not}} bank holiday"
   },
   "titleFormatted": {
-    "en": "Is !{{bank|not bank}} holiday [[condition]] in [[country]]"
+    "en": "Is !{{|not}} bank holiday [[condition]] in [[country]]"
   },
   "args": [
     {

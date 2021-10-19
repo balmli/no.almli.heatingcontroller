@@ -1,7 +1,7 @@
 {
   "id": "is_at_work",
   "title": {
-    "en": "Is !{{at work|not at work}}"
+    "en": "Is !{{|not}} at work"
   },
   "args": [
     {

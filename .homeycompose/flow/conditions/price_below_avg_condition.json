@@ -6,6 +6,9 @@
   "titleFormatted": {
     "en": "Current price is !{{|not}} [[percentage]] % below today's average"
   },
+  "hint": {
+    "en": "Condition to check if the current price is X % below today's average."
+  },
   "args": [
     {
       "name": "device",

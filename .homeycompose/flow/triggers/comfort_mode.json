@@ -3,6 +3,9 @@
   "title": {
     "en": "Comfort mode"
   },
+  "hint": {
+    "en": "Triggers when Comfort mode is enabled."
+  },
   "args": [
     {
       "name": "device",

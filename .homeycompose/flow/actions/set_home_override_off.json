@@ -1,10 +1,10 @@
 {
   "id": "set_home_override_off",
   "title": {
-    "en": "Set home override off"
+    "en": "Set 'Home override' off"
   },
   "hint": {
-    "en": "True will keep heating on even if at work"
+    "en": "This will turn the 'Home override' off."
   },
   "args": [
     {

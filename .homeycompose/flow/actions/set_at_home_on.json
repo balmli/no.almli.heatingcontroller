@@ -4,7 +4,7 @@
     "en": "Set home"
   },
   "hint": {
-    "en": "Set home mode on."
+    "en": "Will turn the 'Home mode' on. The device will be turned on."
   },
   "args": [
     {

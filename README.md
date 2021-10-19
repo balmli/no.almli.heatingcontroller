@@ -6,7 +6,7 @@ To switch between 'Comfort' and 'ECO' modes, just two flows are necessary: one '
 
 Each 'HeatingController' device has its own schedule that can be changed from 'Advanced settings'. Several devices can be used, each with their own schedule.
 
-The app has support for public holidays for several countries, and utility prices for Nordic and Baltic countries.
+The app has support for public holidays for several countries, and utility prices for Austria, Belgium, Germany, Luxembourg, France, Netherlands, Nordic and Baltic countries.
 
 #### Install
 
@@ -126,13 +126,18 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 
 ##### Price areas
 
-- Norway: Oslo, Kr.sand, Bergen, Molde, Tr.heim, Tromsø
-- Sweden: SE1, SE2, SE3, SE4
+- Austria: AT
+- Belgium: BE
 - Denmark: DK1, DK2
-- Finland: FI
 - Estonia: EE
+- Finland: FI
+- France: FR
+- Germany and Luxembourg: DE-LU
 - Latvia: LV
 - Lithuania: LT
+- Netherlands: NL
+- Norway: Oslo, Kr.sand, Bergen, Molde, Tr.heim, Tromsø
+- Sweden: SE1, SE2, SE3, SE4
 
 ##### Currencies
 
@@ -168,6 +173,8 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 - Is current price below / above
 - Current price is among / is not among the [x] hours of the days lowest prices
 - Current price is among / is not among the [x] hours of the days highest prices
+- The following [x] hours are among / are not among the [y] hours of today's lowest prices
+- The following [x] hours are among / are not among the [y] hours of today's highest prices
 - Current price is / is not [x] % above today's average
 - Current price is / is not [x] % below today's average
 - Current price is / is not [x] % above the average of the next [y] hours
@@ -193,6 +200,12 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 Please report issues at the [issues section on Github](https://github.com/balmli/no.almli.heatingcontroller/issues).
 
 ### Release Notes:
+
+#### 1.5.1
+
+- Utility prices for more countries
+- Added 'The following [x] hours are !{{|not}} among the [y] hours of today's lowest prices' condition
+- Added 'The following [x] hours are !{{|not}} among the [y] hours of today's highest prices' condition
 
 #### 1.5.0
 

@@ -3,6 +3,9 @@
   "title": {
     "en": "Night ends"
   },
+  "hint": {
+    "en": "Triggers when the night period ends."
+  },
   "args": [
     {
       "name": "device",

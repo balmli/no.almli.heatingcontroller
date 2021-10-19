@@ -6,6 +6,9 @@
   "titleFormatted": {
     "en": "Current price is !{{among|not among}} the [[low_hours]] hours of the days lowest prices"
   },
+  "hint": {
+    "en": "Condition to check if the current price is among the today's lowest prices. Specify the number of hours with lowest prices to compare against."
+  },
   "args": [
     {
       "name": "device",
@@ -19,10 +22,10 @@
       "max": 23,
       "step": 1,
       "title": {
-        "en": "Low hours (x)"
+        "en": "Low hours"
       },
       "placeholder": {
-        "en": "Low hours (x)"
+        "en": "Low hours"
       }
     }
   ]

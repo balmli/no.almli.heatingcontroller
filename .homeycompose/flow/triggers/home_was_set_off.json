@@ -3,6 +3,9 @@
   "title": {
     "en": "Home mode set to off"
   },
+  "hint": {
+    "en": "Triggers when 'Home mode' has been disabled (when the device turned off)."
+  },
   "args": [
     {
       "name": "device",

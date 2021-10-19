@@ -6,6 +6,9 @@
   "titleFormatted": {
     "en": "Low prices [[low_hours]] hours of the day"
   },
+  "hint": {
+    "en": "Triggers when the utility price changes, and the price is among the lowest prices of the day."
+  },
   "tokens": [
     {
       "name": "heating",
@@ -35,10 +38,10 @@
       "max": 23,
       "step": 1,
       "title": {
-        "en": "Low hours (x)"
+        "en": "Low hours"
       },
       "placeholder": {
-        "en": "Low hours (x)"
+        "en": "Low hours"
       }
     }
   ]

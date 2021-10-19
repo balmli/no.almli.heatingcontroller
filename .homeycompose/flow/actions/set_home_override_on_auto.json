@@ -1,10 +1,10 @@
 {
   "id": "set_home_override_on_auto",
   "title": {
-    "en": "Set home override on, and automatically off on next schedule"
+    "en": "Set 'Home override' on, and automatically off on next schedule"
   },
   "hint": {
-    "en": "Keep heating on even if at work. Will automatically turn home override off on next schedule."
+    "en": "This will turn the 'Home override' on, so you will keep the Comfort mode during the work period. Will automatically turn 'Home override' off on the next schedule."
   },
   "args": [
     {

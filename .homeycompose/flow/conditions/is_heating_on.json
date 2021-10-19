@@ -1,7 +1,7 @@
 {
   "id": "is_heating_on",
   "title": {
-    "en": "Is !{{comfort mode|ECO mode}}"
+    "en": "Is !{{Comfort mode|ECO mode}}"
   },
   "args": [
     {

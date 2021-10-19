@@ -3,6 +3,9 @@
   "title": {
     "en": "ECO mode"
   },
+  "hint": {
+    "en": "Triggers when ECO mode is enabled."
+  },
   "args": [
     {
       "name": "device",

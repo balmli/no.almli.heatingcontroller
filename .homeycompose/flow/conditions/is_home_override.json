@@ -1,7 +1,7 @@
 {
   "id": "is_home_override",
   "title": {
-    "en": "Is home override !{{on|off}}"
+    "en": "Is 'Home override' !{{on|off}}"
   },
   "args": [
     {

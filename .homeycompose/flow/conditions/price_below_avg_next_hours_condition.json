@@ -6,6 +6,9 @@
   "titleFormatted": {
     "en": "Current price is !{{|not}} [[percentage]] % below the average of the next [[hours]] hours"
   },
+  "hint": {
+    "en": "Condition to check if the current price is X % below the average of the next hours."
+  },
   "args": [
     {
       "name": "device",
@@ -29,10 +32,10 @@
       "max": 23,
       "step": 1,
       "title": {
-        "en": "Hours (x)"
+        "en": "Hours"
       },
       "placeholder": {
-        "en": "Hours (x)"
+        "en": "Hours"
       }
     }
   ]

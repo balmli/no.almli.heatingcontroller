@@ -125,6 +125,20 @@ class HeatingControllerApp extends Homey.App {
         return device._priceAvgComparer(args, state);
       });
 
+    this.homey.flow.getConditionCard('prices_among_lowest_condition')
+      .registerRunListener((args, state) => {
+        const device = args.device;
+        state.prices = device._prices;
+        return device._priceAmongLowestComparer(args, state);
+      });
+
+    this.homey.flow.getConditionCard('prices_among_highest_condition')
+      .registerRunListener((args, state) => {
+        const device = args.device;
+        state.prices = device._prices;
+        return device._priceAmongHighestComparer(args, state);
+      });
+
     this.homey.flow.getActionCard('set_at_home_on')
       .registerRunListener((args, state) => args.device.onActionSetAtHomeOn(args, state));
 

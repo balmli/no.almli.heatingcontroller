@@ -1,10 +1,10 @@
 {
   "id": "set_home_override_on",
   "title": {
-    "en": "Set home override on"
+    "en": "Set 'Home override' on"
   },
   "hint": {
-    "en": "Keep heating on even if at work."
+    "en": "This will turn the 'Home override' on, so you will keep the Comfort mode during the work period."
   },
   "args": [
     {

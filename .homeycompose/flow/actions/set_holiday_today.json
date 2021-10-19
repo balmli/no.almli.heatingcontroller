@@ -7,7 +7,7 @@
     "en": "[[holiday]] today"
   },
   "hint": {
-    "en": "Use this to inform the heating controller that today is a holiday.  Must be set once each day"
+    "en": "Use this to inform the heating controller that today is a holiday.  Must be set once each day."
   },
   "args": [
     {

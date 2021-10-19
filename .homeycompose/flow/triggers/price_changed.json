@@ -3,6 +3,9 @@
   "title": {
     "en": "Utility price changed"
   },
+  "hint": {
+    "en": "Triggers when the utility price changes."
+  },
   "tokens": [
     {
       "name": "price",

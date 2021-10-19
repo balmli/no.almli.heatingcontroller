@@ -3,6 +3,9 @@
   "title": {
     "en": "Night starts"
   },
+  "hint": {
+    "en": "Triggers when the night period starts."
+  },
   "args": [
     {
       "name": "device",

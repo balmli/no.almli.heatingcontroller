@@ -7,25 +7,7 @@ const nordpool = require('../lib/nordpool');
 const heating = require('../lib/heating');
 const pricesLib = require('../lib/prices');
 
-days.setTimeZone('Europe/Oslo');
-
-let heatingOptions = {
-    workday: {
-        startHour: 5,
-        endHour: 22.5,
-    },
-    notWorkday: {
-        startHour: 7,
-        endHour: 23,
-    },
-    workHours: {
-        startHour: 7,
-        endHour: 14
-    },
-    country: 'NO'
-};
-
-let handleData = function (prices, low_hours, num_hours) {
+const handleData = function (prices, low_hours, num_hours) {
     const high_hours = num_hours - low_hours;
     const localTime = dayjs().tz();
 
@@ -58,7 +40,7 @@ let handleData = function (prices, low_hours, num_hours) {
     console.log('onNowOrOff ', startingAt, onNowOrOff);
 };
 
-let findHeatingOffWhenHighPrices = function (prices, high_hours, num_hours) {
+const findHeatingOffWhenHighPrices = function (prices, high_hours, num_hours, heatingOptions) {
     const localTime = dayjs().tz();
 
     let pricesNextHours = pricesLib.pricesStarting(prices, localTime, 0, 24);
@@ -83,17 +65,39 @@ let findHeatingOffWhenHighPrices = function (prices, high_hours, num_hours) {
 
 };
 
-const localTime = dayjs().tz().startOf('day');
+const testNordpool = function ({priceArea, currency, country, timeZone}) {
+    days.setTimeZone(timeZone);
 
-Promise.all([
-    nordpool.getHourlyPrices(localTime, {priceArea: 'Bergen', currency: 'NOK'}),
-    nordpool.getHourlyPrices(localTime.add(1, 'day'), {priceArea: 'Bergen', currency: 'NOK'})
-]).then(result => {
-    let prices = result[0];
-    Array.prototype.push.apply(prices, result[1]);
-    handleData(prices, 18, 24);
-    findHeatingOffWhenHighPrices(prices, 6, 24);
-}).catch(console.error);
+    const heatingOptions = {
+        workday: {
+            startHour: 5,
+            endHour: 22.5,
+        },
+        notWorkday: {
+            startHour: 7,
+            endHour: 23,
+        },
+        workHours: {
+            startHour: 7,
+            endHour: 14
+        },
+        country
+    };
 
+    const localTime = dayjs().tz().startOf('day');
 
+    Promise.all([
+        nordpool.getHourlyPrices(localTime, { priceArea, currency }),
+        nordpool.getHourlyPrices(localTime.add(1, 'day'), { priceArea, currency })
+    ]).then(result => {
+        let prices = result[0];
+        Array.prototype.push.apply(prices, result[1]);
+        handleData(prices, 18, 24);
+        findHeatingOffWhenHighPrices(prices, 6, 24, heatingOptions);
+    }).catch(console.error);
 
+}
+
+module.exports = {
+    testNordpool
+};

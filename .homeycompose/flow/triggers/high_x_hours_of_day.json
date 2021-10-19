@@ -6,6 +6,9 @@
   "titleFormatted": {
     "en": "High prices [[high_hours]] hours of the day"
   },
+  "hint": {
+    "en": "Triggers when the utility price changes, and the price is among the highest prices of the day."
+  },
   "tokens": [
     {
       "name": "heating",
@@ -35,10 +38,10 @@
       "max": 23,
       "step": 1,
       "title": {
-        "en": "High hours (x)"
+        "en": "High hours"
       },
       "placeholder": {
-        "en": "High hours (x)"
+        "en": "High hours"
       }
     }
   ]

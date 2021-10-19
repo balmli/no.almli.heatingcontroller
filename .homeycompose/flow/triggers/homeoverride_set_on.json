@@ -3,6 +3,9 @@
   "title": {
     "en": "Home override set to on"
   },
+  "hint": {
+    "en": "Triggers when 'Home override' has been enabled."
+  },
   "args": [
     {
       "name": "device",

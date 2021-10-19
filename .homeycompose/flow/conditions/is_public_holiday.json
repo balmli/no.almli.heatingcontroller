@@ -1,10 +1,10 @@
 {
   "id": "is_public_holiday",
   "title": {
-    "en": "Is !{{public|not public}} holiday"
+    "en": "Is !{{|not}} public holiday"
   },
   "titleFormatted": {
-    "en": "Is !{{public|not public}} holiday [[condition]] in [[country]]"
+    "en": "Is !{{|not}} public holiday [[condition]] in [[country]]"
   },
   "args": [
     {

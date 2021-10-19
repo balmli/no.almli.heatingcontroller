@@ -1,10 +1,10 @@
 {
   "id": "is_workingday",
   "title": {
-    "en": "Is !{{working day|not working day}}"
+    "en": "Is !{{|not}} working day"
   },
   "titleFormatted": {
-    "en": "Is !{{working|not working}} holiday [[condition]] in [[country]]"
+    "en": "Is !{{|not}} working day [[condition]] in [[country]]"
   },
   "args": [
     {
