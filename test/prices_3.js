@@ -511,26 +511,7 @@ const checkFollowingHoursLowestPrice = function (aDate, startHour, following_hou
     const aDays = dayjs(aDate).tz();
     const prices = getPrices();
     it("Lowest price check at " + aDate + ' - ' + startHour, function () {
-        // Finds prices starting at 00:00 today
-        const pricesToday = pricesLib.pricesStarting(prices, aDays, 0, 24);
-        if (pricesToday.length === 0) {
-            return false;
-        }
-
-        // Maximum price of lowest hours today
-        let maxOfPeriodToday = pricesLib.maxOfLowestPrices(pricesToday, num_lowest_hours);
-
-        // X following prices
-        const pricesFollowing = pricesLib.pricesStarting(prices, aDays, startHour, following_hours);
-        if (pricesFollowing.length === 0) {
-            return false;
-        }
-
-        // Maximum price of X following prices
-        let maxOfFollowing = pricesLib.maxOfLowestPrices(pricesFollowing, following_hours);
-
-        const chk = maxOfFollowing.price <= maxOfPeriodToday.price;
-
+        const chk = pricesLib.pricesAmongLowest(prices, aDays, startHour, following_hours, num_lowest_hours);
         expect(chk).to.equal(state);
     });
 };
@@ -539,26 +520,7 @@ const checkFollowingHoursHighestPrice = function (aDate, startHour, following_ho
     const aDays = dayjs(aDate).tz();
     const prices = getPrices();
     it("Highest price check at " + aDate + ' - ' + startHour, function () {
-        // Finds prices starting at 00:00 today
-        const pricesToday = pricesLib.pricesStarting(prices, aDays, 0, 24);
-        if (pricesToday.length === 0) {
-            return false;
-        }
-
-        // Minimum price of highest hours today
-        let minOfPeriodToday = pricesLib.minOfHighestPrices(pricesToday, num_highest_hours);
-
-        // X following prices
-        const pricesFollowing = pricesLib.pricesStarting(prices, aDays, startHour, following_hours);
-        if (pricesFollowing.length === 0) {
-            return false;
-        }
-
-        // Minimum price of X following prices
-        let minOfFollowing = pricesLib.minOfHighestPrices(pricesFollowing, following_hours);
-
-        const chk = minOfFollowing.price >= minOfPeriodToday.price;
-
+        const chk = pricesLib.pricesAmongHighest(prices, aDays, startHour, following_hours, num_highest_hours);
         expect(chk).to.equal(state);
     });
 };

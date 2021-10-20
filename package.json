@@ -1,12 +1,12 @@
 {
   "name": "no.almli.heatingcontroller",
-  "version": "1.5.1",
-  "description": "HeatingController with utility prices from Nordpoolspot",
+  "version": "1.5.2",
+  "description": "Heating Controller with utility prices from Nordpoolspot",
   "main": "app.js",
   "scripts": {
     "pretest": "eslint --ignore-path .gitignore app.js lib drivers test",
     "test": "./node_modules/.bin/mocha --reporter spec",
-    "posttest": "athom app validate --level publish"
+    "posttest": "homey app validate"
   },
   "author": "Bjørnar Almli",
   "license": "ISC",

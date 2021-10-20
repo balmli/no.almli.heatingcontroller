@@ -8,12 +8,16 @@ const heating = require('../lib/heating');
 const pricesLib = require('../lib/prices');
 
 const handleData = function (prices, low_hours, num_hours) {
-    const high_hours = num_hours - low_hours;
     const localTime = dayjs().tz();
 
     let pricesNextHours = pricesLib.pricesStarting(prices, localTime, 0, 24);
     console.log('pricesNextHours', localTime, pricesNextHours.length);
-    console.log('pricesNextHours ' + num_hours + ' hours ', pricesNextHours);
+    console.log('pricesNextHours ' + num_hours + ' hours ', pricesNextHours.map(p => ({
+        startsAt: p.startIso,
+        priceArea: p.priceArea,
+        currency: p.currency,
+        price: p.price
+    })));
 
     let pricesSorted = _.sortBy(pricesNextHours, ['price']);
     //console.log('pricesSorted ', pricesSorted);
@@ -56,13 +60,13 @@ const findHeatingOffWhenHighPrices = function (prices, high_hours, num_hours, he
         .reverse()
         .take(high_hours)
         .value();
-    console.log('heatingOffWithHighPrices ', heatingOffWithHighPrices.length, heatingOffWithHighPrices);
-
-    let onNowOrOff = _(heatingOffWithHighPrices)
-        .filter(p => p.startsAt.isBefore(localTime) && p.startsAt.add(1, 'hour').startOf('hour').isAfter(localTime));
-
-    console.log('onNowOrOff ', onNowOrOff.value());
-
+    console.log('heatingOffWithHighPrices ', heatingOffWithHighPrices.length, heatingOffWithHighPrices.map(p => ({
+        startsAt: p.startIso,
+        priceArea: p.priceArea,
+        currency: p.currency,
+        price: p.price,
+        heating: p.heating
+    })));
 };
 
 const testNordpool = function ({priceArea, currency, country, timeZone}) {

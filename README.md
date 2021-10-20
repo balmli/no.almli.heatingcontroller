@@ -201,6 +201,11 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 1.5.2
+
+- Fixed bug when changing settings
+- Fixed bug in 'The following [x] hours are !{{|not}} among the [y] hours of today's lowest prices' condition 
+
 #### 1.5.1
 
 - Utility prices for more countries

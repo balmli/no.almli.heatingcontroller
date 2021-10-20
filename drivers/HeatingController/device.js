@@ -49,20 +49,19 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     }
   }
 
-  async onSettings(oldSettingsObj, newSettingsObj, changedKeysArr, callback) {
-    if (changedKeysArr.includes('currency')) {
+  async onSettings({ oldSettings, newSettings, changedKeys }) {
+    if (changedKeys.includes('currency')) {
       await this.fixPrice(newSettingsObj.currency);
       this._lastFetchData = undefined;
       this._lastPrice = undefined;
       this.scheduleCheckTime(5);
     }
-    callback(null, true);
   }
 
   async onActionSetAtHomeOn(args, state) {
     const device = args.device;
     await this.homey.app._homeWasSetOnTrigger.trigger(device);
-    await device.setCapabilityValue('onoff', true).catch(console.error);
+    await device.setCapabilityValue('onoff', true).catch(err => this.log('Error:', err));
     return device.checkTime(true);
   }
 
@@ -70,7 +69,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     const device = args.device;
     device._home_on_next_period = false;
     await this.homey.app._homeWasSetOffTrigger.trigger(device);
-    await device.setCapabilityValue('onoff', false).catch(console.error);
+    await device.setCapabilityValue('onoff', false).catch(err => this.log('Error:', err));
     return device.checkTime(false);
   }
 
@@ -78,7 +77,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     const device = args.device;
     device._home_on_next_period = true;
     await this.homey.app._homeWasSetOffTrigger.trigger(device);
-    await device.setCapabilityValue('onoff', false).catch(console.error);
+    await device.setCapabilityValue('onoff', false).catch(err => this.log('Error:', err));
     return device.checkTime(false);
   }
 
@@ -86,7 +85,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     const device = args.device;
     device._ho_off_next_period = false;
     await this.homey.app._homeOverrideSetOnTrigger.trigger(device);
-    await device.setCapabilityValue('home_override', true).catch(console.error);
+    await device.setCapabilityValue('home_override', true).catch(err => this.log('Error:', err));
     return device.checkTime(undefined, true);
   }
 
@@ -94,20 +93,20 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     const device = args.device;
     device._ho_off_next_period = true;
     await this.homey.app._homeOverrideSetOnTrigger.trigger(device);
-    await device.setCapabilityValue('home_override', true).catch(console.error);
+    await device.setCapabilityValue('home_override', true).catch(err => this.log('Error:', err));
     return device.checkTime(undefined, true);
   }
 
   async onActionSetHomeOverrideOff(args, state) {
     const device = args.device;
     await this.homey.app._homeOverrideSetOffTrigger.trigger(device);
-    await device.setCapabilityValue('home_override', false).catch(console.error);
+    await device.setCapabilityValue('home_override', false).catch(err => this.log('Error:', err));
     return device.checkTime(undefined, false);
   }
 
-  onActionSetHolidayToday(args, state) {
+  async onActionSetHolidayToday(args, state) {
     const device = args.device;
-    device.setSettings({ holiday_today: args.holiday }).catch(console.error);
+    await device.setSettings({ holiday_today: args.holiday }).catch(err => this.log('Error:', err));
     return device.checkTime();
   }
 
@@ -116,77 +115,87 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
   }
 
   onDeleted() {
-    this.log(this.getName() + ' -> virtual device deleted');
-  }
-
-  async checkTime(onoff, home_override) {
-    this.log('checkTime with device: ', this.getData().id);
+    this._deleted = true;
     this.clearCheckTime();
-
-    if (onoff === false || onoff === true) {
-      this._at_home = onoff;
-    } else {
-      this._at_home = await this.getCapabilityValue('onoff');
-    }
-    if (this._at_home === undefined || this._at_home === null) {
-      this._at_home = true;
-      await this.setCapabilityValue('onoff', this._at_home).catch(console.error);
-    }
-
-    if (home_override === false || home_override === true) {
-      this._home_override = home_override;
-    } else {
-      this._home_override = await this.getCapabilityValue('home_override');
-    }
-    if (this._home_override === undefined || this._home_override === null) {
-      this._home_override = false;
-      await this.setCapabilityValue('home_override', this._home_override).catch(console.error);
-    }
-
-    if (this.shallFetchData()) {
-      return this.fetchData();
-    } else if (this._prices) {
-      return this.onData();
-    } else {
-      this.scheduleCheckTime(60);
-      return Promise.resolve();
-    }
+    this.log(this.getName() + ' -> virtual device deleted');
   }
 
   clearCheckTime() {
     if (this.curTimeout) {
-      clearTimeout(this.curTimeout);
+      this.homey.clearTimeout(this.curTimeout);
       this.curTimeout = undefined;
     }
   }
 
-  scheduleCheckTime(seconds) {
+  scheduleCheckTime(seconds = 60) {
+    if (this._deleted) {
+      return;
+    }
     this.clearCheckTime();
     this.log(`Checking time in ${seconds} seconds`);
     this.curTimeout = this.homey.setTimeout(this.checkTime.bind(this), seconds * 1000);
   }
 
+  async checkTime(onoff, home_override) {
+    if (this._deleted) {
+      return;
+    }
+    try {
+      this.log('checkTime with device: ', this.getData().id);
+      this.clearCheckTime();
+
+      if (onoff === false || onoff === true) {
+        this._at_home = onoff;
+      } else {
+        this._at_home = await this.getCapabilityValue('onoff');
+      }
+      if (this._at_home === undefined || this._at_home === null) {
+        this._at_home = true;
+        await this.setCapabilityValue('onoff', this._at_home).catch(err => this.log('Error:', err));
+      }
+
+      if (home_override === false || home_override === true) {
+        this._home_override = home_override;
+      } else {
+        this._home_override = await this.getCapabilityValue('home_override');
+      }
+      if (this._home_override === undefined || this._home_override === null) {
+        this._home_override = false;
+        await this.setCapabilityValue('home_override', this._home_override).catch(err => this.log('Error:', err));
+      }
+
+      if (this.shallFetchData()) {
+        await this.fetchData();
+      }
+      if (this._prices) {
+        await this.onData();
+      }
+    } catch (err) {
+      this.log('checkTime error', err);
+    } finally {
+      this.scheduleCheckTime();
+    }
+  }
+
   async fetchData() {
-    let settings = this.getSettings();
-    let priceArea = settings.priceArea || 'Oslo';
-    let currency = settings.currency || 'EUR';
-    this.log('fetchData: ', this.getData().id, priceArea, currency);
-    const localTime = dayjs().tz().startOf('day');
-    Promise.all([
-      nordpool.getHourlyPrices(localTime, { priceArea: priceArea, currency: currency }),
-      nordpool.getHourlyPrices(localTime.add(1, 'day'), { priceArea: priceArea, currency: currency })
-    ]).then(result => {
+    try {
+      let settings = this.getSettings();
+      let priceArea = settings.priceArea || 'Oslo';
+      let currency = settings.currency || 'EUR';
+      this.log('fetchData: ', this.getData().id, priceArea, currency);
+      const localTime = dayjs().tz().startOf('day');
+      const result = await Promise.all([
+        nordpool.getHourlyPrices(localTime, { priceArea: priceArea, currency: currency }),
+        nordpool.getHourlyPrices(localTime.add(1, 'day'), { priceArea: priceArea, currency: currency })
+      ]);
       let prices = result[0];
       Array.prototype.push.apply(prices, result[1]);
       this._lastFetchData = dayjs().tz();
       this._prices = prices;
       this.log('fetchData: got data ', this.getData().id, prices.length);
-      return this.onData();
-    }).catch(err => {
-      console.error(err);
-      this.scheduleCheckTime(60);
-      return Promise.reject(err);
-    });
+    } catch (err) {
+      this.log('fetchData error', err);
+    }
   }
 
   toHour(aDate) {
@@ -209,7 +218,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     let curNight = await this.getCapabilityValue('night');
     if (curNight === undefined || curNight === null || calcHeating.night !== curNight) {
       nigthAtWorkChanged = true;
-      await this.setCapabilityValue('night', calcHeating.night).catch(console.error);
+      await this.setCapabilityValue('night', calcHeating.night).catch(err => this.log('Error:', err));
       if (calcHeating.night) {
         await this.homey.app._nightStartsTrigger.trigger(this);
         this.log('night starts trigger');
@@ -222,7 +231,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     let curAtWork = await this.getCapabilityValue('at_work');
     if (curAtWork === undefined || curAtWork === null || calcHeating.atWork !== curAtWork) {
       nigthAtWorkChanged = true;
-      await this.setCapabilityValue('at_work', calcHeating.atWork).catch(console.error);
+      await this.setCapabilityValue('at_work', calcHeating.atWork).catch(err => this.log('Error:', err));
       if (calcHeating.atWork) {
         await this.homey.app._atWorkStartsTrigger.trigger(this);
         this.log('at_work starts trigger');
@@ -239,7 +248,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
         this._home_on_next_period = false;
         this._at_home = true;
         await this.homey.app._homeWasSetOnTrigger.trigger(this);
-        await this.setCapabilityValue('onoff', true).catch(console.error);
+        await this.setCapabilityValue('onoff', true).catch(err => this.log('Error:', err));
         this.log('automatically set home mode');
       }
       if (this._ho_off_next_period) {
@@ -247,7 +256,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
         this._ho_off_next_period = false;
         this._home_override = false;
         await this.homey.app._homeOverrideSetOffTrigger.trigger(this);
-        await this.setCapabilityValue('home_override', false).catch(console.error);
+        await this.setCapabilityValue('home_override', false).catch(err => this.log('Error:', err));
         this.log('automatically set home override off');
       }
       if (recalcHeating) {
@@ -259,7 +268,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     let curHeating = await this.getCapabilityValue('heating');
     let heatChanged = curHeating === undefined || curHeating === null || calcHeating.heating !== curHeating;
     if (heatChanged) {
-      await this.setCapabilityValue('heating', calcHeating.heating).catch(console.error);
+      await this.setCapabilityValue('heating', calcHeating.heating).catch(err => this.log('Error:', err));
       if (calcHeating.heating) {
         await this.homey.app._comfortModeTrigger.trigger(this);
         this.log('comfortModeTrigger');
@@ -281,7 +290,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
         await this.homey.app._priceChangedTrigger.trigger(this, { price, priceArea, currency });
         const priceCapability = `price_${this.getSetting('currency')}`;
         if (this.hasCapability(priceCapability)) {
-          await this.setCapabilityValue(priceCapability, price).catch(console.error);
+          await this.setCapabilityValue(priceCapability, price).catch(err => this.log('Error:', err));
         }
         this.log('price_changed trigger', currentPrice);
       }
@@ -297,7 +306,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
           high_price: true,
           heatingOptions: heatingOptions,
           prices: this._prices
-        }).catch(console.error);
+        }).catch(err => this.log('Error:', err));
 
         await this.homey.app._highPriceFalseTrigger.trigger(this, {
           heating: calcHeating.heating,
@@ -309,7 +318,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
           high_price: false,
           heatingOptions: heatingOptions,
           prices: this._prices
-        }).catch(console.error);
+        }).catch(err => this.log('Error:', err));
 
         await this.homey.app._lowPriceTrueTrigger.trigger(this, {
           heating: calcHeating.heating,
@@ -321,7 +330,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
           low_price: true,
           heatingOptions: heatingOptions,
           prices: this._prices
-        }).catch(console.error);
+        }).catch(err => this.log('Error:', err));
 
         await this.homey.app._lowPriceFalseTrigger.trigger(this, {
           heating: calcHeating.heating,
@@ -333,12 +342,9 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
           low_price: false,
           heatingOptions: heatingOptions,
           prices: this._prices
-        }).catch(console.error);
+        }).catch(err => this.log('Error:', err));
       }
     }
-
-    this.scheduleCheckTime(60);
-    return Promise.resolve();
   }
 
   _getCurrentPrice(prices) {
@@ -455,25 +461,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       numLowestHours = args.low_hours;
     }
 
-    // Finds prices starting at 00:00 today
-    const pricesToday = pricesLib.pricesStarting(state.prices, localTime, 0, 24);
-    if (pricesToday.length === 0) {
-      return false;
-    }
-
-    // Minimum price of highest hours today
-    let minOfPeriodToday = pricesLib.minOfHighestPrices(pricesToday, numLowestHours);
-
-    // X following prices
-    const pricesFollowing = pricesLib.pricesStarting(state.prices, localTime, startHour, numHours);
-    if (pricesFollowing.length === 0) {
-      return false;
-    }
-
-    // Minimum price of X following prices
-    let minOfFollowing = pricesLib.minOfHighestPrices(pricesFollowing, numHours);
-
-    return (minOfFollowing.price >= minOfPeriodToday.price);
+    return pricesLib.pricesAmongLowest(state.prices, localTime, startHour, numHours, numLowestHours);
   }
 
   _priceAmongHighestComparer(args, state) {
@@ -494,25 +482,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       numHighestHours = args.high_hours;
     }
 
-    // Finds prices starting at 00:00 today
-    const pricesToday = pricesLib.pricesStarting(state.prices, localTime, 0, 24);
-    if (pricesToday.length === 0) {
-      return false;
-    }
-
-    // Minimum price of highest hours today
-    let minOfPeriodToday = pricesLib.minOfHighestPrices(pricesToday, numHighestHours);
-
-    // X following prices
-    const pricesFollowing = pricesLib.pricesStarting(state.prices, localTime, startHour, numHours);
-    if (pricesFollowing.length === 0) {
-      return false;
-    }
-
-    // Minimum price of X following prices
-    let minOfFollowing = pricesLib.minOfHighestPrices(pricesFollowing, numHours);
-
-    return (minOfFollowing.price >= minOfPeriodToday.price);
+    return pricesLib.pricesAmongHighest(state.prices, localTime, startHour, numHours, numHighestHours);
   }
 
   _getHeatingOptions() {
