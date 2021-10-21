@@ -176,12 +176,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       const currency = settings.currency || 'EUR';
       this.log('Will fetch prices:', this.getData().id, priceArea, currency);
       const localTime = dayjs().tz().startOf('day');
-      const result = await Promise.all([
-        nordpool.getHourlyPrices(localTime, { priceArea: priceArea, currency: currency }),
-        nordpool.getHourlyPrices(localTime.add(1, 'day'), { priceArea: priceArea, currency: currency })
-      ]);
-      let prices = result[0];
-      Array.prototype.push.apply(prices, result[1]);
+      const prices = await nordpool.fetchPrices(localTime, { priceArea, currency });
       this._lastFetchData = dayjs().tz();
       this._prices = prices;
       this.log('Got prices:', this.getData().id, prices.length);
@@ -285,10 +280,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
           if (this.hasCapability(priceCapability)) {
             this.setCapabilityValue(priceCapability, price).catch(this.error);
           }
-          const tokens = {
-            price
-          };
-          this.homey.flow.getDeviceTriggerCard('price_changed').trigger(this, tokens).catch(this.error);
+          this.homey.flow.getDeviceTriggerCard('price_changed2').trigger(this, { price }).catch(this.error);
           this.log('Price changed trigger', startAtHour, price);
         }
 

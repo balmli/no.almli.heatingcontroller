@@ -11,9 +11,10 @@ const handleData = function (prices, low_hours, num_hours) {
     const localTime = dayjs().tz();
 
     let pricesNextHours = pricesLib.pricesStarting(prices, localTime, 0, 24);
-    console.log('pricesNextHours', localTime, pricesNextHours.length);
+    console.log('pricesNextHours', localTime.format(), prices.length, pricesNextHours.length);
     console.log('pricesNextHours ' + num_hours + ' hours ', pricesNextHours.map(p => ({
         startsAt: p.startsAt.toISOString(),
+        startsAtLocal: p.startsAt.format(),
         price: p.price
     })));
 
@@ -59,9 +60,8 @@ const findHeatingOffWhenHighPrices = function (prices, high_hours, num_hours, he
         .take(high_hours)
         .value();
     console.log('heatingOffWithHighPrices ', heatingOffWithHighPrices.length, heatingOffWithHighPrices.map(p => ({
-        startsAt: p.startIso,
-        priceArea: p.priceArea,
-        currency: p.currency,
+        startsAt: p.startsAt.toISOString(),
+        startsAtLocal: p.startsAt.format(),
         price: p.price,
         heating: p.heating
     })));
@@ -88,15 +88,11 @@ const testNordpool = function ({priceArea, currency, country, timeZone}) {
 
     const localTime = dayjs().tz().startOf('day');
 
-    Promise.all([
-        nordpool.getHourlyPrices(localTime, { priceArea, currency }),
-        nordpool.getHourlyPrices(localTime.add(1, 'day'), { priceArea, currency })
-    ]).then(result => {
-        let prices = result[0];
-        Array.prototype.push.apply(prices, result[1]);
+    nordpool.fetchPrices(localTime, { priceArea, currency })
+      .then(prices => {
         handleData(prices, 18, 24);
         findHeatingOffWhenHighPrices(prices, 6, 24, heatingOptions);
-    }).catch(console.error);
+      }).catch(console.error);
 
 }
 

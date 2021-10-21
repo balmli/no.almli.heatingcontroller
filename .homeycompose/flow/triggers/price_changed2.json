@@ -1,6 +1,5 @@
 {
-  "id": "price_changed",
-  "deprecated": true,
+  "id": "price_changed2",
   "title": {
     "en": "Utility price changed"
   },
