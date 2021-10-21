@@ -13,20 +13,6 @@
       "title": {
         "en": "price"
       }
-    },
-    {
-      "name": "priceArea",
-      "type": "string",
-      "title": {
-        "en": "price area"
-      }
-    },
-    {
-      "name": "currency",
-      "type": "string",
-      "title": {
-        "en": "currency"
-      }
     }
   ],
   "args": [

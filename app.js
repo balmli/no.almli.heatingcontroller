@@ -15,49 +15,28 @@ class HeatingControllerApp extends Homey.App {
   }
 
   async _initFlows() {
-    this.homey.flow.getConditionCard('is_public_holiday').registerRunListener((args) => {
-      return this.check(args, { 'public': true });
-    });
+    this.homey.flow.getConditionCard('is_public_holiday')
+      .registerRunListener((args) => this.check(args, { 'public': true }));
+    this.homey.flow.getConditionCard('is_bank_holiday')
+      .registerRunListener((args) => this.check(args, { 'bank': true }));
+    this.homey.flow.getConditionCard('is_observance_holiday')
+      .registerRunListener((args) => this.check(args, { 'observance': true }));
+    this.homey.flow.getConditionCard('is_holiday')
+      .registerRunListener((args) => this.check(args, { 'public': true, 'bank': true, 'observance': true }));
 
-    this.homey.flow.getConditionCard('is_bank_holiday').registerRunListener((args) => {
-      return this.check(args, { 'bank': true });
-    });
-
-    this.homey.flow.getConditionCard('is_observance_holiday').registerRunListener((args) => {
-      return this.check(args, { 'observance': true });
-    });
-
-    this.homey.flow.getConditionCard('is_holiday').registerRunListener((args) => {
-      return this.check(args, { 'public': true, 'bank': true, 'observance': true });
-    });
-
-    this.homey.flow.getConditionCard('is_workingday').registerRunListener((args) => {
-      let theDay = holidays.calcDate(dayjs().tz(), args.condition);
-      return theDay.getDay() >= 1 && theDay.getDay() <= 5 && !this.check(args, {
-        'public': true,
-        'bank': true,
-        'observance': true
+    this.homey.flow.getConditionCard('is_workingday')
+      .registerRunListener((args) => {
+        const theDay = holidays.calcDate(dayjs().tz(), args.condition);
+        return theDay.getDay() >= 1 && theDay.getDay() <= 5 && !this.check(args, {
+          'public': true,
+          'bank': true,
+          'observance': true
+        });
       });
-    });
 
-    this._homeWasSetOnTrigger = this.homey.flow.getDeviceTriggerCard('home_was_set_on');
-    this._homeWasSetOffTrigger = this.homey.flow.getDeviceTriggerCard('home_was_set_off');
-    this._homeOverrideSetOnTrigger = this.homey.flow.getDeviceTriggerCard('homeoverride_set_on');
-    this._homeOverrideSetOffTrigger = this.homey.flow.getDeviceTriggerCard('home_override_set_off');
-    this._nightStartsTrigger = this.homey.flow.getDeviceTriggerCard('night_starts');
-    this._nightEndsTrigger = this.homey.flow.getDeviceTriggerCard('night_ends');
-    this._atWorkStartsTrigger = this.homey.flow.getDeviceTriggerCard('at_work_starts');
-    this._atWorkEndsTrigger = this.homey.flow.getDeviceTriggerCard('at_work_ends');
-    this._comfortModeTrigger = this.homey.flow.getDeviceTriggerCard('comfort_mode');
-    this._ecoModeTrigger = this.homey.flow.getDeviceTriggerCard('eco_mode');
-    this._priceChangedTrigger = this.homey.flow.getDeviceTriggerCard('price_changed');
-    this._highPriceTrueTrigger = this.homey.flow.getDeviceTriggerCard('high_x_hours_of_day')
+    this.homey.flow.getDeviceTriggerCard('high_x_hours_of_day')
       .registerRunListener((args, state) => args.device._heatingOffHighPriceComparer(args, state));
-    this._highPriceFalseTrigger = this.homey.flow.getDeviceTriggerCard('high_x_hours_of_day')
-      .registerRunListener((args, state) => args.device._heatingOffHighPriceComparer(args, state));
-    this._lowPriceTrueTrigger = this.homey.flow.getDeviceTriggerCard('low_x_hours_of_day')
-      .registerRunListener((args, state) => args.device._lowHoursComparer(args, state));
-    this._lowPriceFalseTrigger = this.homey.flow.getDeviceTriggerCard('low_x_hours_of_day')
+    this.homey.flow.getDeviceTriggerCard('low_x_hours_of_day')
       .registerRunListener((args, state) => args.device._lowHoursComparer(args, state));
 
     this.homey.flow.getConditionCard('is_home')
@@ -140,25 +119,25 @@ class HeatingControllerApp extends Homey.App {
       });
 
     this.homey.flow.getActionCard('set_at_home_on')
-      .registerRunListener((args, state) => args.device.onActionSetAtHomeOn(args, state));
+      .registerRunListener((args, state) => args.device.onActionSetAtHomeOn());
 
     this.homey.flow.getActionCard('set_at_home_off')
-      .registerRunListener((args, state) => args.device.onActionSetAtHomeOff(args, state));
+      .registerRunListener((args, state) => args.device.onActionSetAtHomeOff());
 
     this.homey.flow.getActionCard('set_at_home_off_auto')
-      .registerRunListener((args, state) => args.device.onActionSetAtHomeOffAuto(args, state));
+      .registerRunListener((args, state) => args.device.onActionSetAtHomeOffAuto());
 
     this.homey.flow.getActionCard('set_home_override_on')
-      .registerRunListener((args, state) => args.device.onActionSetHomeOverrideOn(args, state));
+      .registerRunListener((args, state) => args.device.onActionSetHomeOverrideOn());
 
     this.homey.flow.getActionCard('set_home_override_on_auto')
-      .registerRunListener((args, state) => args.device.onActionSetHomeOverrideOnAuto(args, state));
+      .registerRunListener((args, state) => args.device.onActionSetHomeOverrideOnAuto());
 
     this.homey.flow.getActionCard('set_home_override_off')
-      .registerRunListener((args, state) => args.device.onActionSetHomeOverrideOff(args, state));
+      .registerRunListener((args, state) => args.device.onActionSetHomeOverrideOff());
 
     this.homey.flow.getActionCard('set_holiday_today')
-      .registerRunListener((args, state) => args.device.onActionSetHolidayToday(args, state));
+      .registerRunListener((args, state) => args.device.onActionSetHolidayToday());
   }
 
   check(args, types) {

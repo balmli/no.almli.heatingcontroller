@@ -1,4 +1,7 @@
 {
+  "1.5.3": {
+    "en": "SDK3 - changes. 'Presence for modes' option removed. Updated holidays. Fixed decimals for Insights. Fixed issue with timezones. Utility prices for more countries. Added 'The following [x] hours are !{{|not}} among the [y] hours of today's lowest prices' condition. Added 'The following [x] hours are !{{|not}} among the [y] hours of today's highest prices' condition."
+  },
   "1.5.2": {
     "en": "SDK3 - changes. 'Presence for modes' option removed. Updated holidays. Fixed decimals for Insights. Fixed issue with timezones. Utility prices for more countries. Added 'The following [x] hours are !{{|not}} among the [y] hours of today's lowest prices' condition. Added 'The following [x] hours are !{{|not}} among the [y] hours of today's highest prices' condition."
   },

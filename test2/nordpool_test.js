@@ -13,9 +13,7 @@ const handleData = function (prices, low_hours, num_hours) {
     let pricesNextHours = pricesLib.pricesStarting(prices, localTime, 0, 24);
     console.log('pricesNextHours', localTime, pricesNextHours.length);
     console.log('pricesNextHours ' + num_hours + ' hours ', pricesNextHours.map(p => ({
-        startsAt: p.startIso,
-        priceArea: p.priceArea,
-        currency: p.currency,
+        startsAt: p.startsAt.toISOString(),
         price: p.price
     })));
 
