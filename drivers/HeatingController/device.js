@@ -280,7 +280,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
           if (this.hasCapability(priceCapability)) {
             this.setCapabilityValue(priceCapability, price).catch(this.error);
           }
-          this.homey.flow.getDeviceTriggerCard('price_changed2').trigger(this, { price }).catch(this.error);
+          this.homey.flow.getDeviceTriggerCard('price_changed').trigger(this, { price }).catch(this.error);
           this.log('Price changed trigger', startAtHour, price);
         }
 
