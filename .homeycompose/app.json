@@ -1,8 +1,8 @@
 {
   "id": "no.almli.heatingcontroller",
-  "version": "1.5.4",
-  "compatibility": ">=5.0.0",
-  "sdk": 3,
+  "version": "1.5.5",
+  "compatibility": ">=4.1.0",
+  "sdk": 2,
   "brandColor": "#d06830",
   "name": {
     "en": "Heating Controller"

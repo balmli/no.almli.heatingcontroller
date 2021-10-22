@@ -8,8 +8,8 @@ module.exports = class HeatingControllerDriver extends Homey.Driver {
     this.log('HeatingControllerDriver driver has been initialized');
   }
 
-  async onPairListDevices() {
-    return [
+  onPairListDevices(data, callback) {
+    let devices = [
       {
         "name": "Heating Controller",
         "data": {
@@ -17,6 +17,7 @@ module.exports = class HeatingControllerDriver extends Homey.Driver {
         }
       }
     ];
+    callback(null, devices);
   }
 
 };

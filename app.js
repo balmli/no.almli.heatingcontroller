@@ -6,25 +6,30 @@ const days = require('./lib/days');
 const holidays = require('./lib/holidays');
 const _ = require('lodash');
 
-class HeatingControllerApp extends Homey.App {
+module.exports = class HeatingControllerApp extends Homey.App {
 
   async onInit() {
-    days.setTimeZone(this.homey.clock.getTimezone());
+    //days.setTimeZone(this.homey.clock.getTimezone());
     await this._initFlows();
     this.log('HeatingControllerApp is running...');
   }
 
   async _initFlows() {
-    this.homey.flow.getConditionCard('is_public_holiday')
+    new Homey.FlowCardCondition('is_public_holiday')
+      .register()
       .registerRunListener((args) => this.check(args, { 'public': true }));
-    this.homey.flow.getConditionCard('is_bank_holiday')
+    new Homey.FlowCardCondition('is_bank_holiday')
+      .register()
       .registerRunListener((args) => this.check(args, { 'bank': true }));
-    this.homey.flow.getConditionCard('is_observance_holiday')
+    new Homey.FlowCardCondition('is_observance_holiday')
+      .register()
       .registerRunListener((args) => this.check(args, { 'observance': true }));
-    this.homey.flow.getConditionCard('is_holiday')
+    new Homey.FlowCardCondition('is_holiday')
+      .register()
       .registerRunListener((args) => this.check(args, { 'public': true, 'bank': true, 'observance': true }));
 
-    this.homey.flow.getConditionCard('is_workingday')
+    new Homey.FlowCardCondition('is_workingday')
+      .register()
       .registerRunListener((args) => {
         const theDay = holidays.calcDate(dayjs().tz(), args.condition);
         return theDay.getDay() >= 1 && theDay.getDay() <= 5 && !this.check(args, {
@@ -34,25 +39,77 @@ class HeatingControllerApp extends Homey.App {
         });
       });
 
-    this.homey.flow.getDeviceTriggerCard('high_x_hours_of_day')
+    this._homeWasSetOnTrigger = new Homey.FlowCardTriggerDevice('home_was_set_on');
+    this._homeWasSetOnTrigger.register();
+
+    this._homeWasSetOffTrigger = new Homey.FlowCardTriggerDevice('home_was_set_off');
+    this._homeWasSetOffTrigger.register();
+
+    this._homeOverrideSetOnTrigger = new Homey.FlowCardTriggerDevice('homeoverride_set_on');
+    this._homeOverrideSetOnTrigger.register();
+
+    this._homeOverrideSetOffTrigger = new Homey.FlowCardTriggerDevice('home_override_set_off');
+    this._homeOverrideSetOffTrigger.register();
+
+    this._nightStartsTrigger = new Homey.FlowCardTriggerDevice('night_starts');
+    this._nightStartsTrigger.register();
+
+    this._nightEndsTrigger = new Homey.FlowCardTriggerDevice('night_ends');
+    this._nightEndsTrigger.register();
+
+    this._atWorkStartsTrigger = new Homey.FlowCardTriggerDevice('at_work_starts');
+    this._atWorkStartsTrigger.register();
+
+    this._atWorkEndsTrigger = new Homey.FlowCardTriggerDevice('at_work_ends');
+    this._atWorkEndsTrigger.register();
+
+    this._comfortModeTrigger = new Homey.FlowCardTriggerDevice('comfort_mode');
+    this._comfortModeTrigger.register();
+
+    this._ecoModeTrigger = new Homey.FlowCardTriggerDevice('eco_mode');
+    this._ecoModeTrigger.register();
+
+    this._priceChangedTrigger = new Homey.FlowCardTriggerDevice('price_changed');
+    this._priceChangedTrigger.register();
+
+    this._highPriceTrueTrigger = new Homey.FlowCardTriggerDevice('high_x_hours_of_day');
+    this._highPriceTrueTrigger
+      .register()
       .registerRunListener((args, state) => args.device._heatingOffHighPriceComparer(args, state));
-    this.homey.flow.getDeviceTriggerCard('low_x_hours_of_day')
+    this._highPriceFalseTrigger = new Homey.FlowCardTriggerDevice('high_x_hours_of_day');
+    this._highPriceFalseTrigger
+      .register()
+      .registerRunListener((args, state) => args.device._heatingOffHighPriceComparer(args, state));
+    this._lowPriceTrueTrigger = new Homey.FlowCardTriggerDevice('low_x_hours_of_day');
+    this._lowPriceTrueTrigger
+      .register()
+      .registerRunListener((args, state) => args.device._lowHoursComparer(args, state));
+    this._lowPriceFalseTrigger = new Homey.FlowCardTriggerDevice('low_x_hours_of_day');
+    this._lowPriceFalseTrigger
+      .register()
       .registerRunListener((args, state) => args.device._lowHoursComparer(args, state));
 
-    this.homey.flow.getConditionCard('is_home')
+    new Homey.FlowCardCondition('is_home')
+      .register()
       .registerRunListener((args, state) => args.device.getCapabilityValue('onoff'));
-    this.homey.flow.getConditionCard('is_home_override')
+    new Homey.FlowCardCondition('is_home_override')
+      .register()
       .registerRunListener((args, state) => args.device.getCapabilityValue('home_override'));
-    this.homey.flow.getConditionCard('is_night')
+    new Homey.FlowCardCondition('is_night')
+      .register()
       .registerRunListener((args, state) => args.device.getCapabilityValue('night'));
-    this.homey.flow.getConditionCard('is_at_work')
+    new Homey.FlowCardCondition('is_at_work')
+      .register()
       .registerRunListener((args, state) => args.device.getCapabilityValue('at_work'));
-    this.homey.flow.getConditionCard('is_heating_on')
+    new Homey.FlowCardCondition('is_heating_on')
+      .register()
       .registerRunListener((args, state) => args.device.getCapabilityValue('heating'));
-    this.homey.flow.getConditionCard('current_price_below')
+    new Homey.FlowCardCondition('current_price_below')
+      .register()
       .registerRunListener(args => args.price > _.get(args.device._lastPrice, 'price'));
 
-    this.homey.flow.getConditionCard('high_x_hours_of_day_condition')
+    new Homey.FlowCardCondition('high_x_hours_of_day_condition')
+      .register()
       .registerRunListener((args, state) => {
         const device = args.device;
         state.prices = device._prices;
@@ -60,7 +117,8 @@ class HeatingControllerApp extends Homey.App {
         return device._highHoursComparer(args, state);
       });
 
-    this.homey.flow.getConditionCard('low_x_hours_of_day_condition')
+    new Homey.FlowCardCondition('low_x_hours_of_day_condition')
+      .register()
       .registerRunListener((args, state) => {
         const device = args.device;
         state.prices = device._prices;
@@ -68,7 +126,8 @@ class HeatingControllerApp extends Homey.App {
         return device._lowHoursComparer(args, state);
       });
 
-    this.homey.flow.getConditionCard('price_below_avg_condition')
+    new Homey.FlowCardCondition('price_below_avg_condition')
+      .register()
       .registerRunListener((args, state) => {
         const device = args.device;
         state.prices = device._prices;
@@ -77,7 +136,8 @@ class HeatingControllerApp extends Homey.App {
         return device._priceAvgComparer(args, state);
       });
 
-    this.homey.flow.getConditionCard('price_below_avg_next_hours_condition')
+    new Homey.FlowCardCondition('price_below_avg_next_hours_condition')
+      .register()
       .registerRunListener((args, state) => {
         const device = args.device;
         state.prices = device._prices;
@@ -86,7 +146,8 @@ class HeatingControllerApp extends Homey.App {
         return device._priceAvgComparer(args, state);
       });
 
-    this.homey.flow.getConditionCard('price_above_avg_condition')
+    new Homey.FlowCardCondition('price_above_avg_condition')
+      .register()
       .registerRunListener((args, state) => {
         const device = args.device;
         state.prices = device._prices;
@@ -95,7 +156,8 @@ class HeatingControllerApp extends Homey.App {
         return device._priceAvgComparer(args, state);
       });
 
-    this.homey.flow.getConditionCard('price_above_avg_next_hours_condition')
+    new Homey.FlowCardCondition('price_above_avg_next_hours_condition')
+      .register()
       .registerRunListener((args, state) => {
         const device = args.device;
         state.prices = device._prices;
@@ -104,39 +166,48 @@ class HeatingControllerApp extends Homey.App {
         return device._priceAvgComparer(args, state);
       });
 
-    this.homey.flow.getConditionCard('prices_among_lowest_condition')
+    new Homey.FlowCardCondition('prices_among_lowest_condition')
+      .register()
       .registerRunListener((args, state) => {
         const device = args.device;
         state.prices = device._prices;
         return device._priceAmongLowestComparer(args, state);
       });
 
-    this.homey.flow.getConditionCard('prices_among_highest_condition')
+    new Homey.FlowCardCondition('prices_among_highest_condition')
+      .register()
       .registerRunListener((args, state) => {
         const device = args.device;
         state.prices = device._prices;
         return device._priceAmongHighestComparer(args, state);
       });
 
-    this.homey.flow.getActionCard('set_at_home_on')
+    new Homey.FlowCardAction('set_at_home_on')
+      .register()
       .registerRunListener((args, state) => args.device.onActionSetAtHomeOn());
 
-    this.homey.flow.getActionCard('set_at_home_off')
+    new Homey.FlowCardAction('set_at_home_off')
+      .register()
       .registerRunListener((args, state) => args.device.onActionSetAtHomeOff());
 
-    this.homey.flow.getActionCard('set_at_home_off_auto')
+    new Homey.FlowCardAction('set_at_home_off_auto')
+      .register()
       .registerRunListener((args, state) => args.device.onActionSetAtHomeOffAuto());
 
-    this.homey.flow.getActionCard('set_home_override_on')
+    new Homey.FlowCardAction('set_home_override_on')
+      .register()
       .registerRunListener((args, state) => args.device.onActionSetHomeOverrideOn());
 
-    this.homey.flow.getActionCard('set_home_override_on_auto')
+    new Homey.FlowCardAction('set_home_override_on_auto')
+      .register()
       .registerRunListener((args, state) => args.device.onActionSetHomeOverrideOnAuto());
 
-    this.homey.flow.getActionCard('set_home_override_off')
+    new Homey.FlowCardAction('set_home_override_off')
+      .register()
       .registerRunListener((args, state) => args.device.onActionSetHomeOverrideOff());
 
-    this.homey.flow.getActionCard('set_holiday_today')
+    new Homey.FlowCardAction('set_holiday_today')
+      .register()
       .registerRunListener((args, state) => args.device.onActionSetHolidayToday());
   }
 
@@ -153,6 +224,4 @@ class HeatingControllerApp extends Homey.App {
     return hd && hd.type && hd.type in types;
   }
 
-}
-
-module.exports = HeatingControllerApp;
+};

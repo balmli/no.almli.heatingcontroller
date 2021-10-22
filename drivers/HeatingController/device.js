@@ -21,9 +21,9 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
 
     this.registerCapabilityListener('onoff', async (value, opts) => {
       if (value) {
-        this.homey.flow.getDeviceTriggerCard('home_was_set_on').trigger(this, {}).catch(this.error);
+        Homey.app._homeWasSetOnTrigger.trigger(this, {}).catch(this.error);
       } else {
-        this.homey.flow.getDeviceTriggerCard('home_was_set_off').trigger(this, {}).catch(this.error);
+        Homey.app._homeWasSetOffTrigger.trigger(this, {}).catch(this.error);
       }
       this.log(this.getName() + ' -> onoff changed: ', value, opts);
       return this.checkTime(value);
@@ -48,52 +48,53 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     }
   }
 
-  async onSettings({ oldSettings, newSettings, changedKeys }) {
-    if (changedKeys.includes('currency')) {
+  async onSettings(oldSettingsObj, newSettingsObj, changedKeysArr, callback) {
+    if (changedKeysArr.includes('currency')) {
       await this.fixPrice(newSettingsObj.currency);
       this._lastFetchData = undefined;
       this._lastPrice = undefined;
       this.scheduleCheckTime(5);
     }
+    callback(null, true);
   }
 
   async onActionSetAtHomeOn() {
     this.setCapabilityValue('onoff', true).catch(this.error);
-    this.homey.flow.getDeviceTriggerCard('home_was_set_on').trigger(this, {}).catch(this.error);
+    Homey.app._homeWasSetOnTrigger.trigger(this, {}).catch(this.error);
     return this.checkTime(true);
   }
 
   async onActionSetAtHomeOff() {
     this._home_on_next_period = false;
     this.setCapabilityValue('onoff', false).catch(this.error);
-    this.homey.flow.getDeviceTriggerCard('home_was_set_off').trigger(this, {}).catch(this.error);
+    Homey.app._homeWasSetOffTrigger.trigger(this, {}).catch(this.error);
     return this.checkTime(false);
   }
 
   async onActionSetAtHomeOffAuto() {
     this._home_on_next_period = true;
     this.setCapabilityValue('onoff', false).catch(this.error);
-    this.homey.flow.getDeviceTriggerCard('home_was_set_off').trigger(this, {}).catch(this.error);
+    Homey.app._homeWasSetOffTrigger.trigger(this, {}).catch(this.error);
     return this.checkTime(false);
   }
 
   async onActionSetHomeOverrideOn() {
     this._ho_off_next_period = false;
     this.setCapabilityValue('home_override', true).catch(this.error);
-    this.homey.flow.getDeviceTriggerCard('homeoverride_set_on').trigger(this, {}).catch(this.error);
+    Homey.app._homeOverrideSetOnTrigger.trigger(this, {}).catch(this.error);
     return this.checkTime(undefined, true);
   }
 
   async onActionSetHomeOverrideOnAuto() {
     this._ho_off_next_period = true;
     this.setCapabilityValue('home_override', true).catch(this.error);
-    this.homey.flow.getDeviceTriggerCard('homeoverride_set_on').trigger(this, {}).catch(this.error);
+    Homey.app._homeOverrideSetOnTrigger.trigger(this, {}).catch(this.error);
     return this.checkTime(undefined, true);
   }
 
   async onActionSetHomeOverrideOff() {
     this.setCapabilityValue('home_override', false).catch(this.error);
-    this.homey.flow.getDeviceTriggerCard('home_override_set_off').trigger(this, {}).catch(this.error);
+    Homey.app._homeOverrideSetOffTrigger.trigger(this, {}).catch(this.error);
     return this.checkTime(undefined, false);
   }
 
@@ -114,7 +115,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
 
   clearCheckTime() {
     if (this.curTimeout) {
-      this.homey.clearTimeout(this.curTimeout);
+      clearTimeout(this.curTimeout);
       this.curTimeout = undefined;
     }
   }
@@ -125,7 +126,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     }
     this.clearCheckTime();
     this.log(`Checking time in ${seconds} seconds`);
-    this.curTimeout = this.homey.setTimeout(this.checkTime.bind(this), seconds * 1000);
+    this.curTimeout = setTimeout(this.checkTime.bind(this), seconds * 1000);
   }
 
   async checkTime(onoff, home_override) {
@@ -208,10 +209,10 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
         nigthAtWorkChanged = true;
         this.setCapabilityValue('night', calcHeating.night).catch(this.error);
         if (calcHeating.night) {
-          this.homey.flow.getDeviceTriggerCard('night_starts').trigger(this, {}).catch(this.error);
+          Homey.app._nightStartsTrigger.trigger(this, {}).catch(this.error);
           this.log('Night starts trigger');
         } else {
-          this.homey.flow.getDeviceTriggerCard('night_ends').trigger(this, {}).catch(this.error);
+          Homey.app._nightEndsTrigger.trigger(this, {}).catch(this.error);
           this.log('Night ends trigger');
         }
       }
@@ -221,10 +222,10 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
         nigthAtWorkChanged = true;
         this.setCapabilityValue('at_work', calcHeating.atWork).catch(this.error);
         if (calcHeating.atWork) {
-          this.homey.flow.getDeviceTriggerCard('at_work_starts').trigger(this, {}).catch(this.error);
+          Homey.app._atWorkStartsTrigger.trigger(this, {}).catch(this.error);
           this.log('At work starts trigger');
         } else {
-          this.homey.flow.getDeviceTriggerCard('at_work_ends').trigger(this, {}).catch(this.error);
+          Homey.app._atWorkEndsTrigger.trigger(this, {}).catch(this.error);
           this.log('At work ends trigger');
         }
       }
@@ -236,7 +237,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
           this._home_on_next_period = false;
           this._at_home = true;
           this.setCapabilityValue('onoff', true).catch(this.error);
-          this.homey.flow.getDeviceTriggerCard('home_was_set_on').trigger(this, {}).catch(this.error);
+          Homey.app._homeWasSetOnTrigger.trigger(this, {}).catch(this.error);
           this.log('Automatically set home mode');
         }
         if (this._ho_off_next_period) {
@@ -244,7 +245,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
           this._ho_off_next_period = false;
           this._home_override = false;
           this.setCapabilityValue('home_override', false).catch(this.error);
-          this.homey.flow.getDeviceTriggerCard('home_override_set_off').trigger(this, {}).catch(this.error);
+          Homey.app._homeOverrideSetOffTrigger.trigger(this, {}).catch(this.error);
           this.log('Automatically set home override off');
         }
         if (recalcHeating) {
@@ -258,10 +259,10 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       if (heatChanged) {
         this.setCapabilityValue('heating', calcHeating.heating).catch(this.error);
         if (calcHeating.heating) {
-          this.homey.flow.getDeviceTriggerCard('comfort_mode').trigger(this, {}).catch(this.error);
+          Homey.app._comfortModeTrigger.trigger(this, {}).catch(this.error);
           this.log('Comfort mode trigger');
         } else {
-          this.homey.flow.getDeviceTriggerCard('eco_mode').trigger(this, {}).catch(this.error);
+          Homey.app._ecoModeTrigger.trigger(this, {}).catch(this.error);
           this.log('ECO mode trigger');
         }
       }
@@ -280,12 +281,12 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
           if (this.hasCapability(priceCapability)) {
             this.setCapabilityValue(priceCapability, price).catch(this.error);
           }
-          this.homey.flow.getDeviceTriggerCard('price_changed').trigger(this, { price }).catch(this.error);
+          Homey.app._priceChangedTrigger.trigger(this, { price }).catch(this.error);
           this.log('Price changed trigger', startAtHour, price);
         }
 
         if (priceChanged || heatChanged) {
-          this.homey.flow.getDeviceTriggerCard('high_x_hours_of_day').trigger(this, {
+          Homey.app._highPriceTrueTrigger.trigger(this, {
             heating: calcHeating.heating,
             high_price: true
           }, {
@@ -297,7 +298,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
             prices: this._prices
           }).catch(this.error);
 
-          this.homey.flow.getDeviceTriggerCard('high_x_hours_of_day').trigger(this, {
+          Homey.app._highPriceFalseTrigger.trigger(this, {
             heating: calcHeating.heating,
             high_price: false
           }, {
@@ -309,7 +310,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
             prices: this._prices
           }).catch(this.error);
 
-          this.homey.flow.getDeviceTriggerCard('low_x_hours_of_day').trigger(this, {
+          Homey.app._lowPriceTrueTrigger.trigger(this, {
             heating: calcHeating.heating,
             low_price: true
           }, {
@@ -321,7 +322,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
             prices: this._prices
           }).catch(this.error);
 
-          this.homey.flow.getDeviceTriggerCard('low_x_hours_of_day').trigger(this, {
+          Homey.app._lowPriceFalseTrigger.trigger(this, {
             heating: calcHeating.heating,
             low_price: false
           }, {
