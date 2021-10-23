@@ -336,14 +336,14 @@ const getState = function (atHome) {
 const checkLowPrice = function (aDate, aTime, numRows) {
     it("Low price at " + aTime, function () {
         let x = pricesLib.pricesStarting(getPrices(), dayjs(aDate).tz(), 0, 24);
-        expect(pricesLib.checkLowPrice(x, 18, dayjs(aDate + 'T' + aTime).tz()).value().length).to.equal(numRows);
+        expect(pricesLib.checkLowPrice(x, 18, dayjs(aDate + 'T' + aTime).tz()).length).to.equal(numRows);
     });
 };
 
 const checkHighPrice = function (aDate, aTime, state, numRows) {
     it("High price at " + aTime, function () {
         let x = pricesLib.pricesStarting(getPrices(), dayjs(aDate).tz(), 0, 24);
-        expect(pricesLib.checkHighPrice2(x, 6, dayjs(aDate + 'T' + aTime).tz(), state).value().length).to.equal(numRows);
+        expect(pricesLib.checkHighPrice2(x, 6, dayjs(aDate + 'T' + aTime).tz(), state).length).to.equal(numRows);
     });
 };
 
@@ -364,10 +364,10 @@ describe("Prices", function () {
             expect(pricesLib.pricesStarting([], dayjs('2019-01-21').tz(), 0, 24).length).to.equal(0);
         });
         it("No prices: checkLowPrice", function () {
-            expect(pricesLib.checkLowPrice([], 18, dayjs('2019-01-21').tz()).length).to.equal(undefined);
+            expect(pricesLib.checkLowPrice([], 18, dayjs('2019-01-21').tz()).length).to.equal(0);
         });
         it("No prices: checkHighPrice", function () {
-            expect(pricesLib.checkHighPrice2([], 6, dayjs('2019-01-21').tz(), {}).length).to.equal(undefined);
+            expect(pricesLib.checkHighPrice2([], 6, dayjs('2019-01-21').tz(), {}).length).to.equal(0);
         });
     });
 

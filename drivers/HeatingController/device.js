@@ -273,9 +273,9 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
         const price = currentPrice.price;
         this.log('Current price:', startAtHour, price);
 
-        const priceChanged = !this._lastPrice || startAtHour !== this._lastPrice;
+        const priceChanged = !this._lastPrice || startAtHour !== this.toHour(this._lastPrice.startsAt);
         if (priceChanged) {
-          this._lastPrice = startAtHour;
+          this._lastPrice = currentPrice;
           const priceCapability = `price_${this.getSetting('currency')}`;
           if (this.hasCapability(priceCapability)) {
             this.setCapabilityValue(priceCapability, price).catch(this.error);
@@ -291,10 +291,8 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
           }, {
             atHome: this._at_home,
             homeOverride: this._home_override,
-            heating: calcHeating.heating,
             high_price: true,
-            heatingOptions: heatingOptions,
-            prices: this._prices
+            heatingOptions: heatingOptions
           }).catch(this.error);
 
           this.homey.flow.getDeviceTriggerCard('high_x_hours_of_day').trigger(this, {
@@ -303,34 +301,22 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
           }, {
             atHome: this._at_home,
             homeOverride: this._home_override,
-            heating: calcHeating.heating,
             high_price: false,
-            heatingOptions: heatingOptions,
-            prices: this._prices
+            heatingOptions: heatingOptions
           }).catch(this.error);
 
           this.homey.flow.getDeviceTriggerCard('low_x_hours_of_day').trigger(this, {
             heating: calcHeating.heating,
             low_price: true
           }, {
-            atHome: this._at_home,
-            homeOverride: this._home_override,
-            heating: calcHeating.heating,
-            low_price: true,
-            heatingOptions: heatingOptions,
-            prices: this._prices
+            low_price: true
           }).catch(this.error);
 
           this.homey.flow.getDeviceTriggerCard('low_x_hours_of_day').trigger(this, {
             heating: calcHeating.heating,
             low_price: false
           }, {
-            atHome: this._at_home,
-            homeOverride: this._home_override,
-            heating: calcHeating.heating,
-            low_price: false,
-            heatingOptions: heatingOptions,
-            prices: this._prices
+            low_price: false
           }).catch(this.error);
         }
       }
@@ -348,14 +334,14 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     if (!args.high_hours
       || args.high_hours <= 0
       || args.high_hours >= 24
-      || !state.prices) {
+      || !this._prices) {
       return false;
     }
 
     const localTime = dayjs().tz();
 
     // Finds prices starting at 00:00 today
-    const pricesNextHours = pricesLib.pricesStarting(state.prices, localTime, 0, 24);
+    const pricesNextHours = pricesLib.pricesStarting(this._prices, localTime, 0, 24);
     if (pricesNextHours.length === 0) {
       return false;
     }
@@ -363,21 +349,21 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     // Check if high price now.  Must be ECO mode, and will skip consecutive hours.
     const highPriceNow = pricesLib.checkHighPrice2(pricesNextHours, args.high_hours, localTime, state);
 
-    return state.high_price === false && highPriceNow.size() === 0 || state.high_price === true && highPriceNow.size() === 1;
+    return state.high_price === false && highPriceNow.length === 0 || state.high_price === true && highPriceNow.length === 1;
   }
 
   async _highHoursComparer(args, state) {
     if (!args.high_hours
       || args.high_hours <= 0
       || args.high_hours >= 24
-      || !state.prices) {
+      || !this._prices) {
       return false;
     }
 
     const localTime = dayjs().tz();
 
     // Finds prices starting at 00:00 today
-    const pricesNextHours = pricesLib.pricesStarting(state.prices, localTime, 0, 24);
+    const pricesNextHours = pricesLib.pricesStarting(this._prices, localTime, 0, 24);
     if (pricesNextHours.length === 0) {
       return false;
     }
@@ -385,21 +371,21 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     // Check if high price now.
     const highPriceNow = pricesLib.checkHighPrice(pricesNextHours, args.high_hours, localTime);
 
-    return state.high_price === false && highPriceNow.size() === 0 || state.high_price === true && highPriceNow.size() === 1;
+    return state.high_price === false && highPriceNow.length === 0 || state.high_price === true && highPriceNow.length === 1;
   }
 
   async _lowHoursComparer(args, state) {
     if (!args.low_hours
       || args.low_hours <= 0
       || args.low_hours >= 24
-      || !state.prices) {
+      || !this._prices) {
       return false;
     }
 
     const localTime = dayjs().tz();
 
     // Finds prices starting at 00:00 today
-    const pricesNextHours = pricesLib.pricesStarting(state.prices, localTime, 0, 24);
+    const pricesNextHours = pricesLib.pricesStarting(this._prices, localTime, 0, 24);
     if (pricesNextHours.length === 0) {
       return false;
     }
@@ -407,15 +393,14 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     // Check if low price now
     const lowPriceNow = pricesLib.checkLowPrice(pricesNextHours, args.low_hours, localTime);
 
-    return state.low_price === true && lowPriceNow.size() === 1 || state.low_price === false && lowPriceNow.size() === 0;
+    return state.low_price === true && lowPriceNow.length === 1 || state.low_price === false && lowPriceNow.length === 0;
   }
 
   async _priceAvgComparer(args, state) {
     if (!args.percentage
       || args.percentage <= 0
       || args.percentage >= 100
-      || !state.prices
-      || !state.currentPrice) {
+      || !this._prices) {
       return false;
     }
     const localTime = dayjs().tz();
@@ -425,21 +410,22 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       startHour = localTime.hour();
       numHours = args.hours;
     }
+    const currentPrice = this._getCurrentPrice(this._prices);
 
     // Finds average of prices
-    const averagePrice = pricesLib.averagePricesStarting(state.prices, localTime, startHour, numHours);
+    const averagePrice = pricesLib.averagePricesStarting(this._prices, localTime, startHour, numHours);
     if (!averagePrice) {
       return false;
     }
 
-    return pricesLib.checkAveragePrice(state.currentPrice.price, averagePrice, state.below, args.percentage);
+    return pricesLib.checkAveragePrice(currentPrice.price, averagePrice, state.below, args.percentage);
   }
 
   async _priceAmongLowestComparer(args, state) {
     if (!args.low_hours
       || args.low_hours <= 0
       || args.low_hours >= 24
-      || !state.prices) {
+      || !this._prices) {
       return false;
     }
 
@@ -453,14 +439,14 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       numLowestHours = args.low_hours;
     }
 
-    return pricesLib.pricesAmongLowest(state.prices, localTime, startHour, numHours, numLowestHours);
+    return pricesLib.pricesAmongLowest(this._prices, localTime, startHour, numHours, numLowestHours);
   }
 
   async _priceAmongHighestComparer(args, state) {
     if (!args.high_hours
       || args.high_hours <= 0
       || args.high_hours >= 24
-      || !state.prices) {
+      || !this._prices) {
       return false;
     }
 
@@ -474,7 +460,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       numHighestHours = args.high_hours;
     }
 
-    return pricesLib.pricesAmongHighest(state.prices, localTime, startHour, numHours, numHighestHours);
+    return pricesLib.pricesAmongHighest(this._prices, localTime, startHour, numHours, numHighestHours);
   }
 
   _getHeatingOptions() {

@@ -336,7 +336,7 @@ const getState = function (atHome) {
 const checkHighPrice = function (aDate, aTime, state, numRows) {
     it("High price at " + aTime, function () {
         let x = pricesLib.pricesStarting(getPrices(), dayjs(aDate).tz(), 0, 24);
-        expect(pricesLib.checkHighPrice2(x, 4, dayjs(aDate + 'T' + aTime).tz(), state).value().length).to.equal(numRows);
+        expect(pricesLib.checkHighPrice2(x, 4, dayjs(aDate + 'T' + aTime).tz(), state).length).to.equal(numRows);
     });
 };
 

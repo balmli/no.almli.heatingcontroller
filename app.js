@@ -4,7 +4,6 @@ const Homey = require('homey');
 const dayjs = require('dayjs');
 const days = require('./lib/days');
 const holidays = require('./lib/holidays');
-const _ = require('lodash');
 
 class HeatingControllerApp extends Homey.App {
 
@@ -50,73 +49,49 @@ class HeatingControllerApp extends Homey.App {
     this.homey.flow.getConditionCard('is_heating_on')
       .registerRunListener((args, state) => args.device.getCapabilityValue('heating'));
     this.homey.flow.getConditionCard('current_price_below')
-      .registerRunListener(args => args.price > _.get(args.device._lastPrice, 'price'));
+      .registerRunListener(args => args.device._lastPrice && (args.price > args.device._lastPrice.price));
 
     this.homey.flow.getConditionCard('high_x_hours_of_day_condition')
       .registerRunListener((args, state) => {
-        const device = args.device;
-        state.prices = device._prices;
         state.high_price = true;
-        return device._highHoursComparer(args, state);
+        return args.device._highHoursComparer(args, state);
       });
 
     this.homey.flow.getConditionCard('low_x_hours_of_day_condition')
       .registerRunListener((args, state) => {
-        const device = args.device;
-        state.prices = device._prices;
         state.low_price = true;
-        return device._lowHoursComparer(args, state);
+        return args.device._lowHoursComparer(args, state);
       });
 
     this.homey.flow.getConditionCard('price_below_avg_condition')
       .registerRunListener((args, state) => {
-        const device = args.device;
-        state.prices = device._prices;
-        state.currentPrice = device._getCurrentPrice(device._prices);
         state.below = true;
-        return device._priceAvgComparer(args, state);
+        return args.device._priceAvgComparer(args, state);
       });
 
     this.homey.flow.getConditionCard('price_below_avg_next_hours_condition')
       .registerRunListener((args, state) => {
-        const device = args.device;
-        state.prices = device._prices;
-        state.currentPrice = device._getCurrentPrice(device._prices);
         state.below = true;
-        return device._priceAvgComparer(args, state);
+        return args.device._priceAvgComparer(args, state);
       });
 
     this.homey.flow.getConditionCard('price_above_avg_condition')
       .registerRunListener((args, state) => {
-        const device = args.device;
-        state.prices = device._prices;
-        state.currentPrice = device._getCurrentPrice(device._prices);
         state.below = false;
-        return device._priceAvgComparer(args, state);
+        return args.device._priceAvgComparer(args, state);
       });
 
     this.homey.flow.getConditionCard('price_above_avg_next_hours_condition')
       .registerRunListener((args, state) => {
-        const device = args.device;
-        state.prices = device._prices;
-        state.currentPrice = device._getCurrentPrice(device._prices);
         state.below = false;
-        return device._priceAvgComparer(args, state);
+        return args.device._priceAvgComparer(args, state);
       });
 
     this.homey.flow.getConditionCard('prices_among_lowest_condition')
-      .registerRunListener((args, state) => {
-        const device = args.device;
-        state.prices = device._prices;
-        return device._priceAmongLowestComparer(args, state);
-      });
+      .registerRunListener((args, state) => args.device._priceAmongLowestComparer(args, state));
 
     this.homey.flow.getConditionCard('prices_among_highest_condition')
-      .registerRunListener((args, state) => {
-        const device = args.device;
-        state.prices = device._prices;
-        return device._priceAmongHighestComparer(args, state);
-      });
+      .registerRunListener((args, state) => args.device._priceAmongHighestComparer(args, state));
 
     this.homey.flow.getActionCard('set_at_home_on')
       .registerRunListener((args, state) => args.device.onActionSetAtHomeOn());
