@@ -50,7 +50,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
 
   async onSettings({ oldSettings, newSettings, changedKeys }) {
     if (changedKeys.includes('currency')) {
-      await this.fixPrice(newSettingsObj.currency);
+      await this.fixPrice(newSettings.currency);
       this._lastFetchData = undefined;
       this._lastPrice = undefined;
       this.scheduleCheckTime(5);

@@ -201,6 +201,10 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 1.5.6
+
+- Fixed bug in settings
+
 #### 1.5.5
 
 - Fixed issues with 'High prices [x] hours of the day (tokens: heating, high price)' and 'Low prices [x] hours of the day (tokens: heating, low price)' triggers
