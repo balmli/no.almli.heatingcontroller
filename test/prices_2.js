@@ -1,5 +1,5 @@
+const moment = require('../lib/moment-timezone-with-data');
 const expect = require("chai").expect;
-const dayjs = require('dayjs');
 const pricesLib = require('../lib/prices');
 const days = require("../lib/days");
 
@@ -299,14 +299,13 @@ const getPrices = function () {
             price: 0.49186
         }
     ];
+    const timeZone = moment().tz();
     _prices = prices
       .map(p => {
-          const date = dayjs(p.startsAt);
-          const local = date.tz();
-          p.startsAt = local;
-          p.startIso = date.toISOString();
-          p.startLocal = local.format();
-          return p;
+          const startsAt = moment.tz(p.startsAt, 'UTC').tz(timeZone);
+          const time = startsAt.unix();
+          const price = p.price;
+          return { startsAt, time, price };
       });
     return _prices;
 };
@@ -335,8 +334,8 @@ const getState = function (atHome) {
 
 const checkHighPrice = function (aDate, aTime, state, numRows) {
     it("High price at " + aTime, function () {
-        let x = pricesLib.pricesStarting(getPrices(), dayjs(aDate).tz(), 0, 24);
-        expect(pricesLib.checkHighPrice2(x, 4, dayjs(aDate + 'T' + aTime).tz(), state).length).to.equal(numRows);
+        let x = pricesLib.pricesStarting(getPrices(), moment(aDate), 0, 24);
+        expect(pricesLib.checkHighPrice2(x, 4, moment(aDate + 'T' + aTime), state).length).to.equal(numRows);
     });
 };
 

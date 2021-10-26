@@ -1,9 +1,11 @@
+const moment = require('../lib/moment-timezone-with-data');
 const expect = require("chai").expect;
-const dayjs = require('dayjs');
 const pricesLib = require('../lib/prices');
 const days = require("../lib/days");
 
 let _prices = undefined;
+
+days.setTimeZone('Europe/Oslo');
 
 const getPrices = function () {
     if (_prices) {
@@ -299,14 +301,13 @@ const getPrices = function () {
             price: 0.50902
         }
     ];
+    const timeZone = moment().tz();
     _prices = prices
       .map(p => {
-          const date = dayjs(p.startsAt);
-          const local = date.tz();
-          p.startsAt = local;
-          p.startIso = date.toISOString();
-          p.startLocal = local.format();
-          return p;
+          const startsAt = moment.tz(p.startsAt, 'UTC').tz(timeZone);
+          const time = startsAt.unix();
+          const price = p.price;
+          return { startsAt, time, price };
       });
     return _prices;
 };
@@ -335,15 +336,15 @@ const getState = function (atHome) {
 
 const checkLowPrice = function (aDate, aTime, numRows) {
     it("Low price at " + aTime, function () {
-        let x = pricesLib.pricesStarting(getPrices(), dayjs(aDate).tz(), 0, 24);
-        expect(pricesLib.checkLowPrice(x, 18, dayjs(aDate + 'T' + aTime).tz()).length).to.equal(numRows);
+        let x = pricesLib.pricesStarting(getPrices(), moment(aDate), 0, 24);
+        expect(pricesLib.checkLowPrice(x, 18, moment(aDate + 'T' + aTime)).length).to.equal(numRows);
     });
 };
 
 const checkHighPrice = function (aDate, aTime, state, numRows) {
     it("High price at " + aTime, function () {
-        let x = pricesLib.pricesStarting(getPrices(), dayjs(aDate).tz(), 0, 24);
-        expect(pricesLib.checkHighPrice2(x, 6, dayjs(aDate + 'T' + aTime).tz(), state).length).to.equal(numRows);
+        let x = pricesLib.pricesStarting(getPrices(), moment(aDate), 0, 24);
+        expect(pricesLib.checkHighPrice2(x, 6, moment(aDate + 'T' + aTime), state).length).to.equal(numRows);
     });
 };
 
@@ -355,40 +356,42 @@ describe("Prices", function () {
 
     describe("Check testdata", function () {
         it("48 hours", function () {
-            expect(getPrices().length).to.equal(48);
+            const prcs = getPrices();
+            //console.log(prcs);
+            expect(prcs.length).to.equal(48);
         });
     });
 
     describe("Check no prices", function () {
         it("No prices: pricesStarting", function () {
-            expect(pricesLib.pricesStarting([], dayjs('2019-01-21').tz(), 0, 24).length).to.equal(0);
+            expect(pricesLib.pricesStarting([], moment('2019-01-21'), 0, 24).length).to.equal(0);
         });
         it("No prices: checkLowPrice", function () {
-            expect(pricesLib.checkLowPrice([], 18, dayjs('2019-01-21').tz()).length).to.equal(0);
+            expect(pricesLib.checkLowPrice([], 18, moment('2019-01-21')).length).to.equal(0);
         });
         it("No prices: checkHighPrice", function () {
-            expect(pricesLib.checkHighPrice2([], 6, dayjs('2019-01-21').tz(), {}).length).to.equal(0);
+            expect(pricesLib.checkHighPrice2([], 6, moment('2019-01-21'), {}).length).to.equal(0);
         });
     });
 
     describe("Prices next hours", function () {
         it("2019-01-21: 24 hours", function () {
-            const forDay = dayjs('2019-01-21').startOf('day').tz();
+            const forDay = moment('2019-01-21').startOf('day');
             const prcs = pricesLib.pricesStarting(getPrices(), forDay, 0, 24)
             expect(prcs.length).to.equal(24);
-            //expect(pricesLib.pricesStarting(getPrices(), dayjs('2019-01-21'), 0, 24).length).to.equal(24);
+            //expect(pricesLib.pricesStarting(getPrices(), moment('2019-01-21'), 0, 24).length).to.equal(24);
         });
         it("2019-01-22: 24 hours", function () {
-            expect(pricesLib.pricesStarting(getPrices(), dayjs('2019-01-22').tz(), 0, 24).length).to.equal(24);
+            expect(pricesLib.pricesStarting(getPrices(), moment('2019-01-22'), 0, 24).length).to.equal(24);
         });
         it("2019-01-21T10:00:00: 20 hours", function () {
-            let prices = pricesLib.pricesStarting(getPrices(), dayjs('2019-01-21').tz(), 10, 20);
+            let prices = pricesLib.pricesStarting(getPrices(), moment('2019-01-21'), 10, 20);
             expect(prices.length).to.equal(20);
             expect(prices[0].startsAt.format()).to.equal('2019-01-21T10:00:00+01:00');
             expect(prices[prices.length - 1].startsAt.format()).to.equal('2019-01-22T05:00:00+01:00');
         });
         it("2019-01-23: 0 hours", function () {
-            expect(pricesLib.pricesStarting(getPrices(), dayjs('2019-01-23').tz(), 0, 24).length).to.equal(0);
+            expect(pricesLib.pricesStarting(getPrices(), moment('2019-01-23'), 0, 24).length).to.equal(0);
         });
     });
 

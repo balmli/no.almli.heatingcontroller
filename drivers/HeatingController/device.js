@@ -1,7 +1,7 @@
 'use strict';
 
 const Homey = require('homey');
-const dayjs = require('dayjs');
+const moment = require('../../lib/moment-timezone-with-data');
 const pricesLib = require('../../lib/prices');
 const nordpool = require('../../lib/nordpool');
 const heating = require('../../lib/heating');
@@ -175,9 +175,9 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       const priceArea = settings.priceArea || 'Oslo';
       const currency = settings.currency || 'EUR';
       this.log('Will fetch prices:', this.getData().id, priceArea, currency);
-      const localTime = dayjs().tz().startOf('day');
+      const localTime = moment().startOf('day');
       const prices = await nordpool.fetchPrices(localTime, { priceArea, currency });
-      this._lastFetchData = dayjs().tz();
+      this._lastFetchData = moment();
       this._prices = prices;
       this.log('Got prices:', this.getData().id, prices.length);
     } catch (err) {
@@ -192,12 +192,12 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
   shallFetchData() {
     return !this._prices
       || !this._lastFetchData
-      || this.toHour(this._lastFetchData) !== this.toHour(dayjs().tz());
+      || this.toHour(this._lastFetchData) !== this.toHour(moment());
   }
 
   async onData() {
     try {
-      const localTime = dayjs().tz();
+      const localTime = moment();
       const heatingOptions = this._getHeatingOptions();
       let calcHeating = heating.calcHeating(localTime, this._at_home, this._home_override, heatingOptions);
       let nigthAtWorkChanged = false;
@@ -326,7 +326,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
   }
 
   _getCurrentPrice(prices) {
-    const currentHour = this.toHour(dayjs().tz());
+    const currentHour = this.toHour(moment());
     return prices.find(p => this.toHour(p.startsAt) === currentHour);
   }
 
@@ -338,7 +338,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       return false;
     }
 
-    const localTime = dayjs().tz();
+    const localTime = moment();
 
     // Finds prices starting at 00:00 today
     const pricesNextHours = pricesLib.pricesStarting(this._prices, localTime, 0, 24);
@@ -360,7 +360,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       return false;
     }
 
-    const localTime = dayjs().tz();
+    const localTime = moment();
 
     // Finds prices starting at 00:00 today
     const pricesNextHours = pricesLib.pricesStarting(this._prices, localTime, 0, 24);
@@ -382,7 +382,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       return false;
     }
 
-    const localTime = dayjs().tz();
+    const localTime = moment();
 
     // Finds prices starting at 00:00 today
     const pricesNextHours = pricesLib.pricesStarting(this._prices, localTime, 0, 24);
@@ -403,7 +403,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       || !this._prices) {
       return false;
     }
-    const localTime = dayjs().tz();
+    const localTime = moment();
     let startHour = 0;
     let numHours = 24;
     if (args.hours) {
@@ -429,7 +429,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       return false;
     }
 
-    const localTime = dayjs().tz();
+    const localTime = moment();
     let startHour = 0;
     let numHours = 24;
     let numLowestHours = 1;
@@ -450,7 +450,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       return false;
     }
 
-    const localTime = dayjs().tz();
+    const localTime = moment();
     let startHour = 0;
     let numHours = 24;
     let numHighestHours = 1;

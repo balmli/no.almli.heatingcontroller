@@ -1,9 +1,11 @@
+const moment = require('../lib/moment-timezone-with-data');
 const expect = require("chai").expect;
-const dayjs = require('dayjs');
 const pricesLib = require('../lib/prices');
 const days = require("../lib/days");
 
 let _prices = undefined;
+
+days.setTimeZone('Europe/Oslo');
 
 const getPrices = function () {
     if (_prices) {
@@ -299,20 +301,19 @@ const getPrices = function () {
             price: 0.49186
         }
     ];
+    const timeZone = moment().tz();
     _prices = prices
       .map(p => {
-          const date = dayjs(p.startsAt);
-          const local = date.tz();
-          p.startsAt = local;
-          p.startIso = date.toISOString();
-          p.startLocal = local.format();
-          return p;
+          const startsAt = moment.tz(p.startsAt, 'UTC').tz(timeZone);
+          const time = startsAt.unix();
+          const price = p.price;
+          return { startsAt, time, price };
       });
     return _prices;
 };
 
 const checkAvgPrice = function (aDate, startHour, below, percentage, state) {
-    const aDays = dayjs(aDate).tz();
+    const aDays = moment(aDate);
     const startingAt = aDays.hour(startHour).startOf('hour');
     const prices = getPrices();
     it("Average price check at " + aDate + ' - ' + startHour, function () {
@@ -328,6 +329,14 @@ describe("Average price change", function () {
 
     before(function() {
         days.setTimeZone('Europe/Oslo');
+    });
+
+    describe("Check testdata", function () {
+        it("48 hours", function () {
+            const prcs = getPrices();
+            //console.log(prcs);
+            expect(prcs.length).to.equal(48);
+        });
     });
 
     describe("1 percent", function () {
@@ -504,11 +513,10 @@ describe("Average prices Kr.sand 31.01.2019", function () {
         checkAvgPrice('2019-01-31', 22, false, 3, false);
         checkAvgPrice('2019-01-31', 23, false, 3, false);
     });
-
 });
 
 const checkFollowingHoursLowestPrice = function (aDate, startHour, following_hours, num_lowest_hours, state) {
-    const aDays = dayjs(aDate).tz();
+    const aDays = moment(aDate);
     const prices = getPrices();
     it("Lowest price check at " + aDate + ' - ' + startHour, function () {
         const chk = pricesLib.pricesAmongLowest(prices, aDays, startHour, following_hours, num_lowest_hours);
@@ -517,7 +525,7 @@ const checkFollowingHoursLowestPrice = function (aDate, startHour, following_hou
 };
 
 const checkFollowingHoursHighestPrice = function (aDate, startHour, following_hours, num_highest_hours, state) {
-    const aDays = dayjs(aDate).tz();
+    const aDays = moment(aDate);
     const prices = getPrices();
     it("Highest price check at " + aDate + ' - ' + startHour, function () {
         const chk = pricesLib.pricesAmongHighest(prices, aDays, startHour, following_hours, num_highest_hours);

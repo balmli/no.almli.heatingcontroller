@@ -1,10 +1,10 @@
+const moment = require('../lib/moment-timezone-with-data');
 const expect = require("chai").expect;
-const dayjs = require("dayjs");
 const heating = require('../lib/heating');
 const days = require("../lib/days");
 
-const getDay = (y, m, d, hh, mm, ss, ms) => {
-    return dayjs().tz().year(y).month(m).date(d).hour(hh).minute(mm).second(ss).millisecond(ms);
+const getDay = (y, M, d, h, m, s, ms) => {
+    return moment({ y, M, d, h, m, s, ms});
 };
 
 const getHeatingOptions = function () {
@@ -89,6 +89,13 @@ describe("Heating", function () {
 
     before(function() {
         days.setTimeZone('Europe/Oslo');
+    });
+
+    describe("Check getDay", function () {
+        it("Friday 21.12.2018", function () {
+            const aDate = getDay(2018, 11, 21, 7, 0, 0, 0);
+            expect(aDate.format()).to.equal('2018-12-21T07:00:00+01:00');
+        });
     });
 
     describe("Heating on a Monday, at home, no home override", function () {

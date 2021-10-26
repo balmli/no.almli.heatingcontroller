@@ -1,21 +1,17 @@
 'use strict';
 
-const dayjs = require('dayjs');
+const moment = require('moment-timezone');
 const days = require('../lib/days');
 const nordpool = require('../lib/nordpool');
 const heating = require('../lib/heating');
 const pricesLib = require('../lib/prices');
 
 const handleData = function (prices, low_hours, num_hours) {
-    const localTime = dayjs().tz();
+    const localTime = moment();
 
     let pricesNextHours = pricesLib.pricesStarting(prices, localTime, 0, 24);
     console.log('pricesNextHours', localTime.format(), prices.length, pricesNextHours.length);
-    console.log('pricesNextHours ' + num_hours + ' hours ', pricesNextHours.map(p => ({
-        startsAt: p.startsAt.toISOString(),
-        startsAtLocal: p.startsAt.format(),
-        price: p.price
-    })));
+    console.log('pricesNextHours ' + num_hours + ' hours ', pricesNextHours);
 
     let pricesSorted = pricesNextHours
       .sort((a,b) => a.price - b.price);
@@ -25,7 +21,7 @@ const handleData = function (prices, low_hours, num_hours) {
     //console.log('lowHours ', lowHours);
 
     let onNow = lowHours
-        .filter(p => p.startsAt.isBefore(localTime) && p.startsAt.add(1, 'hour').startOf('hour').isAfter(localTime))
+        .filter(p => p.startsAt.isBefore(localTime) && moment(p.startsAt).add(1, 'hour').startOf('hour').isAfter(localTime))
         .length
 
     console.log('onNow ', onNow);
@@ -37,13 +33,13 @@ const handleData = function (prices, low_hours, num_hours) {
     .slice(0, num_hours)
     .sort((a, b) => a.price - b.price)
     .slice(0, lowHours)
-    .filter(p => p.startsAt.isBefore(localTime) && p.startsAt.add(1, 'hour').startOf('hour').isAfter(localTime));
+    .filter(p => p.startsAt.isBefore(localTime) && moment(p.startsAt).add(1, 'hour').startOf('hour').isAfter(localTime));
 
     console.log('onNowOrOff ', startingAt, onNowOrOff);
 };
 
 const findHeatingOffWhenHighPrices = function (prices, high_hours, num_hours, heatingOptions) {
-    const localTime = dayjs().tz();
+    const localTime = moment();
 
     let pricesNextHours = pricesLib.pricesStarting(prices, localTime, 0, 24);
 
@@ -84,7 +80,7 @@ const testNordpool = function ({priceArea, currency, country, timeZone}) {
         country
     };
 
-    const localTime = dayjs().tz().startOf('day');
+    const localTime = moment().startOf('day');
 
     nordpool.fetchPrices(localTime, { priceArea, currency })
       .then(prices => {

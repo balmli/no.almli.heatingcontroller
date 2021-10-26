@@ -201,6 +201,10 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 1.5.7
+
+- Reduced memory consumption
+
 #### 1.5.6
 
 - Fixed bug in settings

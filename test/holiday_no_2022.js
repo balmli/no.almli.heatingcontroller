@@ -1,10 +1,10 @@
+const moment = require('../lib/moment-timezone-with-data');
 const expect = require("chai").expect;
-const dayjs = require("dayjs");
 const holidays = require('../lib/holidays');
 const days = require("../lib/days");
 
 const getDay = (y, m, d) => {
-    return dayjs().year(y).month(m).date(d);
+    return moment({ year: y, month: m, day: d });
 };
 
 describe("Norwegian holidays", function () {

@@ -1,11 +1,10 @@
-const dayjs = require('dayjs');
+const moment = require('../lib/moment-timezone-with-data');
 const chai = require("chai");
 const expect = chai.expect;
-const days = require('../lib/days');
 const holidays = require('../lib/holidays');
 
 const getDay = (y, m, d) => {
-  return dayjs({ year: y, month: m, day: d });
+  return moment({ year: y, month: m, day: d });
 };
 
 const toStr = (aDate) => {

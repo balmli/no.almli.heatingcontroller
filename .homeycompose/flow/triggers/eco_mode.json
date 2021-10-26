@@ -1,5 +1,6 @@
 {
   "id": "eco_mode",
+  "highlight": true,
   "title": {
     "en": "ECO mode"
   },

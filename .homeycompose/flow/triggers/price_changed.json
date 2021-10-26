@@ -1,5 +1,6 @@
 {
   "id": "price_changed",
+  "highlight": true,
   "title": {
     "en": "Utility price changed"
   },
