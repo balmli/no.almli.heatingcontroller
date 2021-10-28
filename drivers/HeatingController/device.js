@@ -9,6 +9,7 @@ const heating = require('../../lib/heating');
 module.exports = class HeatingControllerDevice extends Homey.Device {
 
   async onInit() {
+    await this.migrate();
     await this.fixPrice(this.getSetting('currency'));
     this._at_home = undefined;
     this._home_override = undefined;
@@ -33,18 +34,33 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     this.log(this.getName() + ' -> device initialized');
   }
 
-  async fixPrice(selectedCurrency) {
-    if (this.hasCapability('price')) {
-      await this.removeCapability('price');
-    }
-    for (let currency of ['DKK', 'EUR', 'NOK', 'SEK']) {
-      if (currency !== selectedCurrency &&
-        this.hasCapability(`price_${currency}`)) {
-        await this.removeCapability(`price_${currency}`);
+  async migrate() {
+    try {
+      if (!this.hasCapability('price_ratio')) {
+        await this.addCapability('price_ratio');
       }
+      this.log(this.getName() + ' -> migrated OK');
+    } catch (err) {
+      this.error(err);
     }
-    if (!this.hasCapability(`price_${selectedCurrency}`)) {
-      await this.addCapability(`price_${selectedCurrency}`);
+  }
+
+  async fixPrice(selectedCurrency) {
+    try {
+      if (this.hasCapability('price')) {
+        await this.removeCapability('price');
+      }
+      for (let currency of ['DKK', 'EUR', 'NOK', 'SEK']) {
+        if (currency !== selectedCurrency &&
+          this.hasCapability(`price_${currency}`)) {
+          await this.removeCapability(`price_${currency}`);
+        }
+      }
+      if (!this.hasCapability(`price_${selectedCurrency}`)) {
+        await this.addCapability(`price_${selectedCurrency}`);
+      }
+    } catch (err) {
+      this.error(err);
     }
   }
 
@@ -266,7 +282,8 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
         }
       }
 
-      const currentPrice = this._getCurrentPrice(this._prices);
+      const currentPrice = pricesLib.currentPrice(this._prices, localTime);
+      const priceRatio = pricesLib.priceRatio(this._prices, localTime);
 
       if (currentPrice) {
         const startAtHour = this.toHour(currentPrice.startsAt);
@@ -280,8 +297,11 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
           if (this.hasCapability(priceCapability)) {
             this.setCapabilityValue(priceCapability, price).catch(this.error);
           }
-          this.homey.flow.getDeviceTriggerCard('price_changed').trigger(this, { price }).catch(this.error);
-          this.log('Price changed trigger', startAtHour, price);
+          if (priceRatio !== undefined && this.hasCapability('price_ratio')) {
+            this.setCapabilityValue('price_ratio', priceRatio).catch(this.error);
+          }
+          this.homey.flow.getDeviceTriggerCard('price_changed').trigger(this, { price, priceRatio }).catch(this.error);
+          this.log('Price changed trigger', startAtHour, price, priceRatio);
         }
 
         if (priceChanged || heatChanged) {
@@ -323,11 +343,6 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     } catch (err) {
       this.error(err);
     }
-  }
-
-  _getCurrentPrice(prices) {
-    const currentHour = this.toHour(moment());
-    return prices.find(p => this.toHour(p.startsAt) === currentHour);
   }
 
   async _heatingOffHighPriceComparer(args, state) {
@@ -410,7 +425,8 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       startHour = localTime.hour();
       numHours = args.hours;
     }
-    const currentPrice = this._getCurrentPrice(this._prices);
+
+    const currentPrice = pricesLib.currentPrice(this._prices, localTime);
 
     // Finds average of prices
     const averagePrice = pricesLib.averagePricesStarting(this._prices, localTime, startHour, numHours);

@@ -1,7 +1,7 @@
 {
   "id": "at_work_starts",
   "title": {
-    "en": "At work starts"
+    "en": "Workday starts"
   },
   "hint": {
     "en": "Triggers when the work period starts."

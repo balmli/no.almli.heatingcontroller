@@ -1,7 +1,7 @@
 {
   "id": "home_was_set_off",
   "title": {
-    "en": "Home mode set to off"
+    "en": "Home mode is disabled"
   },
   "hint": {
     "en": "Triggers when 'Home mode' has been disabled (when the device turned off)."

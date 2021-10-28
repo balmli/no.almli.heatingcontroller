@@ -12,7 +12,14 @@
       "name": "price",
       "type": "number",
       "title": {
-        "en": "price"
+        "en": "Price"
+      }
+    },
+    {
+      "name": "priceRatio",
+      "type": "number",
+      "title": {
+        "en": "Price ratio"
       }
     }
   ],

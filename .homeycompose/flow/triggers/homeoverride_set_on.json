@@ -1,7 +1,7 @@
 {
   "id": "homeoverride_set_on",
   "title": {
-    "en": "Home override set to on"
+    "en": "Home override is enabled"
   },
   "hint": {
     "en": "Triggers when 'Home override' has been enabled."

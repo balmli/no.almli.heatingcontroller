@@ -1,7 +1,7 @@
 {
   "id": "at_work_ends",
   "title": {
-    "en": "At work ends"
+    "en": "Workday ends"
   },
   "hint": {
     "en": "Triggers when the work period ends."

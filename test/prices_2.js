@@ -351,6 +351,27 @@ describe("Prices Kr.sand 31.01.2019", function () {
         });
     });
 
+    describe("Price ratio", function () {
+        it("Price ratio 2019-01-31: 24 hours", function () {
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31'))).to.equal(0.077433);
+        });
+        it("Price ratio 2019-01-31T01:00:00.000Z: 24 hours", function () {
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31T01:00:00.000Z'))).to.equal(0.0);
+        });
+        it("Price ratio 2019-01-31T07:00:00.000Z: 24 hours", function () {
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31T07:00:00.000Z'))).to.equal(0.865472);
+        });
+        it("Price ratio 2019-01-31T10:00:00.000Z: 24 hours", function () {
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31T10:00:00.000Z'))).to.equal(0.821633);
+        });
+        it("Price ratio 2019-01-31T16:00:00.000Z: 24 hours", function () {
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31T16:00:00.000Z'))).to.equal(1.0);
+        });
+        it("Price ratio 2019-02-01: 24 hours", function () {
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-02-01'))).to.equal(0.186661);
+        });
+    });
+
     describe("Check high price - working day - home", function () {
         let state = getState(true);
         checkHighPrice('2019-01-31', '00:00:00', state, 0);

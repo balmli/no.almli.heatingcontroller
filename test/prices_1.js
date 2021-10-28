@@ -374,6 +374,24 @@ describe("Prices", function () {
         });
     });
 
+    describe("Price ratio", function () {
+        it("Price ratio 2019-01-21: 24 hours", function () {
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-21'))).to.equal(0.048043);
+        });
+        it("Price ratio 2019-01-21T01:00:00.000Z: 24 hours", function () {
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-21T01:00:00.000Z'))).to.equal(0.0);
+        });
+        it("Price ratio 2019-01-21T07:00:00.000Z: 24 hours", function () {
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-21T07:00:00.000Z'))).to.equal(1.0);
+        });
+        it("Price ratio 2019-01-21T10:00:00.000Z: 24 hours", function () {
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-21T10:00:00.000Z'))).to.equal(0.47937);
+        });
+        it("Price ratio 2019-01-22: 24 hours", function () {
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-22'))).to.equal(0.048043);
+        });
+    });
+
     describe("Prices next hours", function () {
         it("2019-01-21: 24 hours", function () {
             const forDay = moment('2019-01-21').startOf('day');

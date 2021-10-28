@@ -201,6 +201,11 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 1.5.8
+
+- Added 'price ratio', which is a number between 0 and 1 for today's prices
+- Updated flow titles
+
 #### 1.5.7
 
 - Reduced memory consumption

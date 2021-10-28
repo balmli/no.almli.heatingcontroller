@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.almli.heatingcontroller",
-  "version": "1.5.7",
+  "version": "1.5.8",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#d06830",
@@ -56,7 +56,7 @@
       {
         "id": "at_work_ends",
         "title": {
-          "en": "At work ends"
+          "en": "Workday ends"
         },
         "hint": {
           "en": "Triggers when the work period ends."
@@ -72,7 +72,7 @@
       {
         "id": "at_work_starts",
         "title": {
-          "en": "At work starts"
+          "en": "Workday starts"
         },
         "hint": {
           "en": "Triggers when the work period starts."
@@ -89,7 +89,7 @@
         "id": "comfort_mode",
         "highlight": true,
         "title": {
-          "en": "Comfort mode"
+          "en": "Comfort mode is enabled"
         },
         "hint": {
           "en": "Triggers when Comfort mode is enabled."
@@ -106,7 +106,7 @@
         "id": "eco_mode",
         "highlight": true,
         "title": {
-          "en": "ECO mode"
+          "en": "ECO mode is enabled"
         },
         "hint": {
           "en": "Triggers when ECO mode is enabled."
@@ -170,7 +170,7 @@
       {
         "id": "home_override_set_off",
         "title": {
-          "en": "Home override set to off"
+          "en": "Home override is disabled"
         },
         "hint": {
           "en": "Triggers when 'Home override' has been disabled."
@@ -186,7 +186,7 @@
       {
         "id": "home_was_set_off",
         "title": {
-          "en": "Home mode set to off"
+          "en": "Home mode is disabled"
         },
         "hint": {
           "en": "Triggers when 'Home mode' has been disabled (when the device turned off)."
@@ -202,7 +202,7 @@
       {
         "id": "home_was_set_on",
         "title": {
-          "en": "Home mode set to on"
+          "en": "Home mode is enabled"
         },
         "hint": {
           "en": "Triggers when 'Home mode' has been enabled (when the device turned on)."
@@ -218,7 +218,7 @@
       {
         "id": "homeoverride_set_on",
         "title": {
-          "en": "Home override set to on"
+          "en": "Home override is enabled"
         },
         "hint": {
           "en": "Triggers when 'Home override' has been enabled."
@@ -325,7 +325,14 @@
             "name": "price",
             "type": "number",
             "title": {
-              "en": "price"
+              "en": "Price"
+            }
+          },
+          {
+            "name": "priceRatio",
+            "type": "number",
+            "title": {
+              "en": "Price ratio"
             }
           }
         ],
@@ -2291,6 +2298,20 @@
       },
       "decimals": 4,
       "icon": "/assets/nok.svg"
+    },
+    "price_ratio": {
+      "type": "number",
+      "title": {
+        "en": "Price ratio"
+      },
+      "desc": {
+        "en": "Price ratio of today's prices, where 0 is the lowest price and 1 is the highest price"
+      },
+      "insights": true,
+      "decimals": 6,
+      "getable": true,
+      "setable": false,
+      "uiComponent": null
     },
     "price_SEK": {
       "type": "number",

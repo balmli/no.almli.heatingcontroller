@@ -2,7 +2,7 @@
   "id": "eco_mode",
   "highlight": true,
   "title": {
-    "en": "ECO mode"
+    "en": "ECO mode is enabled"
   },
   "hint": {
     "en": "Triggers when ECO mode is enabled."
