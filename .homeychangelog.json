@@ -1,4 +1,7 @@
 {
+  "1.5.9": {
+    "en": "Added 'price ratio', which is a number between 0 and 1 for today's prices. Updated flow titles."
+  },
   "1.5.8": {
     "en": "Added 'price ratio', which is a number between 0 and 1 for today's prices. Updated flow titles."
   },

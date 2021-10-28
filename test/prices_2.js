@@ -353,22 +353,22 @@ describe("Prices Kr.sand 31.01.2019", function () {
 
     describe("Price ratio", function () {
         it("Price ratio 2019-01-31: 24 hours", function () {
-            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31'))).to.equal(0.077433);
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31'))).to.equal(0.826087);
         });
         it("Price ratio 2019-01-31T01:00:00.000Z: 24 hours", function () {
-            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31T01:00:00.000Z'))).to.equal(0.0);
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31T01:00:00.000Z'))).to.equal(1.0);
         });
         it("Price ratio 2019-01-31T07:00:00.000Z: 24 hours", function () {
-            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31T07:00:00.000Z'))).to.equal(0.865472);
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31T07:00:00.000Z'))).to.equal(0.130435);
         });
         it("Price ratio 2019-01-31T10:00:00.000Z: 24 hours", function () {
-            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31T10:00:00.000Z'))).to.equal(0.821633);
+           expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31T10:00:00.000Z'))).to.equal(0.434783);
         });
         it("Price ratio 2019-01-31T16:00:00.000Z: 24 hours", function () {
-            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31T16:00:00.000Z'))).to.equal(1.0);
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-01-31T16:00:00.000Z'))).to.equal(0.0);
         });
         it("Price ratio 2019-02-01: 24 hours", function () {
-            expect(pricesLib.priceRatio(getPrices(), moment('2019-02-01'))).to.equal(0.186661);
+            expect(pricesLib.priceRatio(getPrices(), moment('2019-02-01'))).to.equal(0.782609);
         });
     });
 

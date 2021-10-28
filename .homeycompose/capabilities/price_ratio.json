@@ -4,7 +4,7 @@
     "en": "Price ratio"
   },
   "desc": {
-    "en": "Price ratio of today's prices, where 0 is the lowest price and 1 is the highest price"
+    "en": "Price ratio of today's prices, where 1 is the lowest price and 0 is the highest price"
   },
   "insights": true,
   "decimals": 6,
