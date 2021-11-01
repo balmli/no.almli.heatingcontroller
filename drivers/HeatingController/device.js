@@ -201,14 +201,10 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     }
   }
 
-  toHour(aDate) {
-    return aDate.startOf('hour').toISOString();
-  }
-
   shallFetchData() {
     return !this._prices
       || !this._lastFetchData
-      || this.toHour(this._lastFetchData) !== this.toHour(moment());
+      || pricesLib.toHour(this._lastFetchData) !== pricesLib.toHour(moment());
   }
 
   async onData() {
@@ -286,11 +282,11 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       const priceRatio = pricesLib.priceRatio(this._prices, localTime);
 
       if (currentPrice) {
-        const startAtHour = this.toHour(currentPrice.startsAt);
+        const startAtHour = pricesLib.toHour(currentPrice.startsAt);
         const price = currentPrice.price;
         this.log('Current price:', startAtHour, price);
 
-        const priceChanged = !this._lastPrice || startAtHour !== this.toHour(this._lastPrice.startsAt);
+        const priceChanged = !this._lastPrice || startAtHour !== pricesLib.toHour(this._lastPrice.startsAt);
         if (priceChanged) {
           this._lastPrice = currentPrice;
           const priceCapability = `price_${this.getSetting('currency')}`;

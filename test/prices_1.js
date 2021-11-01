@@ -9,6 +9,12 @@ days.setTimeZone('Europe/Oslo');
 
 const getPrices = function () {
     if (_prices) {
+        const aDate = moment('2019-01-20T23:00:00.000Z');
+        for (let p of _prices) {
+            expect(p.startsAt.toISOString()).to.equal( aDate.toISOString());
+            aDate.add(1, 'hour');
+        }
+        expect(_prices.length).to.equal(48);
         return _prices;
     }
     const prices = [
@@ -359,6 +365,61 @@ describe("Prices", function () {
             const prcs = getPrices();
             //console.log(prcs);
             expect(prcs.length).to.equal(48);
+        });
+    });
+
+    describe("Check no date change", function () {
+        it("No date change: toHour", function () {
+            const aDate = moment('2019-01-21T03:12:45.678Z');
+            pricesLib.toHour(aDate);
+            expect(aDate.toISOString()).to.equal('2019-01-21T03:12:45.678Z');
+        });
+        it("No date change: currentPrice", function () {
+            const aDate = moment('2019-01-21T03:12:45.678Z');
+            pricesLib.currentPrice(getPrices(), aDate);
+            expect(aDate.toISOString()).to.equal('2019-01-21T03:12:45.678Z');
+        });
+        it("No date change: priceRatio", function () {
+            const aDate = moment('2019-01-21T03:12:45.678Z');
+            pricesLib.priceRatio(getPrices(), aDate);
+            expect(aDate.toISOString()).to.equal('2019-01-21T03:12:45.678Z');
+        });
+        it("No date change: pricesStarting", function () {
+            const aDate = moment('2019-01-21T03:12:45.678Z');
+            pricesLib.pricesStarting(getPrices(), aDate, 0, 24);
+            expect(aDate.toISOString()).to.equal('2019-01-21T03:12:45.678Z');
+        });
+        it("No date change: averagePricesStarting", function () {
+            const aDate = moment('2019-01-21T03:12:45.678Z');
+            pricesLib.averagePricesStarting(getPrices(), aDate, 0, 24);
+            expect(aDate.toISOString()).to.equal('2019-01-21T03:12:45.678Z');
+        });
+        it("No date change: checkLowPrice", function () {
+            const aDate = moment('2019-01-21T03:12:45.678Z');
+            const prcs = getPrices();
+            pricesLib.checkLowPrice(prcs, 4, aDate);
+            expect(aDate.toISOString()).to.equal('2019-01-21T03:12:45.678Z');
+        });
+        it("No date change: checkHighPrice", function () {
+            const aDate = moment('2019-01-21T03:12:45.678Z');
+            pricesLib.checkHighPrice(getPrices(), 6, aDate);
+            expect(aDate.toISOString()).to.equal('2019-01-21T03:12:45.678Z');
+        });
+        it("No date change: checkHighPrice2", function () {
+            const aDate = moment('2019-01-21T03:12:45.678Z');
+            const state = getState(true);
+            pricesLib.checkHighPrice2(getPrices(), 6, aDate, state);
+            expect(aDate.toISOString()).to.equal('2019-01-21T03:12:45.678Z');
+        });
+        it("No date change: pricesAmongLowest", function () {
+            const aDate = moment('2019-01-21T03:12:45.678Z');
+            pricesLib.pricesAmongLowest(getPrices(), aDate, 0, 4, 2);
+            expect(aDate.toISOString()).to.equal('2019-01-21T03:12:45.678Z');
+        });
+        it("No date change: pricesAmongHighest", function () {
+            const aDate = moment('2019-01-21T03:12:45.678Z');
+            pricesLib.pricesAmongHighest(getPrices(), aDate, 0, 4, 2);
+            expect(aDate.toISOString()).to.equal('2019-01-21T03:12:45.678Z');
         });
     });
 

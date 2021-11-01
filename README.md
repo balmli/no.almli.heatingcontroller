@@ -195,11 +195,25 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 - Set home override off
 - Set holiday today.  Holiday can be overridden with this action.
 
+#### Capabilities 
+
+- On / off (home / away)
+- Home override (true/false)
+- Night (true/false)
+- At work (true/false)
+- Heating (true/false)
+- Price (per kWh)
+- Price ratio (calculated from all hours on a day, with 1 for the lowest price and 0 for the highest price)
+
 ## Feedback:
 
 Please report issues at the [issues section on Github](https://github.com/balmli/no.almli.heatingcontroller/issues).
 
 ### Release Notes:
+
+#### 1.5.10
+
+- Fixed date handling
 
 #### 1.5.9
 

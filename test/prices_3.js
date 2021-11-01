@@ -9,6 +9,12 @@ days.setTimeZone('Europe/Oslo');
 
 const getPrices = function () {
     if (_prices) {
+        const aDate = moment('2019-01-30T23:00:00.000Z');
+        for (let p of _prices) {
+            expect(p.startsAt.toISOString()).to.equal( aDate.toISOString());
+            aDate.add(1, 'hour');
+        }
+        expect(_prices.length).to.equal(48);
         return _prices;
     }
     const prices = [
