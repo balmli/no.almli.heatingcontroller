@@ -1,6 +1,6 @@
 'use strict';
 
-const moment = require('moment-timezone');
+const moment = require('../lib/moment-timezone-with-data');
 const days = require('../lib/days');
 const nordpool = require('../lib/nordpool');
 const heating = require('../lib/heating');

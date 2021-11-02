@@ -211,6 +211,10 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 1.5.11
+
+- Fix for timezone
+
 #### 1.5.10
 
 - Fixed date handling
