@@ -16,6 +16,13 @@
       }
     },
     {
+      "name": "heating",
+      "type": "boolean",
+      "title": {
+        "en": "Heating"
+      }
+    },
+    {
       "name": "priceRatio",
       "type": "number",
       "title": {

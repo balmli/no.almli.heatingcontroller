@@ -6,90 +6,54 @@ const nordpool = require('../lib/nordpool');
 const heating = require('../lib/heating');
 const pricesLib = require('../lib/prices');
 
-const handleData = function (prices, low_hours, num_hours) {
-    const localTime = moment();
-
-    let pricesNextHours = pricesLib.pricesStarting(prices, localTime, 0, 24);
-    console.log('pricesNextHours', localTime.format(), prices.length, pricesNextHours.length);
-    console.log('pricesNextHours ' + num_hours + ' hours ', pricesNextHours);
-
-    let pricesSorted = pricesNextHours
-      .sort((a,b) => a.price - b.price);
-    //console.log('pricesSorted ', pricesSorted);
-
-    let lowHours = pricesSorted.slice(0, low_hours);
-    //console.log('lowHours ', lowHours);
-
-    let onNow = lowHours
-        .filter(p => p.startsAt.isBefore(localTime) && moment(p.startsAt).add(1, 'hour').startOf('hour').isAfter(localTime))
-        .length
-
-    console.log('onNow ', onNow);
-
-    const startingAt = localTime.startOf('day');
-
-  let onNowOrOff = prices
-    .filter(p => p.startsAt.isSameOrAfter(startingAt))
-    .slice(0, num_hours)
-    .sort((a, b) => a.price - b.price)
-    .slice(0, lowHours)
-    .filter(p => p.startsAt.isBefore(localTime) && moment(p.startsAt).add(1, 'hour').startOf('hour').isAfter(localTime));
-
-    console.log('onNowOrOff ', startingAt, onNowOrOff);
-};
-
-const findHeatingOffWhenHighPrices = function (prices, high_hours, num_hours, heatingOptions) {
-    const localTime = moment();
-
-    let pricesNextHours = pricesLib.pricesStarting(prices, localTime, 0, 24);
-
-    let heatingOffWithHighPrices = pricesNextHours
-        .map(p => {
-            p.heating = heating.calcHeating(p.startsAt, true, false, heatingOptions);
-            return p;
-        })
-        .filter(p => p.heating.heating === false)
-        .filter((p, idx) => idx % 2 === 0)
-      .sort((a,b) => b.price - a.price)
-        .slice(0, high_hours);
-
-    console.log('heatingOffWithHighPrices ', heatingOffWithHighPrices.length, heatingOffWithHighPrices.map(p => ({
-        startsAt: p.startsAt.toISOString(),
-        startsAtLocal: p.startsAt.format(),
-        price: p.price,
-        heating: p.heating
-    })));
-};
-
-const testNordpool = function ({priceArea, currency, country, timeZone}) {
+const testNordpool = async function ({ priceArea, currency, country, timeZone, date }) {
+  try {
     days.setTimeZone(timeZone);
 
+    const localTime = (date ? moment(date) : moment()).startOf('day');
+    const atHome = true;
+    const homeOverride = false;
     const heatingOptions = {
-        workday: {
-            startHour: 5,
-            endHour: 22.5,
-        },
-        notWorkday: {
-            startHour: 7,
-            endHour: 23,
-        },
-        workHours: {
-            startHour: 7,
-            endHour: 14
-        },
-        country
+      workday: {
+        startHour: 5,
+        endHour: 22.5,
+      },
+      notWorkday: {
+        startHour: 7,
+        endHour: 23,
+      },
+      workHours: {
+        startHour: 7,
+        endHour: 14
+      },
+      country
     };
+    const state = { atHome, homeOverride, heatingOptions };
 
-    const localTime = moment().startOf('day');
+    console.log('localTime:', localTime);
 
-    nordpool.fetchPrices(localTime, { priceArea, currency })
-      .then(prices => {
-        handleData(prices, 18, 24);
-        findHeatingOffWhenHighPrices(prices, 6, 24, heatingOptions);
-      }).catch(console.error);
+    const prices = await nordpool.fetchPrices(localTime, { priceArea, currency });
+    console.log('prices:', prices.length, prices);
 
+    const pricesNextHours = pricesLib.pricesStarting(prices, localTime, 0, 24);
+
+    pricesNextHours
+      .map(p => {
+        p.heating = heating.calcHeating(p.startsAt, atHome, homeOverride, heatingOptions);
+        p.lowPrice22Hours = pricesLib.checkLowPrice(pricesNextHours, 22, p.startsAt).length === 1;
+        p.highPrice6Hours = pricesLib.checkHighPrice2(pricesNextHours, 6, p.startsAt, state).length === 1;
+        return p;
+      });
+    console.log('pricesNextHours:', pricesNextHours.length, pricesNextHours);
+
+    const heatingOffWithHighPrices = pricesLib.checkHighPrice2(pricesNextHours, 6, localTime, state, false);
+    console.log('heatingOffWithHighPrices:', heatingOffWithHighPrices.length, heatingOffWithHighPrices);
+
+  } catch (err) {
+    console.log('Error:', err);
+  }
 }
 
 module.exports = {
-    testNordpool
+  testNordpool
 };

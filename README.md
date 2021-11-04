@@ -161,7 +161,7 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 - Night ends
 - At work starts
 - At work ends
-- Utility price changed (tokens: price, price area, currency)
+- Utility price changed (tokens: price, heating, price ratio)
 
 #### Conditions
 
@@ -210,6 +210,10 @@ The 'Utility price changed' will trig every hour, based on utility prices in the
 Please report issues at the [issues section on Github](https://github.com/balmli/no.almli.heatingcontroller/issues).
 
 ### Release Notes:
+
+#### 1.5.12
+
+- Added 'heating' token to 'Utility price changed' trigger
 
 #### 1.5.11
 

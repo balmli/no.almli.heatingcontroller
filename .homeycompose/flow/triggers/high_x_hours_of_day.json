@@ -14,14 +14,14 @@
       "name": "heating",
       "type": "boolean",
       "title": {
-        "en": "heating"
+        "en": "Heating"
       }
     },
     {
       "name": "high_price",
       "type": "boolean",
       "title": {
-        "en": "high_price"
+        "en": "High price"
       }
     }
   ],
