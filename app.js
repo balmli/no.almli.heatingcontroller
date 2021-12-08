@@ -93,6 +93,12 @@ class HeatingControllerApp extends Homey.App {
     this.homey.flow.getConditionCard('prices_among_highest_condition')
       .registerRunListener((args, state) => args.device._priceAmongHighestComparer(args, state));
 
+    this.homey.flow.getConditionCard('price_lowest_among_in_period')
+      .registerRunListener((args, state) => args.device._priceLowestInPeriodComparer(args, state));
+
+    this.homey.flow.getConditionCard('price_highest_among_in_period')
+      .registerRunListener((args, state) => args.device._priceHighestInPeriodComparer(args, state));
+
     this.homey.flow.getActionCard('set_at_home_on')
       .registerRunListener((args, state) => args.device.onActionSetAtHomeOn());
 

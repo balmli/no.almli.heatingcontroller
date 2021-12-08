@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.almli.heatingcontroller",
-  "version": "1.5.12",
+  "version": "1.6.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#d06830",
@@ -1481,6 +1481,110 @@
             },
             "placeholder": {
               "en": "Hours"
+            }
+          }
+        ]
+      },
+      {
+        "id": "price_highest_among_in_period",
+        "title": {
+          "en": "Current price is !{{|not}} among the [x] hours of highest in a period"
+        },
+        "titleFormatted": {
+          "en": "Current price is !{{|not}} among the [[high_hours]] hours of highest between [[start]] and [[end]]"
+        },
+        "hint": {
+          "en": "Condition to check if the current price is among the X highest in a period."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "start",
+            "type": "time",
+            "title": {
+              "en": "Start hour"
+            },
+            "placeholder": {
+              "en": "04:00"
+            }
+          },
+          {
+            "name": "end",
+            "type": "time",
+            "title": {
+              "en": "End hour"
+            },
+            "placeholder": {
+              "en": "08:00"
+            }
+          },
+          {
+            "name": "high_hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "High hours"
+            },
+            "placeholder": {
+              "en": "2"
+            }
+          }
+        ]
+      },
+      {
+        "id": "price_lowest_among_in_period",
+        "title": {
+          "en": "Current price is !{{|not}} among the [x] hours of lowest in a period"
+        },
+        "titleFormatted": {
+          "en": "Current price is !{{|not}} among the [[low_hours]] hours of lowest between [[start]] and [[end]]"
+        },
+        "hint": {
+          "en": "Condition to check if the current price is among the X lowest in a period."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "start",
+            "type": "time",
+            "title": {
+              "en": "Start hour"
+            },
+            "placeholder": {
+              "en": "04:00"
+            }
+          },
+          {
+            "name": "end",
+            "type": "time",
+            "title": {
+              "en": "End hour"
+            },
+            "placeholder": {
+              "en": "08:00"
+            }
+          },
+          {
+            "name": "low_hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "Low hours"
+            },
+            "placeholder": {
+              "en": "2"
             }
           }
         ]

@@ -493,6 +493,64 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     return pricesLib.pricesAmongHighest(this._prices, localTime, startHour, numHours, numHighestHours);
   }
 
+  async _priceLowestInPeriodComparer(args, state) {
+    if (args.start === undefined
+      || args.end === undefined
+      || !args.low_hours
+      || args.low_hours <= 0
+      || args.low_hours >= 24
+      || !this._prices) {
+      return false;
+    }
+
+    const startHour = parseInt(args.start.split(':')[0]);
+    const endHour = parseInt(args.end.split(':')[0]);
+    if (startHour >= endHour) {
+      // Invalid start / end hour
+      return false;
+    }
+
+    const localTime = moment();
+    if (startHour > localTime.hour() || endHour <= localTime.hour()) {
+      // Not in period
+      return false;
+    }
+
+    const numHours = endHour - startHour;
+    const numLowestHours = args.low_hours;
+
+    return pricesLib.pricesLowestInPeriod(this._prices, localTime, startHour, numHours, numLowestHours);
+  }
+
+  async _priceHighestInPeriodComparer(args, state) {
+    if (args.start === undefined
+      || args.end === undefined
+      || !args.high_hours
+      || args.high_hours <= 0
+      || args.high_hours >= 24
+      || !this._prices) {
+      return false;
+    }
+
+    const startHour = parseInt(args.start.split(':')[0]);
+    const endHour = parseInt(args.end.split(':')[0]);
+    if (startHour >= endHour) {
+      // Invalid start / end hour
+      return false;
+    }
+
+    const localTime = moment();
+    if (startHour > localTime.hour() || endHour <= localTime.hour()) {
+      // Not in period
+      return false;
+    }
+
+    const numHours = endHour - startHour;
+    const numHighestHours = args.high_hours;
+
+    return pricesLib.pricesHighestInPeriod(this._prices, localTime, startHour, numHours, numHighestHours);
+  }
+
   _getHeatingOptions() {
     const settings = this.getSettings();
     return {

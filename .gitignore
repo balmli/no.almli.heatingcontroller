@@ -2,3 +2,4 @@ env.json
 *.iml
 .idea
 node_modules/*
+build/
