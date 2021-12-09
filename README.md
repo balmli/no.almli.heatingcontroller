@@ -211,6 +211,10 @@ Please report issues at the [issues section on Github](https://github.com/balmli
 
 ### Release Notes:
 
+#### 1.6.1
+
+- Adjustments to the two new conditions 'Current price is among / not amount the X hours of lowest between start and end' and 'Current price is among / not amount the X hours of highest between start and end'
+
 #### 1.6.0
 
 - Added condition: 'Current price is among / not amount the X hours of lowest between start and end'

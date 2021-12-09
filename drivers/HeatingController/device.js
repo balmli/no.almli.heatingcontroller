@@ -503,23 +503,9 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       return false;
     }
 
-    const startHour = parseInt(args.start.split(':')[0]);
-    const endHour = parseInt(args.end.split(':')[0]);
-    if (startHour >= endHour) {
-      // Invalid start / end hour
-      return false;
-    }
-
     const localTime = moment();
-    if (startHour > localTime.hour() || endHour <= localTime.hour()) {
-      // Not in period
-      return false;
-    }
-
-    const numHours = endHour - startHour;
-    const numLowestHours = args.low_hours;
-
-    return pricesLib.pricesLowestInPeriod(this._prices, localTime, startHour, numHours, numLowestHours);
+    const { startTs, endTs } = pricesLib.daysPeriod(localTime, args.start, args.end);
+    return pricesLib.pricesLowestInPeriod(this._prices, localTime, startTs, endTs, args.low_hours);
   }
 
   async _priceHighestInPeriodComparer(args, state) {
@@ -532,23 +518,9 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       return false;
     }
 
-    const startHour = parseInt(args.start.split(':')[0]);
-    const endHour = parseInt(args.end.split(':')[0]);
-    if (startHour >= endHour) {
-      // Invalid start / end hour
-      return false;
-    }
-
     const localTime = moment();
-    if (startHour > localTime.hour() || endHour <= localTime.hour()) {
-      // Not in period
-      return false;
-    }
-
-    const numHours = endHour - startHour;
-    const numHighestHours = args.high_hours;
-
-    return pricesLib.pricesHighestInPeriod(this._prices, localTime, startHour, numHours, numHighestHours);
+    const { startTs, endTs } = pricesLib.daysPeriod(localTime, args.start, args.end);
+    return pricesLib.pricesHighestInPeriod(this._prices, localTime, startTs, endTs, args.high_hours);
   }
 
   _getHeatingOptions() {
