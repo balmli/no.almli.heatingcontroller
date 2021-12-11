@@ -86,6 +86,21 @@ Needs one flow:
   THEN: Start charging
   ELSE: Stop charging
 
+## 'The following X consecutive hours have the lowest total price between START and END' condition
+
+Use the 'The following X consecutive hours have the lowest total price between START and END' condition to find a period of X consecutive hours with the lowest total price in a given period. 
+
+#### Example
+
+Start the washing machine for four hours with the lowest total price between '20:00' and '08:00' the next day.
+
+Needs one flow:
+
+- **Flow**: WHEN: Utility price changed
+  AND: The washing machine is not running
+  AND: The following 4 consecutive hours have the lowest total price between '20:00' and '08:00'
+  THEN: Start the washing machine
+
 ## Average price condition
 
 The 'Current price is X percent above / below today's average' conditions will compare the current price to the average price for the whole day.
@@ -211,6 +226,8 @@ The 'Night starts', 'Night ends', 'At work starts' and 'At work ends' will trigg
 - Current price is / is not X % below the average of the next Y hours
 - The following X hours are among / are not among the Y hours of today's lowest prices
 - The following X hours are among / are not among the Y hours of today's highest prices
+- The following X consecutive hours have / have not the lowest total price between START and END
+- The following X consecutive hours have / have not the highest total price between START and END
 - Is public holiday today / yesterday / tomorrow.
 - Is bank holiday today / yesterday / tomorrow.
 - Is observance holiday today / yesterday / tomorrow.
@@ -242,6 +259,11 @@ The 'Night starts', 'Night ends', 'At work starts' and 'At work ends' will trigg
 Please report issues on the [community forum page](https://community.homey.app/t/app-pro-heating-controller-with-utility-prices/7795).
 
 ### Release Notes:
+
+#### 1.7.0
+
+- Added condition: 'The following X consecutive hours have / have not the lowest total price between start and end'
+- Added condition: 'The following X consecutive hours have / have not the highest total price between start and end'
 
 #### 1.6.1
 

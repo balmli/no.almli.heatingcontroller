@@ -337,6 +337,26 @@ describe("Check days period", function () {
   });
 
   describe("Check days period", function () {
+    it("Check 00:00 to 23:59 - '2021-10-20", function () {
+      const { startTs, endTs } = pricesLib.daysPeriod(moment('2021-10-20T07:00:00.000Z'), '00:00', '23:59');
+      expect(startTs.format()).to.equal('2021-10-20T00:00:00+02:00');
+      expect(endTs.format()).to.equal('2021-10-20T23:59:00+02:00');
+    });
+    it("Check 00:00 to 00:00 next day - '2021-10-20 a", function () {
+      const { startTs, endTs } = pricesLib.daysPeriod(moment('2021-10-20T00:00:00+02:00'), '00:00', '00:00');
+      expect(startTs.format()).to.equal('2021-10-20T00:00:00+02:00');
+      expect(endTs.format()).to.equal('2021-10-21T00:00:00+02:00');
+    });
+    it("Check 00:00 to 00:00 next day - '2021-10-20 b", function () {
+      const { startTs, endTs } = pricesLib.daysPeriod(moment('2021-10-20T07:00:00.000Z'), '00:00', '00:00');
+      expect(startTs.format()).to.equal('2021-10-20T00:00:00+02:00');
+      expect(endTs.format()).to.equal('2021-10-21T00:00:00+02:00');
+    });
+    it("Check 01:00 to 00:00 - '2021-10-20", function () {
+      const { startTs, endTs } = pricesLib.daysPeriod(moment('2021-10-20T07:00:00.000Z'), '01:00', '00:00');
+      expect(startTs.format()).to.equal('2021-10-20T01:00:00+02:00');
+      expect(endTs.format()).to.equal('2021-10-21T00:00:00+02:00');
+    });
     it("Check 20:00 to 23:00 - '2021-10-20 a", function () {
       const { startTs, endTs } = pricesLib.daysPeriod(moment('2021-10-20T07:00:00.000Z'), '20:00', '23:00');
       expect(startTs.format()).to.equal('2021-10-20T20:00:00+02:00');

@@ -523,6 +523,38 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     return pricesLib.pricesHighestInPeriod(this._prices, localTime, startTs, endTs, args.high_hours);
   }
 
+  _priceLowestNextHoursComparer(args, state) {
+    if (args.start === undefined
+      || args.end === undefined
+      || !args.hours
+      || args.hours <= 0
+      || args.hours > 24
+      || !this._prices) {
+      return false;
+    }
+
+    const localTime = moment();
+    const { startTs, endTs } = pricesLib.daysPeriod(localTime, args.start, args.end);
+    const sumPrice = pricesLib.checkSumPrices(this._prices, localTime, startTs, endTs, args.hours, true);
+    return !!sumPrice;
+  }
+
+  _priceHighestNextHoursComparer(args, state) {
+    if (args.start === undefined
+      || args.end === undefined
+      || !args.hours
+      || args.hours <= 0
+      || args.hours > 24
+      || !this._prices) {
+      return false;
+    }
+
+    const localTime = moment();
+    const { startTs, endTs } = pricesLib.daysPeriod(localTime, args.start, args.end);
+    const sumPrice = pricesLib.checkSumPrices(this._prices, localTime, startTs, endTs, args.hours, false);
+    return !!sumPrice;
+  }
+
   _getHeatingOptions() {
     const settings = this.getSettings();
     return {
