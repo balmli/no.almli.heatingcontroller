@@ -224,6 +224,7 @@ The 'Night starts', 'Night ends', 'At work starts' and 'At work ends' will trigg
 - Current price is / is not X % below today's average
 - Current price is / is not X % above the average of the next Y hours
 - Current price is / is not X % below the average of the next Y hours
+- Difference between highest and lowest price is less / more than X %
 - The following X hours are among / are not among the Y hours of today's lowest prices
 - The following X hours are among / are not among the Y hours of today's highest prices
 - The following X consecutive hours have / have not the lowest total price between START and END
