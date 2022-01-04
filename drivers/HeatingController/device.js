@@ -555,6 +555,19 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     return !!sumPrice;
   }
 
+  _priceDiffHighLowComparer(args, state) {
+    if (!args.percentage
+      || args.percentage < 0
+      || args.percentage > 9999
+      || !this._prices) {
+      return false;
+    }
+
+    const localTime = moment();
+    const diffCheck = pricesLib.priceHighLow(this._prices, localTime);
+    return diffCheck.diffPercentage < args.percentage;
+  }
+
   _getHeatingOptions() {
     const settings = this.getSettings();
     return {

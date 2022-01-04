@@ -1,4 +1,7 @@
 {
+  "1.8.0": {
+    "en": "Added condition: 'Difference between highest and lowest price is less / more than X %'. "
+  },
   "1.7.0": {
     "en": "Added condition: 'The following X consecutive hours have / have not the lowest total price between start and end'. Added condition: 'The following X consecutive hours have / have not the highest total price between start and end'."
   },

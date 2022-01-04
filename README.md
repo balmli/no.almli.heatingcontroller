@@ -260,6 +260,10 @@ Please report issues on the [community forum page](https://community.homey.app/t
 
 ### Release Notes:
 
+#### 1.8.0
+
+- Added condition: 'Difference between highest and lowest price is less / more than X %'
+
 #### 1.7.0
 
 - Added condition: 'The following X consecutive hours have / have not the lowest total price between start and end'
