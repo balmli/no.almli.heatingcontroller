@@ -583,6 +583,30 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     return diffCheck.diffAmount < args.amount;
   }
 
+  _priceLowerNextHoursComparer(args, state) {
+    if (!args.hours
+      || args.hours <= 0
+      || args.hours > 24
+      || !this._prices) {
+      return false;
+    }
+
+    const localTime = moment();
+    return pricesLib.currentPriceLowerThanNext(this._prices, localTime, args.hours);
+  }
+
+  _priceHigherNextHoursComparer(args, state) {
+    if (!args.hours
+      || args.hours <= 0
+      || args.hours > 24
+      || !this._prices) {
+      return false;
+    }
+
+    const localTime = moment();
+    return pricesLib.currentPriceHigherThanNext(this._prices, localTime, args.hours);
+  }
+
   _getHeatingOptions() {
     const settings = this.getSettings();
     return {
