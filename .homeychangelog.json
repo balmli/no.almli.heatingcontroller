@@ -1,6 +1,6 @@
 {
   "1.9.0": {
-    "en": "Added condition: 'Difference between highest and lowest price is less / more than X'. Added conditions: 'Current price is / is not lower / higher than prices next X hours'"
+    "en": "Added condition: 'Difference between highest and lowest price is less / more than X'. Added conditions: 'Current price is / is not lower / higher than prices next X hours'. Added 'Min price' and 'Max price' tags to 'Utility price changed' trigger. "
   },
   "1.8.0": {
     "en": "Added condition: 'Difference between highest and lowest price is less / more than X %'. "

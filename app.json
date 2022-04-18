@@ -341,6 +341,20 @@
             "title": {
               "en": "Price ratio"
             }
+          },
+          {
+            "name": "priceMin",
+            "type": "number",
+            "title": {
+              "en": "Min Price"
+            }
+          },
+          {
+            "name": "priceMax",
+            "type": "number",
+            "title": {
+              "en": "Max Price"
+            }
           }
         ],
         "args": [

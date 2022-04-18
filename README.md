@@ -204,7 +204,7 @@ The 'Night starts', 'Night ends', 'At work starts' and 'At work ends' will trigg
 - Workday ends
 - Night starts
 - Night ends
-- Utility price changed (tokens: price, heating, price ratio)
+- Utility price changed (tokens: price, heating, price ratio, min price, max price)
 - High prices X hours of the day (tokens: heating, high price)
 - Low prices X hours of the day (tokens: heating, low price)
 
@@ -224,6 +224,8 @@ The 'Night starts', 'Night ends', 'At work starts' and 'At work ends' will trigg
 - Current price is / is not X % below today's average
 - Current price is / is not X % above the average of the next Y hours
 - Current price is / is not X % below the average of the next Y hours
+- Current price is / is not lower than prices next X hours
+- Current price is / is not higher than prices next X hours
 - Difference between highest and lowest price is less / more than X %
 - Difference between highest and lowest price is less / more than X
 - The following X hours are among / are not among the Y hours of today's lowest prices
@@ -266,7 +268,7 @@ Please report issues on the [community forum page](https://community.homey.app/t
 
 - Added condition: 'Difference between highest and lowest price is less / more than X'
 - Added conditions: 'Current price is / is not lower / higher than prices next X hours'
-
+- Added 'Min price' and 'Max price' tags to 'Utility price changed' trigger
 
 #### 1.8.0
 

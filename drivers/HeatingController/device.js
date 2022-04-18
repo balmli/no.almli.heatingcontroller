@@ -313,10 +313,15 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
       }
 
       if (priceChanged) {
+        const sorted = pricesLib.pricesSorted(this._prices, localTime);
+        const priceMin = sorted.length > 0 ? sorted[0].price : undefined;
+        const priceMax = sorted.length > 0 ? sorted[sorted.length - 1].price : undefined;
         await this.homey.flow.getDeviceTriggerCard('price_changed').trigger(this, {
           price,
           heating: calcHeating.heating,
-          priceRatio
+          priceRatio,
+          priceMin,
+          priceMax,
         }).catch(this.error);
         this.log('Price changed trigger', startAtHour, price, priceRatio);
       }
