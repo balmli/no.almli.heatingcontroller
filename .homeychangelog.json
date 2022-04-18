@@ -1,4 +1,7 @@
 {
+  "1.9.0": {
+    "en": "Added condition: 'Difference between highest and lowest price is less / more than X'. "
+  },
   "1.8.0": {
     "en": "Added condition: 'Difference between highest and lowest price is less / more than X %'. "
   },

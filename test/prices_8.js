@@ -356,5 +356,29 @@ describe("Price difference between high and low is less than X percent on 20.10.
 
 });
 
-1.0
+const checkDiffAmount = function (aDate, expectedAmount) {
+  it(`"Price difference at ${aDate} expected to be ${expectedAmount}`,  function () {
+    const prices = getPrices();
+    const diffCheck = pricesLib.priceHighLow(prices, aDate);
+    //console.log(aDate, ', expected: ', expectedAmount, ', was: ', diffCheck);
+    if (diffCheck) {
+      expect(diffCheck.diffAmount).to.be.closeTo(expectedAmount, 0.000001);
+    } else {
+      expect(expectedAmount).eq(undefined);
+    }
+  });
+};
+
+describe("Price difference between high and low is less than X on 20.10.2021", function () {
+
+  before(function () {
+    days.setTimeZone('Europe/Oslo');
+  });
+
+  describe("Price difference between high and low is less than X on 20.10.2021", function () {
+    checkDiffAmount('2021-10-20T01:00:00+02:00', 1.03745 - 0.1005);
+    checkDiffAmount('2021-10-21T01:00:00+02:00', 1.03745 - 0.1005);
+  });
+
+});
 

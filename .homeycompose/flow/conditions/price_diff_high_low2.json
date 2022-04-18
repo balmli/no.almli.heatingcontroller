@@ -1,0 +1,31 @@
+{
+  "id": "price_diff_high_low2",
+  "title": {
+    "en": "Difference between highest and lowest price is !{{less|more}} than [x]"
+  },
+  "titleFormatted": {
+    "en": "Difference between highest and lowest price is !{{less|more}} than [[amount]]"
+  },
+  "hint": {
+    "en": "Condition to check if the difference between the highest and the lowest price for the whole day is less or more than X. "
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    },
+    {
+      "name": "amount",
+      "type": "number",
+      "min": 0,
+      "max": 9999,
+      "title": {
+        "en": "Amount"
+      },
+      "placeholder": {
+        "en": "Amount"
+      }
+    }
+  ]
+}

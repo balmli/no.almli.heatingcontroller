@@ -225,6 +225,7 @@ The 'Night starts', 'Night ends', 'At work starts' and 'At work ends' will trigg
 - Current price is / is not X % above the average of the next Y hours
 - Current price is / is not X % below the average of the next Y hours
 - Difference between highest and lowest price is less / more than X %
+- Difference between highest and lowest price is less / more than X
 - The following X hours are among / are not among the Y hours of today's lowest prices
 - The following X hours are among / are not among the Y hours of today's highest prices
 - The following X consecutive hours have / have not the lowest total price between START and END
@@ -260,6 +261,11 @@ The 'Night starts', 'Night ends', 'At work starts' and 'At work ends' will trigg
 Please report issues on the [community forum page](https://community.homey.app/t/app-pro-heating-controller-with-utility-prices/7795).
 
 ### Release Notes:
+
+#### 1.9.0
+
+- Added condition: 'Difference between highest and lowest price is less / more than X'
+
 
 #### 1.8.0
 
