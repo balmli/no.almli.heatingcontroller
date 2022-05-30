@@ -174,7 +174,16 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
         await this.setCapabilityValue('home_override', this._home_override).catch(this.error);
       }
 
-      if (this.shallFetchData()) {
+      if (this.homey.app.hasPrices()) {
+        this._prices = this.homey.app.getPrices()
+          .map(p => {
+            return {
+              startsAt: moment(p.time * 1000),
+              time: p.time,
+              price: p.price,
+            }
+          });
+      } else if (this.shallFetchData()) {
         await this.fetchData();
       }
       if (this._prices) {

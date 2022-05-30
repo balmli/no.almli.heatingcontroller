@@ -152,6 +152,20 @@ class HeatingControllerApp extends Homey.App {
     return hd && hd.type && hd.type in types;
   }
 
+  hasPrices() {
+    const unixNow = Date.now() / 1000;
+    return this._prices && !!this._prices.find(p => p.time > unixNow);
+  }
+
+  getPrices() {
+    return this._prices;
+  }
+
+  setPrices(prices) {
+    this._prices = prices;
+    this.log('Set prices: ', prices);
+  }
+
 }
 
 module.exports = HeatingControllerApp;

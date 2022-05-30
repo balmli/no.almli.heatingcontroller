@@ -1,6 +1,6 @@
 {
   "id": "no.almli.heatingcontroller",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#d06830",
@@ -30,6 +30,12 @@
     "small": "/assets/images/small.png"
   },
   "permissions": [],
+  "api": {
+    "updatePrices": {
+      "method": "POST",
+      "path": "/prices"
+    }
+  },
   "author": {
     "name": "Bjørnar Almli",
     "email": "bjornar.almli@gmail.com"

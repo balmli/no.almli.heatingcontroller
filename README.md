@@ -264,6 +264,10 @@ Please report issues on the [community forum page](https://community.homey.app/t
 
 ### Release Notes:
 
+#### 1.10.0
+
+- Api to receive prices from other apps
+
 #### 1.9.0
 
 - Added condition: 'Difference between highest and lowest price is less / more than X'
