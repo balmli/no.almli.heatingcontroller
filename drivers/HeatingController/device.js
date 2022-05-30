@@ -279,15 +279,13 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
         this.log('Current price:', startAtHour, price);
 
         priceChanged = !this._lastPrice || startAtHour !== pricesLib.toHour(this._lastPrice.startsAt);
-        if (priceChanged) {
-          this._lastPrice = currentPrice;
-          const priceCapability = `price_${this.getSetting('currency')}`;
-          if (this.hasCapability(priceCapability)) {
-            await this.setCapabilityValue(priceCapability, price).catch(this.error);
-          }
-          if (priceRatio !== undefined && this.hasCapability('price_ratio')) {
-            await this.setCapabilityValue('price_ratio', priceRatio).catch(this.error);
-          }
+        this._lastPrice = currentPrice;
+        const priceCapability = `price_${this.getSetting('currency')}`;
+        if (this.hasCapability(priceCapability)) {
+          await this.setCapabilityValue(priceCapability, price).catch(this.error);
+        }
+        if (priceRatio !== undefined && this.hasCapability('price_ratio')) {
+          await this.setCapabilityValue('price_ratio', priceRatio).catch(this.error);
         }
       }
 

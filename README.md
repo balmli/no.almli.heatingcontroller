@@ -264,7 +264,7 @@ Please report issues on the [community forum page](https://community.homey.app/t
 
 ### Release Notes:
 
-#### 1.10.0
+#### 1.10.1
 
 - Api to receive prices from other apps
 
