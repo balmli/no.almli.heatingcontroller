@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.almli.heatingcontroller",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#d06830",
@@ -30,13 +30,9 @@
     "large": "/assets/images/large.png",
     "small": "/assets/images/small.png"
   },
-  "permissions": [],
-  "api": {
-    "updatePrices": {
-      "method": "POST",
-      "path": "/prices"
-    }
-  },
+  "permissions": [
+    "homey:app:no.almli.utilitycost"
+  ],
   "author": {
     "name": "Bjørnar Almli",
     "email": "bjornar.almli@gmail.com"
@@ -2387,6 +2383,19 @@
                   }
                 }
               ]
+            },
+            {
+              "id": "pricesFromUtilityBill",
+              "type": "checkbox",
+              "label": {
+                "en": "Prices from Utility Bill",
+                "no": "Priser fra Strømregning"
+              },
+              "hint": {
+                "en": "Check to receive prices from the Utility Bill app. Supported if 'Price calculation' in the Utility Bill app is set to 'Spot' or 'Fixed price'.",
+                "no": "Kryss av for å motta priser fra Strømregning appen. Kun støttet hvis 'Prisberegning' i Strømregning er satt til 'Spotpris' eller 'Fastpris'."
+              },
+              "value": false
             }
           ]
         },

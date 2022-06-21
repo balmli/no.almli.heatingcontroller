@@ -1,4 +1,7 @@
 {
+  "1.10.2": {
+    "en": "Option to receive prices from the Utility Bill app. "
+  },
   "1.10.1": {
     "en": "Api to receive prices from other apps. "
   },

@@ -264,9 +264,9 @@ Please report issues on the [community forum page](https://community.homey.app/t
 
 ### Release Notes:
 
-#### 1.10.1
+#### 1.10.2
 
-- Api to receive prices from other apps
+- Option to receive prices from the Utility Bill app
 
 #### 1.9.0
 

@@ -1,0 +1,13 @@
+{
+  "id": "pricesFromUtilityBill",
+  "type": "checkbox",
+  "label": {
+    "en": "Prices from Utility Bill",
+    "no": "Priser fra Strømregning"
+  },
+  "hint": {
+    "en": "Check to receive prices from the Utility Bill app. Supported if 'Price calculation' in the Utility Bill app is set to 'Spot' or 'Fixed price'.",
+    "no": "Kryss av for å motta priser fra Strømregning appen. Kun støttet hvis 'Prisberegning' i Strømregning er satt til 'Spotpris' eller 'Fastpris'."
+  },
+  "value": false
+}

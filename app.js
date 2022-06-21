@@ -9,6 +9,7 @@ class HeatingControllerApp extends Homey.App {
 
   async onInit() {
     days.setTimeZone(this.homey.clock.getTimezone());
+    this.utilityBillApi = this.homey.api.getApiApp('no.almli.utilitycost');
     await this._initFlows();
     this.log('HeatingControllerApp is running...');
   }
@@ -152,18 +153,32 @@ class HeatingControllerApp extends Homey.App {
     return hd && hd.type && hd.type in types;
   }
 
-  hasPrices() {
-    const unixNow = Date.now() / 1000;
-    return this._prices && !!this._prices.find(p => p.time > unixNow);
+  async _checkApi() {
+    try {
+      const isInstalled = await this.utilityBillApi.getInstalled();
+      const version = await this.utilityBillApi.getVersion();
+      if (isInstalled && !!version) {
+        const split = version.split('.');
+        let apiOk = (Number(split[0]) >= 1 && Number(split[1]) >= 4);
+        this.log(`Utility Bill: ${version} installed${apiOk ? ' and ready' : ', but not ready'}`, split);
+        return apiOk;
+      } else {
+        this.log(`Utility Bill: not installed`);
+      }
+    } catch (err) {
+      this.log(`Checking Utility Bill API: ${err.message}`);
+    }
+    return false;
   }
 
-  getPrices() {
-    return this._prices;
-  }
-
-  setPrices(prices) {
-    this._prices = prices;
-    this.log('Set prices: ', prices);
+  async fetchPrices() {
+    if (await this._checkApi()) {
+      try {
+        return await this.utilityBillApi.get('/prices');
+      } catch (err) {
+        this.log('Fetching prices from the Utility Bill app failed: ', err);
+      }
+    }
   }
 
 }

@@ -44,6 +44,10 @@
       {
         "id": "currency",
         "$extends": "currency"
+      },
+      {
+        "id": "pricesFromUtilityBill",
+        "$extends": "pricesFromUtilityBill"
       }
     ]
   },

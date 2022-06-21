@@ -65,7 +65,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
   }
 
   async onSettings({ oldSettings, newSettings, changedKeys }) {
-    if (changedKeys.includes('currency')) {
+    if (changedKeys.includes('currency') || changedKeys.includes('pricesFromUtilityBill')) {
       await this.fixPrice(newSettings.currency);
       this._lastFetchData = undefined;
       this._lastPrice = undefined;
@@ -173,17 +173,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
         this._home_override = false;
         await this.setCapabilityValue('home_override', this._home_override).catch(this.error);
       }
-
-      if (this.homey.app.hasPrices()) {
-        this._prices = this.homey.app.getPrices()
-          .map(p => {
-            return {
-              startsAt: moment(p.time * 1000),
-              time: p.time,
-              price: p.price,
-            }
-          });
-      } else if (this.shallFetchData()) {
+      if (this.shallFetchData()) {
         await this.fetchData();
       }
       if (this._prices) {
@@ -199,14 +189,28 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
   async fetchData() {
     try {
       const settings = this.getSettings();
-      const priceArea = settings.priceArea || 'Oslo';
-      const currency = settings.currency || 'EUR';
-      this.log('Will fetch prices:', this.getData().id, priceArea, currency);
-      const localTime = moment().startOf('day');
-      const prices = await nordpool.fetchPrices(localTime, { priceArea, currency });
-      this._lastFetchData = moment();
-      this._prices = prices;
-      this.log('Got prices:', this.getData().id, prices.length);
+      if (settings.pricesFromUtilityBill) {
+        const pricesUtilityBill = await this.homey.app.fetchPrices();
+        this._lastFetchData = moment();
+        this._prices = pricesUtilityBill ? pricesUtilityBill
+          .map(p => {
+            return {
+              startsAt: moment(p.time * 1000),
+              time: p.time,
+              price: p.price,
+            }
+          }) : undefined;
+        this.log('Got prices from the Utility Bill app:', this._prices ? this._prices.length : 0);
+      } else {
+        const priceArea = settings.priceArea || 'Oslo';
+        const currency = settings.currency || 'EUR';
+        this.log('Will fetch prices:', this.getData().id, priceArea, currency);
+        const localTime = moment().startOf('day');
+        const prices = await nordpool.fetchPrices(localTime, { priceArea, currency });
+        this._lastFetchData = moment();
+        this._prices = prices;
+        this.log('Got prices:', this.getData().id, prices.length);
+      }
     } catch (err) {
       this.error(err);
     }
