@@ -27,7 +27,7 @@ class HeatingControllerApp extends Homey.App {
     this.homey.flow.getConditionCard('is_workingday')
       .registerRunListener((args) => {
         const theDay = holidays.calcDate(moment(), args.condition);
-        return theDay.getDay() >= 1 && theDay.getDay() <= 5 && !this.check(args, {
+        return theDay.day() >= 1 && theDay.day() <= 5 && !this.check(args, {
           'public': true,
           'bank': true,
           'observance': true

@@ -264,6 +264,10 @@ Please report issues on the [community forum page](https://community.homey.app/t
 
 ### Release Notes:
 
+#### 1.10.3
+
+- Fix Is working day condition
+
 #### 1.10.2
 
 - Option to receive prices from the Utility Bill app
