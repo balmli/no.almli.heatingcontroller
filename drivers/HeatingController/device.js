@@ -21,13 +21,13 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     this._prices = undefined;
 
     this.registerCapabilityListener('onoff', async (value, opts) => {
-      if (value) {
-        await this.homey.flow.getDeviceTriggerCard('home_was_set_on').trigger(this, {}).catch(this.error);
-      } else {
-        await this.homey.flow.getDeviceTriggerCard('home_was_set_off').trigger(this, {}).catch(this.error);
-      }
       this.log(this.getName() + ' -> onoff changed: ', value, opts);
-      return this.checkTime({ onoff: value });
+      await this.checkTime({ onoff: value });
+      if (value) {
+        this.homey.flow.getDeviceTriggerCard('home_was_set_on').trigger(this, {}).catch(this.error);
+      } else {
+        this.homey.flow.getDeviceTriggerCard('home_was_set_off').trigger(this, {}).catch(this.error);
+      }
     });
 
     this.scheduleCheckTime(5);

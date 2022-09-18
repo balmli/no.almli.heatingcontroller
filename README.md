@@ -264,6 +264,10 @@ Please report issues on the [community forum page](https://community.homey.app/t
 
 ### Release Notes:
 
+#### 1.10.4
+
+- Fixed 'Home mode is enabled / disabled' triggers
+
 #### 1.10.3
 
 - Fix Is working day condition
