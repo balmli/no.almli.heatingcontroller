@@ -264,6 +264,10 @@ Please report issues on the [community forum page](https://community.homey.app/t
 
 ### Release Notes:
 
+#### 1.11.0
+
+- Added 'Price level' tag on 'Utility price changed' trigger
+
 #### 1.10.4
 
 - Fixed 'Home mode is enabled / disabled' triggers

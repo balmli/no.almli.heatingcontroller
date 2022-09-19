@@ -42,6 +42,20 @@
       "title": {
         "en": "Max Price"
       }
+    },
+    {
+      "name": "priceLevel",
+      "type": "string",
+      "title": {
+        "en": "Price level"
+      }
+    },
+    {
+      "name": "priceLevelDescr",
+      "type": "string",
+      "title": {
+        "en": "Price level description"
+      }
     }
   ],
   "args": [

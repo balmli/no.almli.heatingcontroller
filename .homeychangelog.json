@@ -1,4 +1,7 @@
 {
+  "1.11.0": {
+    "en": "Added 'Price level' tag on 'Utility price changed' trigger. "
+  },
   "1.10.4": {
     "en": "Fixed 'Home mode is enabled / disabled' triggers. "
   },

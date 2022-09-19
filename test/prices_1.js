@@ -435,6 +435,26 @@ describe("Prices", function () {
         });
     });
 
+    describe("Price level", function () {
+        it("Price level 2019-01-21: 24 hours", function () {
+            const priceLevel = pricesLib.priceLevel(getPrices(), moment('2019-01-21'));
+            expect(priceLevel.code).eq('NORMAL');
+            expect(priceLevel.description).eq('The price is greater than 90 % and smaller than 115 % compared to average price.');
+        });
+        it("Price level 2019-01-21T07:00:00.000Z: 24 hours", function () {
+            const priceLevel = pricesLib.priceLevel(getPrices(), moment('2019-01-21T07:00:00.000Z'));
+            expect(priceLevel.code).eq('EXPENSIVE');
+        });
+        it("Price level 2019-01-22T10:00:00.000Z: 24 hours", function () {
+            const priceLevel = pricesLib.priceLevel(getPrices(), moment('2019-01-22T10:00:00.000Z'));
+            expect(priceLevel.code).eq('NORMAL');
+        });
+        it("Price level 2019-01-22T15:00:00.000Z: 24 hours", function () {
+            const priceLevel = pricesLib.priceLevel(getPrices(), moment('2019-01-22T15:00:00.000Z'));
+            expect(priceLevel.code).eq('NORMAL');
+        });
+    });
+
     describe("Price ratio", function () {
         it("Price ratio 2019-01-21: 24 hours", function () {
             expect(pricesLib.priceRatio(getPrices(), moment('2019-01-21'))).to.equal(0.826087);
