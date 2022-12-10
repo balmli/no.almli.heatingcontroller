@@ -113,8 +113,13 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     return this.checkTime({ home_override: false});
   }
 
-  async onActionSetHolidayToday() {
+  async onActionSetHolidayToday(args) {
     await this.setSettings({ holiday_today: args.holiday }).catch(this.error);
+    return this.checkTime();
+  }
+
+  async onActionClearHolidayToday() {
+    await this.setSettings({ holiday_today: '' }).catch(this.error);
     return this.checkTime();
   }
 

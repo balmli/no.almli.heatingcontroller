@@ -1,0 +1,19 @@
+{
+  "id": "clear_holiday_today",
+  "title": {
+    "en": "Use automatic holiday"
+  },
+  "titleFormatted": {
+    "en": "Use automatic holiday"
+  },
+  "hint": {
+    "en": "Use this action to go back to heating controller's automatic holiday setting, if it was previously set to manual by the 'Holiday today' / 'Not a holiday today' action."
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=HeatingController"
+    }
+  ]
+}

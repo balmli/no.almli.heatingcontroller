@@ -274,6 +274,11 @@ Please report issues on the [community forum page](https://community.homey.app/t
 
 ### Release Notes:
 
+#### 1.11.1
+
+- Bug fix for the 'Holiday today' / 'Not a holiday today' action
+- Added 'Use automatic holiday' action to go back to automatic holidays
+
 #### 1.11.0
 
 - Added 'Price level' tag on 'Utility price changed' trigger

@@ -137,7 +137,10 @@ class HeatingControllerApp extends Homey.App {
       .registerRunListener((args, state) => args.device.onActionSetHomeOverrideOff());
 
     this.homey.flow.getActionCard('set_holiday_today')
-      .registerRunListener((args, state) => args.device.onActionSetHolidayToday());
+      .registerRunListener((args, state) => args.device.onActionSetHolidayToday(args));
+
+    this.homey.flow.getActionCard('clear_holiday_today')
+      .registerRunListener((args, state) => args.device.onActionClearHolidayToday());
   }
 
   check(args, types) {

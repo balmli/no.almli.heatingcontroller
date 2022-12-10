@@ -1,4 +1,7 @@
 {
+  "1.11.1": {
+    "en": "Bug fix for the 'Holiday today' / 'Not a holiday today' action. Added 'Use automatic holiday' action to go back to automatic holidays. "
+  },
   "1.11.0": {
     "en": "Added 'Price level' tag on 'Utility price changed' trigger. "
   },
