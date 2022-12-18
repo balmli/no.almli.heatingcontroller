@@ -274,6 +274,10 @@ Please report issues on the [community forum page](https://community.homey.app/t
 
 ### Release Notes:
 
+#### 1.12.0
+
+- 
+
 #### 1.11.1
 
 - Bug fix for the 'Holiday today' / 'Not a holiday today' action

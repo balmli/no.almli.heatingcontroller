@@ -1,14 +1,15 @@
 'use strict';
 
-const moment = require('../lib/moment-timezone-with-data');
-const days = require('../lib/days');
+import moment from 'moment-timezone';
+
 const nordpool = require('../lib/nordpool');
 const heating = require('../lib/heating');
-const pricesLib = require('../lib/prices');
+import { PriceApi } from '@balmli/homey-utility-prices';
+const pricesLib = new PriceApi();
 
 const testNordpool = async function ({ priceArea, currency, country, timeZone, date }) {
   try {
-    days.setTimeZone(timeZone);
+    moment.tz.setDefault(timeZone);
 
     const localTime = (date ? moment(date) : moment()).startOf('day');
     const atHome = true;
@@ -41,12 +42,12 @@ const testNordpool = async function ({ priceArea, currency, country, timeZone, d
       .map(p => {
         p.heating = heating.calcHeating(p.startsAt, atHome, homeOverride, heatingOptions);
         p.lowPrice22Hours = pricesLib.checkLowPrice(pricesNextHours, 22, p.startsAt).length === 1;
-        p.highPrice6Hours = pricesLib.checkHighPrice2(pricesNextHours, 6, p.startsAt, state).length === 1;
+        p.highPrice6Hours = heating.checkHighPrice2(pricesNextHours, 6, p.startsAt, state).length === 1;
         return p;
       });
     console.log('pricesNextHours:', pricesNextHours.length, pricesNextHours);
 
-    const heatingOffWithHighPrices = pricesLib.checkHighPrice2(pricesNextHours, 6, localTime, state, false);
+    const heatingOffWithHighPrices = heating.checkHighPrice2(pricesNextHours, 6, localTime, state, false);
     console.log('heatingOffWithHighPrices:', heatingOffWithHighPrices.length, heatingOffWithHighPrices);
 
   } catch (err) {
