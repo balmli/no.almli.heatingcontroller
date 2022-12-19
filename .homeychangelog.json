@@ -1,6 +1,6 @@
 {
   "1.12.0": {
-    "en": ". "
+    "en": "Bug fix for the 'Holiday today' / 'Not a holiday today' action. Added conditions 'Current price is !{{|not}} among the [[hours]] hours of lowest / highest between [[start]] and [[end]]' and 'The following [[hours]] consecutive hours have !{{|not}} the lowest / highest total price between [[start]] and [[end]]' with hours as numbers."
   },
   "1.11.1": {
     "en": "Bug fix for the 'Holiday today' / 'Not a holiday today' action. Added 'Use automatic holiday' action to go back to automatic holidays. "

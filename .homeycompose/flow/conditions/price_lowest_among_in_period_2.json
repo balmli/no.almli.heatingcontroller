@@ -1,0 +1,56 @@
+{
+  "id": "price_lowest_among_in_period_2",
+  "title": {
+    "en": "Current price is !{{|not}} among the [x] hours of lowest in a period"
+  },
+  "titleFormatted": {
+    "en": "Current price is !{{|not}} among the [[low_hours]] hours of lowest between [[start]] and [[end]]"
+  },
+  "hint": {
+    "en": "Condition to check if the current price is among the X lowest in a period with hours as numbers."
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    },
+    {
+      "name": "start",
+      "type": "number",
+      "min": 0,
+      "max": 24,
+      "title": {
+        "en": "Start hour as number"
+      },
+      "placeholder": {
+        "en": "Start hour as number"
+      }
+    },
+    {
+      "name": "end",
+      "type": "number",
+      "min": 0,
+      "max": 24,
+      "title": {
+        "en": "End hour as number"
+      },
+      "placeholder": {
+        "en": "End hour as number"
+      }
+    },
+    {
+      "name": "low_hours",
+      "type": "number",
+      "min": 1,
+      "max": 23,
+      "step": 1,
+      "title": {
+        "en": "Low hours"
+      },
+      "placeholder": {
+        "en": "2"
+      }
+    }
+  ]
+}

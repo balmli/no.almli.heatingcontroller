@@ -100,6 +100,12 @@ module.exports = class HeatingControllerApp extends Homey.App {
         this.homey.flow.getConditionCard('price_highest_among_in_period')
             .registerRunListener((args, state) => args.device.priceComparer.priceHighestInPeriodComparer(args, state));
 
+        this.homey.flow.getConditionCard('price_lowest_among_in_period_2')
+            .registerRunListener((args, state) => args.device.priceComparer.priceLowestInPeriodComparer(args, state));
+
+        this.homey.flow.getConditionCard('price_highest_among_in_period_2')
+            .registerRunListener((args, state) => args.device.priceComparer.priceHighestInPeriodComparer(args, state));
+
         this.homey.flow.getConditionCard('price_lower_next_hours')
             .registerRunListener((args, state) => args.device.priceComparer.priceLowerNextHoursComparer(args, state));
 
@@ -110,6 +116,12 @@ module.exports = class HeatingControllerApp extends Homey.App {
             .registerRunListener((args, state) => args.device.priceComparer.priceLowestNextHoursComparer(args, state));
 
         this.homey.flow.getConditionCard('prices_highest_next_hours')
+            .registerRunListener((args, state) => args.device.priceComparer.priceHighestNextHoursComparer(args, state));
+
+        this.homey.flow.getConditionCard('prices_lowest_next_hours_2')
+            .registerRunListener((args, state) => args.device.priceComparer.priceLowestNextHoursComparer(args, state));
+
+        this.homey.flow.getConditionCard('prices_highest_next_hours_2')
             .registerRunListener((args, state) => args.device.priceComparer.priceHighestNextHoursComparer(args, state));
 
         this.homey.flow.getConditionCard('price_diff_high_low')

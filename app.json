@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.almli.heatingcontroller",
-  "version": "1.11.1",
+  "version": "1.12.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#d06830",
@@ -1662,6 +1662,62 @@
         ]
       },
       {
+        "id": "price_highest_among_in_period_2",
+        "title": {
+          "en": "Current price is !{{|not}} among the [x] hours of highest in a period"
+        },
+        "titleFormatted": {
+          "en": "Current price is !{{|not}} among the [[high_hours]] hours of highest between [[start]] and [[end]]"
+        },
+        "hint": {
+          "en": "Condition to check if the current price is among the X highest in a period with hours as numbers."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "start",
+            "type": "number",
+            "min": 0,
+            "max": 24,
+            "title": {
+              "en": "Start hour as number"
+            },
+            "placeholder": {
+              "en": "Start hour as number"
+            }
+          },
+          {
+            "name": "end",
+            "type": "number",
+            "min": 0,
+            "max": 24,
+            "title": {
+              "en": "End hour as number"
+            },
+            "placeholder": {
+              "en": "End hour as number"
+            }
+          },
+          {
+            "name": "high_hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "High hours"
+            },
+            "placeholder": {
+              "en": "2"
+            }
+          }
+        ]
+      },
+      {
         "id": "price_lower_next_hours",
         "title": {
           "en": "Current price is !{{|not}} lower than prices next [x] hours"
@@ -1728,6 +1784,62 @@
             },
             "placeholder": {
               "en": "08:00"
+            }
+          },
+          {
+            "name": "low_hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "Low hours"
+            },
+            "placeholder": {
+              "en": "2"
+            }
+          }
+        ]
+      },
+      {
+        "id": "price_lowest_among_in_period_2",
+        "title": {
+          "en": "Current price is !{{|not}} among the [x] hours of lowest in a period"
+        },
+        "titleFormatted": {
+          "en": "Current price is !{{|not}} among the [[low_hours]] hours of lowest between [[start]] and [[end]]"
+        },
+        "hint": {
+          "en": "Condition to check if the current price is among the X lowest in a period with hours as numbers."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "start",
+            "type": "number",
+            "min": 0,
+            "max": 24,
+            "title": {
+              "en": "Start hour as number"
+            },
+            "placeholder": {
+              "en": "Start hour as number"
+            }
+          },
+          {
+            "name": "end",
+            "type": "number",
+            "min": 0,
+            "max": 24,
+            "title": {
+              "en": "End hour as number"
+            },
+            "placeholder": {
+              "en": "End hour as number"
             }
           },
           {
@@ -1888,6 +2000,62 @@
         ]
       },
       {
+        "id": "prices_highest_next_hours_2",
+        "title": {
+          "en": "The following [x] consecutive hours have !{{|not}} the highest total price in a period"
+        },
+        "titleFormatted": {
+          "en": "The following [[hours]] consecutive hours have !{{|not}} the highest total price between [[start]] and [[end]]"
+        },
+        "hint": {
+          "en": "Condition for checking whether the next hours in a row have the highest total price in a period with hours as numbers."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "hours",
+            "type": "number",
+            "min": 1,
+            "max": 24,
+            "step": 1,
+            "title": {
+              "en": "Hours"
+            },
+            "placeholder": {
+              "en": "2"
+            }
+          },
+          {
+            "name": "start",
+            "type": "number",
+            "min": 0,
+            "max": 24,
+            "title": {
+              "en": "Start hour as number"
+            },
+            "placeholder": {
+              "en": "Start hour as number"
+            }
+          },
+          {
+            "name": "end",
+            "type": "number",
+            "min": 0,
+            "max": 24,
+            "title": {
+              "en": "End hour as number"
+            },
+            "placeholder": {
+              "en": "End hour as number"
+            }
+          }
+        ]
+      },
+      {
         "id": "prices_lowest_next_hours",
         "title": {
           "en": "The following [x] consecutive hours have !{{|not}} the lowest total price in a period"
@@ -1935,6 +2103,62 @@
             },
             "placeholder": {
               "en": "08:00"
+            }
+          }
+        ]
+      },
+      {
+        "id": "prices_lowest_next_hours_2",
+        "title": {
+          "en": "The following [x] consecutive hours have !{{|not}} the lowest total price in a period"
+        },
+        "titleFormatted": {
+          "en": "The following [[hours]] consecutive hours have !{{|not}} the lowest total price between [[start]] and [[end]]"
+        },
+        "hint": {
+          "en": "Condition for checking whether the next hours in a row have the lowest total price in a period with hours as numbers."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "hours",
+            "type": "number",
+            "min": 1,
+            "max": 24,
+            "step": 1,
+            "title": {
+              "en": "Hours"
+            },
+            "placeholder": {
+              "en": "2"
+            }
+          },
+          {
+            "name": "start",
+            "type": "number",
+            "min": 0,
+            "max": 24,
+            "title": {
+              "en": "Start hour as number"
+            },
+            "placeholder": {
+              "en": "Start hour as number"
+            }
+          },
+          {
+            "name": "end",
+            "type": "number",
+            "min": 0,
+            "max": 24,
+            "title": {
+              "en": "End hour as number"
+            },
+            "placeholder": {
+              "en": "End hour as number"
             }
           }
         ]

@@ -1,6 +1,6 @@
-const nordpool_test = require('./nordpool_test');
+import {testNordpool} from './nordpool_test';
 
-nordpool_test.testNordpool({
+testNordpool({
     priceArea: 'AT',
     currency: 'EUR',
     country: 'AT',

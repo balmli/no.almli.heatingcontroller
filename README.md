@@ -276,7 +276,8 @@ Please report issues on the [community forum page](https://community.homey.app/t
 
 #### 1.12.0
 
-- 
+- Bug fix for the 'Holiday today' / 'Not a holiday today' action 
+- Added conditions 'Current price is !{{|not}} among the [[hours]] hours of lowest / highest between [[start]] and [[end]]' and 'The following [[hours]] consecutive hours have !{{|not}} the lowest / highest total price between [[start]] and [[end]]' with hours as numbers
 
 #### 1.11.1
 

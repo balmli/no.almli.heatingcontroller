@@ -1,0 +1,56 @@
+{
+  "id": "prices_highest_next_hours_2",
+  "title": {
+    "en": "The following [x] consecutive hours have !{{|not}} the highest total price in a period"
+  },
+  "titleFormatted": {
+    "en": "The following [[hours]] consecutive hours have !{{|not}} the highest total price between [[start]] and [[end]]"
+  },
+  "hint": {
+    "en": "Condition for checking whether the next hours in a row have the highest total price in a period with hours as numbers."
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    },
+    {
+      "name": "hours",
+      "type": "number",
+      "min": 1,
+      "max": 24,
+      "step": 1,
+      "title": {
+        "en": "Hours"
+      },
+      "placeholder": {
+        "en": "2"
+      }
+    },
+    {
+      "name": "start",
+      "type": "number",
+      "min": 0,
+      "max": 24,
+      "title": {
+        "en": "Start hour as number"
+      },
+      "placeholder": {
+        "en": "Start hour as number"
+      }
+    },
+    {
+      "name": "end",
+      "type": "number",
+      "min": 0,
+      "max": 24,
+      "title": {
+        "en": "End hour as number"
+      },
+      "placeholder": {
+        "en": "End hour as number"
+      }
+    }
+  ]
+}
