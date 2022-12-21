@@ -7,11 +7,15 @@ module.exports = class HeatingControllerDriver extends Homey.Driver {
     }
 
     async onPairListDevices() {
+        const syncTime = Math.round(Math.random() * 3600);
         return [
             {
-                "name": "Heating Controller",
-                "data": {
+                name: "Heating Controller",
+                data: {
                     "id": guid()
+                },
+                store: {
+                    syncTime
                 }
             }
         ];

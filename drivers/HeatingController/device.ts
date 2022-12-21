@@ -1,13 +1,37 @@
-const Homey = require('homey');
+import {Device} from "homey";
 import moment from 'moment-timezone';
 
-import {heating, HeatingOptions, HolidayToday, NordpoolApi, PriceApi, PriceComparer} from '@balmli/homey-utility-prices'
+import {
+    heating,
+    HeatingOptions,
+    HeatingResult,
+    HolidayToday,
+    NordpoolApi,
+    NordpoolOptions,
+    NordpoolPrice,
+    NordpoolPrices,
+    PriceApi,
+    PriceComparer,
+    PricesFetchClient
+} from '@balmli/homey-utility-prices'
 
-module.exports = class HeatingControllerDevice extends Homey.Device {
+module.exports = class HeatingControllerDevice extends Device {
 
     priceApi = new PriceApi()
-    nordpool = new NordpoolApi()
     priceComparer = new PriceComparer(this.priceApi)
+    pricesFetchClient = new PricesFetchClient({logger: this.log});
+
+    _at_home?: boolean;
+    _home_override?: boolean;
+    _home_on_next_period?: boolean;
+    _ho_off_next_period?: boolean;
+    _lastPrice?: NordpoolPrice;
+    _prices?: NordpoolPrices;
+    _deleted?: boolean;
+
+    fetchTimeout?: NodeJS.Timeout;
+    updatePriceTimeout?: NodeJS.Timeout;
+    checkTimeout?: NodeJS.Timeout;
 
     async onInit() {
         await this.migrate();
@@ -17,13 +41,12 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
         this._home_on_next_period = false;
         this._ho_off_next_period = false;
 
-        this._lastFetchData = undefined;
         this._lastPrice = undefined;
         this._prices = undefined;
 
         this.registerCapabilityListener('onoff', async (value: any, opts: any) => {
             this.log(this.getName() + ' -> onoff changed: ', value, opts);
-            await this.checkTime({onoff: value});
+            await this.doCheckTime({onoff: value});
             if (value) {
                 this.homey.flow.getDeviceTriggerCard('home_was_set_on').trigger(this, {}).catch(this.error);
             } else {
@@ -31,6 +54,7 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
             }
         });
 
+        this.scheduleFetchData(3);
         this.scheduleCheckTime(5);
         this.log(this.getName() + ' -> device initialized');
     }
@@ -70,10 +94,13 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
         newSettings: any;
         changedKeys: string[];
     }): Promise<string | void> {
-        if (changedKeys.includes('currency') || changedKeys.includes('pricesFromUtilityBill')) {
+        if (changedKeys.includes('currency') ||
+            changedKeys.includes('priceArea') ||
+            changedKeys.includes('pricesFromUtilityBill')) {
             await this.fixPrice(newSettings.currency);
-            this._lastFetchData = undefined;
             this._lastPrice = undefined;
+            this.pricesFetchClient.clearStorage(this);
+            this.scheduleFetchData(3);
             this.scheduleCheckTime(5);
         }
     }
@@ -81,51 +108,51 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
     async onActionSetAtHomeOn() {
         await this.setCapabilityValue('onoff', true).catch(this.error);
         await this.homey.flow.getDeviceTriggerCard('home_was_set_on').trigger(this, {}).catch(this.error);
-        return this.checkTime({onoff: true});
+        return this.doCheckTime({onoff: true});
     }
 
     async onActionSetAtHomeOff() {
         this._home_on_next_period = false;
         await this.setCapabilityValue('onoff', false).catch(this.error);
         await this.homey.flow.getDeviceTriggerCard('home_was_set_off').trigger(this, {}).catch(this.error);
-        return this.checkTime({onoff: false});
+        return this.doCheckTime({onoff: false});
     }
 
     async onActionSetAtHomeOffAuto() {
         this._home_on_next_period = true;
         await this.setCapabilityValue('onoff', false).catch(this.error);
         await this.homey.flow.getDeviceTriggerCard('home_was_set_off').trigger(this, {}).catch(this.error);
-        return this.checkTime({onoff: false});
+        return this.doCheckTime({onoff: false});
     }
 
     async onActionSetHomeOverrideOn() {
         this._ho_off_next_period = false;
         await this.setCapabilityValue('home_override', true).catch(this.error);
         await this.homey.flow.getDeviceTriggerCard('homeoverride_set_on').trigger(this, {}).catch(this.error);
-        return this.checkTime({home_override: true});
+        return this.doCheckTime({home_override: true});
     }
 
     async onActionSetHomeOverrideOnAuto() {
         this._ho_off_next_period = true;
         await this.setCapabilityValue('home_override', true).catch(this.error);
         await this.homey.flow.getDeviceTriggerCard('homeoverride_set_on').trigger(this, {}).catch(this.error);
-        return this.checkTime({home_override: true});
+        return this.doCheckTime({home_override: true});
     }
 
     async onActionSetHomeOverrideOff() {
         await this.setCapabilityValue('home_override', false).catch(this.error);
         await this.homey.flow.getDeviceTriggerCard('home_override_set_off').trigger(this, {}).catch(this.error);
-        return this.checkTime({home_override: false});
+        return this.doCheckTime({home_override: false});
     }
 
     async onActionSetHolidayToday(args: any) {
         await this.setSettings({holiday_today: args.holiday}).catch(this.error);
-        return this.checkTime();
+        return this.doCheckTime();
     }
 
     async onActionClearHolidayToday() {
         await this.setSettings({holiday_today: ''}).catch(this.error);
-        return this.checkTime();
+        return this.doCheckTime();
     }
 
     onAdded() {
@@ -134,14 +161,144 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
 
     onDeleted() {
         this._deleted = true;
+        this.clearFetchData();
+        this.clearUpdatePrice();
         this.clearCheckTime();
         this.log(this.getName() + ' -> device deleted');
     }
 
+    clearFetchData() {
+        if (this.fetchTimeout) {
+            this.homey.clearTimeout(this.fetchTimeout);
+            this.fetchTimeout = undefined;
+        }
+    }
+
+    scheduleFetchData(seconds?: number) {
+        if (this._deleted) {
+            return;
+        }
+        this.clearFetchData();
+        if (seconds === undefined) {
+            let syncTime = this.getStoreValue('syncTime');
+            if (syncTime === undefined || syncTime === null) {
+                syncTime = Math.round(Math.random() * 3600);
+                this.setStoreValue('syncTime', syncTime).catch((err: any) => this.log(err));
+            }
+            const now = new Date();
+            seconds = syncTime - (now.getMinutes() * 60 + now.getSeconds());
+            seconds = seconds <= 0 ? seconds + 3600 : seconds;
+            this.log(`Sync time: ${syncTime}`);
+        }
+        this.log(`Fetch data in ${seconds} seconds`);
+        this.fetchTimeout = this.homey.setTimeout(this.doFetchData.bind(this), seconds * 1000);
+    }
+
+    async doFetchData() {
+        if (this._deleted) {
+            return;
+        }
+        try {
+            this.clearFetchData();
+            this.clearUpdatePrice();
+
+            const settings = this.getSettings();
+            if (settings.pricesFromUtilityBill) {
+                // @ts-ignore
+                const pricesUtilityBill = await this.homey.app.fetchPrices();
+                this._prices = pricesUtilityBill ? pricesUtilityBill
+                    .map((p: any) => {
+                        return {
+                            startsAt: moment(p.time * 1000),
+                            time: p.time,
+                            price: p.price,
+                        }
+                    }) : undefined;
+                if (this._prices) {
+                    this.priceComparer.updatePrices(this._prices);
+                    this.log('Got prices from the Utility Bill app:', this._prices ? this._prices.length : 0);
+                }
+            } else {
+                const fromDate = moment().add(-1, 'day');
+                const toDate = moment().add(1, 'day');
+                const currency = settings.currency || 'EUR';
+                const priceArea = settings.priceArea || 'Oslo';
+                const options: NordpoolOptions = {currency, priceArea};
+                this._prices = await this.pricesFetchClient.fetchSpotPricesInRange(this as Device, fromDate, toDate, options, true);
+                this.priceComparer.updatePrices(this._prices);
+                this.log('Got prices:', this.getData().id, this._prices.length);
+            }
+        } catch (err) {
+            this.log(err);
+        } finally {
+            this.scheduleFetchData();
+            this.scheduleUpdatePrice(1);
+        }
+    }
+
+    clearUpdatePrice() {
+        if (this.updatePriceTimeout) {
+            this.homey.clearTimeout(this.updatePriceTimeout);
+            this.updatePriceTimeout = undefined;
+        }
+    }
+
+    scheduleUpdatePrice(seconds?: number) {
+        if (this._deleted) {
+            return;
+        }
+        this.clearUpdatePrice();
+        if (seconds === undefined) {
+            const now = new Date();
+            seconds = 3 - (now.getMinutes() * 60 + now.getSeconds()); // 3 seconds after top of the hour
+            seconds = seconds <= 0 ? seconds + 3600 : seconds;
+        }
+        this.log(`Update price in ${seconds} seconds`);
+        this.updatePriceTimeout = this.homey.setTimeout(this.doUpdatePrice.bind(this), seconds * 1000);
+    }
+
+    async doUpdatePrice() {
+        if (this._deleted) {
+            return;
+        }
+        try {
+            this.clearUpdatePrice();
+            /*
+            if (this._prices) {
+                const localTime = moment();
+
+                const currentPrice = this.priceApi.currentPrice(this._prices, localTime);
+                const startAtHour = currentPrice ? this.priceApi.toHour(currentPrice.startsAt) : undefined;
+                const priceRatio = this.priceApi.priceRatio(this._prices, localTime);
+                const price = currentPrice ? currentPrice.price : undefined;
+                let priceChanged = false;
+
+                if (currentPrice) {
+                    this.log('Current price:', startAtHour, price);
+
+                    priceChanged = !this._lastPrice || startAtHour !== this.priceApi.toHour(this._lastPrice.startsAt);
+                    this._lastPrice = currentPrice;
+                    const priceCapability = `price_${this.getSetting('currency')}`;
+                    if (this.hasCapability(priceCapability)) {
+                        await this.setCapabilityValue(priceCapability, price).catch(this.error);
+                    }
+                    if (priceRatio !== undefined && this.hasCapability('price_ratio')) {
+                        await this.setCapabilityValue('price_ratio', priceRatio).catch(this.error);
+                    }
+                }
+            }
+            */
+        } catch (err) {
+            this.log(err);
+        } finally {
+            this.scheduleUpdatePrice();
+        }
+    }
+
     clearCheckTime() {
-        if (this.curTimeout) {
-            this.homey.clearTimeout(this.curTimeout);
-            this.curTimeout = undefined;
+        if (this.checkTimeout) {
+            this.homey.clearTimeout(this.checkTimeout);
+            this.checkTimeout = undefined;
         }
     }
 
@@ -151,10 +308,10 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
         }
         this.clearCheckTime();
         this.log(`Checking time in ${seconds} seconds`);
-        this.curTimeout = this.homey.setTimeout(this.checkTime.bind(this), seconds * 1000);
+        this.checkTimeout = this.homey.setTimeout(this.doCheckTime.bind(this), seconds * 1000);
     }
 
-    async checkTime(props: any = {}) {
+    async doCheckTime(props: any = {}) {
         const onoff = props.onoff;
         const home_override = props.home_override;
         if (this._deleted) {
@@ -183,12 +340,8 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
                 this._home_override = false;
                 await this.setCapabilityValue('home_override', this._home_override).catch(this.error);
             }
-            if (this.shallFetchData()) {
-                await this.fetchData();
-            }
-            if (this._prices) {
-                await this.onData();
-            }
+
+            await this.onCheckData();
         } catch (err) {
             this.error(err);
         } finally {
@@ -196,46 +349,10 @@ module.exports = class HeatingControllerDevice extends Homey.Device {
         }
     }
 
-    async fetchData() {
-        try {
-            const settings = this.getSettings();
-            if (settings.pricesFromUtilityBill) {
-                const pricesUtilityBill = await this.homey.app.fetchPrices();
-                this._lastFetchData = moment();
-                this._prices = pricesUtilityBill ? pricesUtilityBill
-                    .map((p: any) => {
-                        return {
-                            startsAt: moment(p.time * 1000),
-                            time: p.time,
-                            price: p.price,
-                        }
-                    }) : undefined;
-                this.priceComparer.updatePrices(this._prices);
-                this.log('Got prices from the Utility Bill app:', this._prices ? this._prices.length : 0);
-            } else {
-                const priceArea = settings.priceArea || 'Oslo';
-                const currency = settings.currency || 'EUR';
-                this.log('Will fetch prices:', this.getData().id, priceArea, currency);
-                const localTime = moment().startOf('day');
-                const prices = await this.nordpool.fetchPrices(localTime, {priceArea, currency});
-                this._lastFetchData = moment();
-                this._prices = prices;
-                this.priceComparer.updatePrices(this._prices);
-                this.log('Got prices:', this.getData().id, prices.length);
-            }
-        } catch (err) {
-            this.error(err);
+    async onCheckData() {
+        if (!this._prices) {
+            return;
         }
-    }
-
-    shallFetchData() {
-        return !this._prices
-            || this._prices.length == 0
-            || !this._lastFetchData
-            || this.priceApi.toHour(this._lastFetchData) !== this.priceApi.toHour(moment());
-    }
-
-    async onData() {
         try {
             const localTime = moment();
             const heatingOptions = this._getHeatingOptions();

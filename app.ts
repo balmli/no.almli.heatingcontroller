@@ -2,14 +2,15 @@ import Homey from 'homey';
 import moment from 'moment-timezone';
 
 import {holidays, Holiday} from '@balmli/homey-public-holidays'
+import {UtilityBillApi} from '@balmli/homey-utility-prices-client'
 
 module.exports = class HeatingControllerApp extends Homey.App {
 
-    utilityBillApi: any;
+    utilityBillApi?: UtilityBillApi;
 
     async onInit() {
         moment.tz.setDefault(this.homey.clock.getTimezone());
-        this.utilityBillApi = this.homey.api.getApiApp('no.almli.utilitycost');
+        this.utilityBillApi = new UtilityBillApi({logger: this.log, homey: this.homey});
         await this._initFlows();
         this.log('HeatingControllerApp is running...');
     }
@@ -172,32 +173,8 @@ module.exports = class HeatingControllerApp extends Homey.App {
         return hdd.type in types;
     }
 
-    async _checkApi() {
-        try {
-            const isInstalled = await this.utilityBillApi.getInstalled();
-            const version = await this.utilityBillApi.getVersion();
-            if (isInstalled && !!version) {
-                const split = version.split('.');
-                let apiOk = (Number(split[0]) >= 1 && Number(split[1]) >= 4);
-                this.log(`Utility Bill: ${version} installed${apiOk ? ' and ready' : ', but not ready'}`, split);
-                return apiOk;
-            } else {
-                this.log(`Utility Bill: not installed`);
-            }
-        } catch (err: any) {
-            this.log(`Checking Utility Bill API: ${err.message}`);
-        }
-        return false;
-    }
-
     async fetchPrices() {
-        if (await this._checkApi()) {
-            try {
-                return await this.utilityBillApi.get('/prices');
-            } catch (err) {
-                this.log('Fetching prices from the Utility Bill app failed: ', err);
-            }
-        }
+        return this.utilityBillApi?.fetchPrices();
     }
 
 }
