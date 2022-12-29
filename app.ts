@@ -173,8 +173,4 @@ module.exports = class HeatingControllerApp extends Homey.App {
         return hdd.type in types;
     }
 
-    async fetchPrices() {
-        return this.utilityBillApi?.fetchPrices();
-    }
-
 }

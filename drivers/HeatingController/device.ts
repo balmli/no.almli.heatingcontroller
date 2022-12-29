@@ -4,22 +4,25 @@ import moment from 'moment-timezone';
 import {
     heating,
     HeatingOptions,
-    HeatingResult,
     HolidayToday,
-    NordpoolApi,
-    NordpoolOptions,
     NordpoolPrice,
     NordpoolPrices,
     PriceApi,
     PriceComparer,
+    PriceFetcher,
+    PriceFetcherMethod,
     PricesFetchClient
 } from '@balmli/homey-utility-prices'
 
+const Logger = require('../../lib/Logger');
+
 module.exports = class HeatingControllerDevice extends Device {
 
+    logger: any;
     priceApi = new PriceApi()
     priceComparer = new PriceComparer(this.priceApi)
     pricesFetchClient = new PricesFetchClient({logger: this.log});
+    priceFetcher!: PriceFetcher;
 
     _at_home?: boolean;
     _home_override?: boolean;
@@ -29,11 +32,13 @@ module.exports = class HeatingControllerDevice extends Device {
     _prices?: NordpoolPrices;
     _deleted?: boolean;
 
-    fetchTimeout?: NodeJS.Timeout;
-    updatePriceTimeout?: NodeJS.Timeout;
     checkTimeout?: NodeJS.Timeout;
 
     async onInit() {
+        this.logger = new Logger({
+            logFunc: this.log,
+            errorFunc: this.error,
+        });
         await this.migrate();
         await this.fixPrice(this.getSetting('currency'));
         this._at_home = undefined;
@@ -54,9 +59,33 @@ module.exports = class HeatingControllerDevice extends Device {
             }
         });
 
-        this.scheduleFetchData(3);
+        this.priceFetcher = new PriceFetcher({
+            logger: this.logger,
+            pricesFetchClient: this.pricesFetchClient,
+            // @ts-ignore
+            utilityBillApi: this.homey.app.utilityBillApi,
+            device: this,
+        });
+        this.priceFetcher.on('prices', this.pricesEvent.bind(this));
+        this.priceFetcher.on('priceChanged', this.pricesChangedEvent.bind(this));
+        this.setFetcherOptions(this.getSettings());
+        this.priceFetcher.start();
         this.scheduleCheckTime(5);
         this.log(this.getName() + ' -> device initialized');
+    }
+
+    setFetcherOptions(settings: any) {
+        this.priceFetcher.setNordpoolOptions({currency: settings.currency, priceArea: settings.priceArea});
+        this.priceFetcher.setFetchMethod(settings.pricesFromUtilityBill ?
+            PriceFetcherMethod.utilityPriceClient :
+            PriceFetcherMethod.nordpool);
+
+        let syncTime = this.getStoreValue('syncTime');
+        if (syncTime === undefined || syncTime === null) {
+            syncTime = Math.round(Math.random() * 3600);
+            this.setStoreValue('syncTime', syncTime).catch((err: any) => this.log(err));
+        }
+        this.priceFetcher.setFetchTime(syncTime);
     }
 
     async migrate() {
@@ -99,8 +128,9 @@ module.exports = class HeatingControllerDevice extends Device {
             changedKeys.includes('pricesFromUtilityBill')) {
             await this.fixPrice(newSettings.currency);
             this._lastPrice = undefined;
+            this.setFetcherOptions(newSettings);
             this.pricesFetchClient.clearStorage(this);
-            this.scheduleFetchData(3);
+            this.priceFetcher.start();
             this.scheduleCheckTime(5);
         }
     }
@@ -161,138 +191,17 @@ module.exports = class HeatingControllerDevice extends Device {
 
     onDeleted() {
         this._deleted = true;
-        this.clearFetchData();
-        this.clearUpdatePrice();
+        this.priceFetcher.destroy();
         this.clearCheckTime();
         this.log(this.getName() + ' -> device deleted');
     }
 
-    clearFetchData() {
-        if (this.fetchTimeout) {
-            this.homey.clearTimeout(this.fetchTimeout);
-            this.fetchTimeout = undefined;
-        }
+    pricesEvent(prices: NordpoolPrices) {
+        this._prices = prices;
+        this.priceComparer.updatePrices(prices);
     }
 
-    scheduleFetchData(seconds?: number) {
-        if (this._deleted) {
-            return;
-        }
-        this.clearFetchData();
-        if (seconds === undefined) {
-            let syncTime = this.getStoreValue('syncTime');
-            if (syncTime === undefined || syncTime === null) {
-                syncTime = Math.round(Math.random() * 3600);
-                this.setStoreValue('syncTime', syncTime).catch((err: any) => this.log(err));
-            }
-            const now = new Date();
-            seconds = syncTime - (now.getMinutes() * 60 + now.getSeconds());
-            seconds = seconds <= 0 ? seconds + 3600 : seconds;
-            this.log(`Sync time: ${syncTime}`);
-        }
-        this.log(`Fetch data in ${seconds} seconds`);
-        this.fetchTimeout = this.homey.setTimeout(this.doFetchData.bind(this), seconds * 1000);
-    }
-
-    async doFetchData() {
-        if (this._deleted) {
-            return;
-        }
-        try {
-            this.clearFetchData();
-            this.clearUpdatePrice();
-
-            const settings = this.getSettings();
-            if (settings.pricesFromUtilityBill) {
-                // @ts-ignore
-                const pricesUtilityBill = await this.homey.app.fetchPrices();
-                this._prices = pricesUtilityBill ? pricesUtilityBill
-                    .map((p: any) => {
-                        return {
-                            startsAt: moment(p.time * 1000),
-                            time: p.time,
-                            price: p.price,
-                        }
-                    }) : undefined;
-                if (this._prices) {
-                    this.priceComparer.updatePrices(this._prices);
-                    this.log('Got prices from the Utility Bill app:', this._prices ? this._prices.length : 0);
-                }
-            } else {
-                const fromDate = moment().add(-1, 'day');
-                const toDate = moment().add(1, 'day');
-                const currency = settings.currency || 'EUR';
-                const priceArea = settings.priceArea || 'Oslo';
-                const options: NordpoolOptions = {currency, priceArea};
-                this._prices = await this.pricesFetchClient.fetchSpotPricesInRange(this as Device, fromDate, toDate, options, true);
-                this.priceComparer.updatePrices(this._prices);
-                this.log('Got prices:', this.getData().id, this._prices.length);
-            }
-        } catch (err) {
-            this.log(err);
-        } finally {
-            this.scheduleFetchData();
-            this.scheduleUpdatePrice(1);
-        }
-    }
-
-    clearUpdatePrice() {
-        if (this.updatePriceTimeout) {
-            this.homey.clearTimeout(this.updatePriceTimeout);
-            this.updatePriceTimeout = undefined;
-        }
-    }
-
-    scheduleUpdatePrice(seconds?: number) {
-        if (this._deleted) {
-            return;
-        }
-        this.clearUpdatePrice();
-        if (seconds === undefined) {
-            const now = new Date();
-            seconds = 3 - (now.getMinutes() * 60 + now.getSeconds()); // 3 seconds after top of the hour
-            seconds = seconds <= 0 ? seconds + 3600 : seconds;
-        }
-        this.log(`Update price in ${seconds} seconds`);
-        this.updatePriceTimeout = this.homey.setTimeout(this.doUpdatePrice.bind(this), seconds * 1000);
-    }
-
-    async doUpdatePrice() {
-        if (this._deleted) {
-            return;
-        }
-        try {
-            this.clearUpdatePrice();
-            /*
-            if (this._prices) {
-                const localTime = moment();
-
-                const currentPrice = this.priceApi.currentPrice(this._prices, localTime);
-                const startAtHour = currentPrice ? this.priceApi.toHour(currentPrice.startsAt) : undefined;
-                const priceRatio = this.priceApi.priceRatio(this._prices, localTime);
-                const price = currentPrice ? currentPrice.price : undefined;
-                let priceChanged = false;
-
-                if (currentPrice) {
-                    this.log('Current price:', startAtHour, price);
-
-                    priceChanged = !this._lastPrice || startAtHour !== this.priceApi.toHour(this._lastPrice.startsAt);
-                    this._lastPrice = currentPrice;
-                    const priceCapability = `price_${this.getSetting('currency')}`;
-                    if (this.hasCapability(priceCapability)) {
-                        await this.setCapabilityValue(priceCapability, price).catch(this.error);
-                    }
-                    if (priceRatio !== undefined && this.hasCapability('price_ratio')) {
-                        await this.setCapabilityValue('price_ratio', priceRatio).catch(this.error);
-                    }
-                }
-            }
-            */
-        } catch (err) {
-            this.log(err);
-        } finally {
-            this.scheduleUpdatePrice();
-        }
+    async pricesChangedEvent(currentPrice: NordpoolPrice) {
     }
 
     clearCheckTime() {
