@@ -1,0 +1,29 @@
+{
+  "id": "fetch_prices",
+  "title": {
+    "en": "Fetch prices"
+  },
+  "advanced": true,
+  "titleFormatted": {
+    "en": "Fetch prices"
+  },
+  "hint": {
+    "en": "Use this card to fetch prices."
+  },
+  "tokens": [
+    {
+      "name": "prices",
+      "type": "string",
+      "title": {
+        "en": "Prices (JSON)"
+      }
+    }
+  ],
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    }
+  ]
+}

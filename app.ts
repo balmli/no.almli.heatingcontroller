@@ -154,6 +154,9 @@ module.exports = class HeatingControllerApp extends Homey.App {
 
         this.homey.flow.getActionCard('clear_holiday_today')
             .registerRunListener((args, state) => args.device.onActionClearHolidayToday());
+
+        this.homey.flow.getActionCard('fetch_prices')
+            .registerRunListener((args, state) => args.device.onFetchPrices());
     }
 
     check(args: any, types: any) {

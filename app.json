@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.almli.heatingcontroller",
-  "version": "1.12.2",
+  "version": "1.12.3",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#d06830",
@@ -2180,6 +2180,35 @@
           {
             "type": "device",
             "name": "device",
+            "filter": "driver_id=HeatingController"
+          }
+        ]
+      },
+      {
+        "id": "fetch_prices",
+        "title": {
+          "en": "Fetch prices"
+        },
+        "advanced": true,
+        "titleFormatted": {
+          "en": "Fetch prices"
+        },
+        "hint": {
+          "en": "Use this card to fetch prices."
+        },
+        "tokens": [
+          {
+            "name": "prices",
+            "type": "string",
+            "title": {
+              "en": "Prices (JSON)"
+            }
+          }
+        ],
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
             "filter": "driver_id=HeatingController"
           }
         ]

@@ -1,6 +1,7 @@
 import {Device} from "homey";
 import moment from 'moment-timezone';
 
+import Logger from '@balmli/homey-logger';
 import {
     heating,
     HeatingOptions,
@@ -14,7 +15,6 @@ import {
     PricesFetchClient
 } from '@balmli/homey-utility-prices'
 
-const Logger = require('../../lib/Logger');
 
 module.exports = class HeatingControllerDevice extends Device {
 
@@ -36,6 +36,8 @@ module.exports = class HeatingControllerDevice extends Device {
 
     async onInit() {
         this.logger = new Logger({
+            logLevel: 3,
+            prefix: undefined,
             logFunc: this.log,
             errorFunc: this.error,
         });
@@ -184,6 +186,17 @@ module.exports = class HeatingControllerDevice extends Device {
         await this.setSettings({holiday_today: ''}).catch(this.error);
         return this.doCheckTime();
     }
+
+    async onFetchPrices() {
+        try {
+            const prices = this._prices ? JSON.stringify(this._prices) : undefined;
+            return {
+                prices
+            };
+        } catch (err) {
+            this.logger.error('onFetchPrices', err);
+        }
+    };
 
     onAdded() {
         this.log(this.getName() + ' -> device added', this.getData().id);
