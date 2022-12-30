@@ -19,9 +19,27 @@
       }
     },
     {
-      "id": "DE-LU",
+      "id": "DK1",
       "label": {
-        "en": "Germany and Luxembourg (DE-LU)"
+        "en": "Denmark - DK1"
+      }
+    },
+    {
+      "id": "DK2",
+      "label": {
+        "en": "Denmark - DK2"
+      }
+    },
+    {
+      "id": "EE",
+      "label": {
+        "en": "Estonia - EE"
+      }
+    },
+    {
+      "id": "FI",
+      "label": {
+        "en": "Finland - FI"
       }
     },
     {
@@ -31,9 +49,57 @@
       }
     },
     {
+      "id": "DE-LU",
+      "label": {
+        "en": "Germany and Luxembourg (DE-LU)"
+      }
+    },
+    {
+      "id": "LV",
+      "label": {
+        "en": "Latvia - LV"
+      }
+    },
+    {
+      "id": "LT",
+      "label": {
+        "en": "Lithuania - LT"
+      }
+    },
+    {
       "id": "NL",
       "label": {
         "en": "Netherlands - NL"
+      }
+    },
+    {
+      "id": "Oslo",
+      "label": {
+        "en": "Norway - Oslo (NO1)"
+      }
+    },
+    {
+      "id": "Kr.sand",
+      "label": {
+        "en": "Norway - Kr.sand (NO2)"
+      }
+    },
+    {
+      "id": "Bergen",
+      "label": {
+        "en": "Norway - Bergen (NO5)"
+      }
+    },
+    {
+      "id": "Tr.heim",
+      "label": {
+        "en": "Norway - Tr.heim (NO3)"
+      }
+    },
+    {
+      "id": "Tromsø",
+      "label": {
+        "en": "Norway - Tromsø (NO4)"
       }
     },
     {
@@ -58,78 +124,6 @@
       "id": "SE4",
       "label": {
         "en": "Sweden - SE4"
-      }
-    },
-    {
-      "id": "DK1",
-      "label": {
-        "en": "Sweden - DK1"
-      }
-    },
-    {
-      "id": "DK2",
-      "label": {
-        "en": "Sweden - DK2"
-      }
-    },
-    {
-      "id": "FI",
-      "label": {
-        "en": "Finland - FI"
-      }
-    },
-    {
-      "id": "Oslo",
-      "label": {
-        "en": "Norway - Oslo"
-      }
-    },
-    {
-      "id": "Kr.sand",
-      "label": {
-        "en": "Norway - Kr.sand"
-      }
-    },
-    {
-      "id": "Bergen",
-      "label": {
-        "en": "Norway - Bergen"
-      }
-    },
-    {
-      "id": "Molde",
-      "label": {
-        "en": "Norway - Molde"
-      }
-    },
-    {
-      "id": "Tr.heim",
-      "label": {
-        "en": "Norway - Tr.heim"
-      }
-    },
-    {
-      "id": "Tromsø",
-      "label": {
-        "en": "Norway - Tromsø"
-      }
-    },
-    {
-      "id": "EE",
-      "label": {
-        "en": "Estonia - EE"
-      }
-    },
-    {
-      "id": "LV",
-      "label": {
-        "en": "Latvia - LV"
-      }
-    },
-    {
-      "id": "LT",
-      "label": {
-        "en": "Lithuania -LT"
       }
     }
   ]
