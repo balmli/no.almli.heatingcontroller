@@ -1,9 +1,15 @@
 import moment from 'moment-timezone';
 
+import Logger from '@balmli/homey-logger';
 import {heating, NordpoolApi, PriceApi} from '@balmli/homey-utility-prices';
 
 const priceApi = new PriceApi()
-const nordpool = new NordpoolApi()
+const nordpool = new NordpoolApi({
+    logger: new Logger({
+        logLevel: 3,
+        prefix: undefined,
+    })
+})
 
 export const testNordpool = async function (
     {priceArea, currency, country, timeZone, date}:

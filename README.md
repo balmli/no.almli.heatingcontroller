@@ -216,6 +216,10 @@ The 'Night starts', 'Night ends', 'At work starts' and 'At work ends' will trigg
 - Is at work / not at work
 - Is comfort mode / ECO mode
 - Is current price below / above
+- Current price is !{{|not}} among the X highest hours before TIME
+- Current price is !{{|not}} among the X lowest hours before TIME
+- Current price is !{{|not}} among the X highest hours in the next Y hours
+- Current price is !{{|not}} among the X lowest hours in the next Y hours
 - Current price is among / is not among the X hours of the days lowest prices
 - Current price is among / is not among the X hours of the days highest prices
 - Current price is among / is not among the X hours of lowest between START and END
@@ -240,13 +244,15 @@ The 'Night starts', 'Night ends', 'At work starts' and 'At work ends' will trigg
 
 #### Actions
 
+- Fetch prices
 - Set home
 - Set away
 - Set away, and automatically switch to home mode on next schedule
 - Set home override on
 - Set home override on, and automatically off on next schedule
 - Set home override off
-- Set holiday today.  Holiday can be overridden with this action.
+- Set holiday today.  Holiday can be overridden with this action
+- Use automatic holiday
 
 #### Capabilities
 
@@ -274,6 +280,13 @@ Please report issues on the [community forum page](https://community.homey.app/t
 
 ### Release Notes:
 
+#### 1.13.0
+
+- Added condition 'Current price is !{{|not}} among the X highest hours before TIME'
+- Added condition 'Current price is !{{|not}} among the X lowest hours before TIME'
+- Added condition 'Current price is !{{|not}} among the X highest hours in the next Y hours'
+- Added condition 'Current price is !{{|not}} among the X lowest hours in the next Y hours'
+- 
 #### 1.12.3
 
 - Bug fix for the 'Holiday today' / 'Not a holiday today' action 

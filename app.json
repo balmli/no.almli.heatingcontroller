@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "no.almli.heatingcontroller",
-  "version": "1.12.3",
+  "version": "1.13.0",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "brandColor": "#d06830",
@@ -383,6 +383,180 @@
       }
     ],
     "conditions": [
+      {
+        "id": "current_price_among_x_highest_before_time",
+        "title": {
+          "en": "Current price is !{{|not}} among the X highest hours before"
+        },
+        "titleFormatted": {
+          "en": "Current price is !{{|not}} among the [[num_hours]] highest hours before [[time]]"
+        },
+        "hint": {
+          "en": "Condition to check if the current price is among the X highest hours before a time of day."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "num_hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "High hours"
+            },
+            "placeholder": {
+              "en": "High hours"
+            }
+          },
+          {
+            "name": "time",
+            "type": "time",
+            "title": {
+              "en": "Hour"
+            },
+            "placeholder": {
+              "en": "04:00"
+            }
+          }
+        ]
+      },
+      {
+        "id": "current_price_among_x_highest_next_y_hours",
+        "title": {
+          "en": "Current price is !{{|not}} among the X highest hours in the next Y hours"
+        },
+        "titleFormatted": {
+          "en": "Current price is !{{|not}} among the [[num_hours]] highest hours in the next [[next_hours]] hours"
+        },
+        "hint": {
+          "en": "Condition to check if the current price is among the X highest hours the next Y hours."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "num_hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "High hours"
+            },
+            "placeholder": {
+              "en": "High hours"
+            }
+          },
+          {
+            "name": "next_hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "Hours"
+            },
+            "placeholder": {
+              "en": "Hours"
+            }
+          }
+        ]
+      },
+      {
+        "id": "current_price_among_x_lowest_before_time",
+        "title": {
+          "en": "Current price is !{{|not}} among the X lowest hours before"
+        },
+        "titleFormatted": {
+          "en": "Current price is !{{|not}} among the [[num_hours]] lowest hours before [[time]]"
+        },
+        "hint": {
+          "en": "Condition to check if the current price is among the X lowest hours before a time of day."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "num_hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "Low hours"
+            },
+            "placeholder": {
+              "en": "Low hours"
+            }
+          },
+          {
+            "name": "time",
+            "type": "time",
+            "title": {
+              "en": "Hour"
+            },
+            "placeholder": {
+              "en": "04:00"
+            }
+          }
+        ]
+      },
+      {
+        "id": "current_price_among_x_lowest_next_y_hours",
+        "title": {
+          "en": "Current price is !{{|not}} among the X lowest hours in the next Y hours"
+        },
+        "titleFormatted": {
+          "en": "Current price is !{{|not}} among the [[num_hours]] lowest hours in the next [[next_hours]] hours"
+        },
+        "hint": {
+          "en": "Condition to check if the current price is among the X lowest hours the next Y hours."
+        },
+        "args": [
+          {
+            "name": "device",
+            "type": "device",
+            "filter": "driver_id=HeatingController"
+          },
+          {
+            "name": "num_hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "Low hours"
+            },
+            "placeholder": {
+              "en": "Low hours"
+            }
+          },
+          {
+            "name": "next_hours",
+            "type": "number",
+            "min": 1,
+            "max": 23,
+            "step": 1,
+            "title": {
+              "en": "Hours"
+            },
+            "placeholder": {
+              "en": "Hours"
+            }
+          }
+        ]
+      },
       {
         "id": "current_price_below",
         "title": {

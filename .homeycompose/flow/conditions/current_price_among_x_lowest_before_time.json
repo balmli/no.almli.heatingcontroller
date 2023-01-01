@@ -1,0 +1,42 @@
+{
+  "id": "current_price_among_x_lowest_before_time",
+  "title": {
+    "en": "Current price is !{{|not}} among the X lowest hours before"
+  },
+  "titleFormatted": {
+    "en": "Current price is !{{|not}} among the [[num_hours]] lowest hours before [[time]]"
+  },
+  "hint": {
+    "en": "Condition to check if the current price is among the X lowest hours before a time of day."
+  },
+  "args": [
+    {
+      "name": "device",
+      "type": "device",
+      "filter": "driver_id=HeatingController"
+    },
+    {
+      "name": "num_hours",
+      "type": "number",
+      "min": 1,
+      "max": 23,
+      "step": 1,
+      "title": {
+        "en": "Low hours"
+      },
+      "placeholder": {
+        "en": "Low hours"
+      }
+    },
+    {
+      "name": "time",
+      "type": "time",
+      "title": {
+        "en": "Hour"
+      },
+      "placeholder": {
+        "en": "04:00"
+      }
+    }
+  ]
+}
