@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@balmli/homey-logger": "^1.0.0",
-    "@balmli/homey-utility-prices": "^1.3.0",
+    "@balmli/homey-utility-prices": "^1.6.0",
     "@balmli/homey-utility-prices-client": "^1.0.0"
   },
   "devDependencies": {

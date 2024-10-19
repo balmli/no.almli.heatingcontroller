@@ -1,4 +1,7 @@
 {
+  "1.14.0": {
+    "en": "Fixed fetching prices."
+  },
   "1.13.0": {
     "en": "Added condition 'Current price is !{{|not}} among the X highest hours before TIME'. Added condition 'Current price is !{{|not}} among the X lowest hours before TIME'. Added condition 'Current price is !{{|not}} among the X highest hours in the next Y hours'. Added condition 'Current price is !{{|not}} among the X lowest hours in the next Y hours'."
   },

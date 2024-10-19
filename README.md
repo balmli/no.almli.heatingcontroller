@@ -280,6 +280,10 @@ Please report issues on the [community forum page](https://community.homey.app/t
 
 ### Release Notes:
 
+#### 1.14.0
+
+- Fixed fetching prices
+
 #### 1.13.0
 
 - Added condition 'Current price is !{{|not}} among the X highest hours before TIME'
