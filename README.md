@@ -280,6 +280,10 @@ Please report issues on the [community forum page](https://community.homey.app/t
 
 ### Release Notes:
 
+#### 1.15.0
+
+- Updated holidays
+
 #### 1.14.0
 
 - Fixed fetching prices
