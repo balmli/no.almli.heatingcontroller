@@ -1,4 +1,7 @@
 {
+  "1.15.1": {
+    "en": "Added support for 15 minute prices."
+  },
   "1.15.0": {
     "en": "Updated holidays."
   },

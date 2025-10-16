@@ -84,7 +84,8 @@ module.exports = class HeatingControllerDevice extends Device {
 
         let syncTime = this.getStoreValue('syncTime');
         if (syncTime === undefined || syncTime === null) {
-            syncTime = Math.round(Math.random() * 3600);
+            // Spread API calls across 15 minutes to align with 15-minute price intervals
+            syncTime = Math.round(Math.random() * 900);
             this.setStoreValue('syncTime', syncTime).catch((err: any) => this.log(err));
         }
         this.priceFetcher.setFetchTime(syncTime);
@@ -334,7 +335,7 @@ module.exports = class HeatingControllerDevice extends Device {
             if (currentPrice) {
                 this.log('Current price:', startAtHour, price);
 
-                priceChanged = !this._lastPrice || startAtHour !== this.priceApi.toHour(this._lastPrice.startsAt);
+                priceChanged = !this._lastPrice || this._lastPrice.startsAt !== currentPrice.startsAt;
                 this._lastPrice = currentPrice;
                 const priceCapability = `price_${this.getSetting('currency')}`;
                 if (this.hasCapability(priceCapability)) {
