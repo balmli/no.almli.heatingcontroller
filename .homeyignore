@@ -8,3 +8,6 @@ scripts/*
 test/*
 test2/*
 image.xcf
+CLAUDE.md
+specs/*
+.claude/
